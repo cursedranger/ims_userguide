@@ -188,8 +188,14 @@ documents each one, and they're substituted as plain text, never executed:
 
 Fine-grained, per-model **view / edit / delete** scoping layered on top of
 CanCanCan's role abilities — each action can be scoped to **None / Own /
-Department / All**. The index lists every role and lets you jump to any
-individual user's override:
+Department / All**. It only ever widens access on top of the app's
+built-in rules, never narrows it — see
+[How the Access Control Matrix works](17-access-control-matrix.md) for the
+full mechanics (role vs. user rows, how conflicting grants resolve, and a
+worked before/after example) and screenshots for the screens below.
+
+The index lists every role and lets you jump to any individual user's
+override:
 
 ![Access control matrix index](images/masters-admin/23-access-control-matrix-index.png)
 

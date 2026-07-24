@@ -67,4 +67,4 @@ authorization scope as its interactive counterpart — there's no
 report-only backdoor to data you couldn't otherwise see.
 
 ---
-Previous: [Assets](15-assets.md) · Back to [Getting Started](00-getting-started.md)
+Previous: [Assets](15-assets.md) · Next: [How the Access Control Matrix works](17-access-control-matrix.md)

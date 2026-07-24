@@ -44,6 +44,9 @@ Sample/demo login credentials are printed by the seed tasks — see
 16. [Assets](15-assets.md) — calibration and maintenance records.
 17. [Dashboards & Reports](16-dashboards-and-reports.md) — the
     organization dashboard and every printable/exportable report.
+18. [How the Access Control Matrix works](17-access-control-matrix.md) —
+    role vs. user rows, the four scopes, resolution order, a worked
+    before/after example, and the non-model tab-toggle rows.
 
 ## Conventions used throughout
 
