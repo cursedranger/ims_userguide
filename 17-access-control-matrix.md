@@ -11,6 +11,9 @@ not a deploy.
 
 This page is a deep dive into how it actually resolves a grant. For the
 screens themselves, see [Masters & Admin](01-masters-and-admin.md#access-control-matrix).
+For how this layer composes with every module's own built-in rules — a
+full reference covering both, with a module-by-module table and worked
+composition examples — see [`docs/access-control.md`](../access-control.md).
 
 ## The mental model: it only ever adds
 

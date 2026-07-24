@@ -137,6 +137,29 @@ approver, completes the request — which moves the audit itself straight to
 *(A finding raised from this audit is still open independently — closing
 an audit doesn't close its findings; see [Findings](03-findings.md).)*
 
+## Downloadable audit report (PDF)
+
+Once an audit is **Completed** *and* every finding it raised is closed or
+rejected, the **Report** tab grows a third card with a generated PDF —
+identification, team, checklist responses, the summary/conclusion, every
+finding's RCA/CAPA resolution, and the approval history, all in one
+document:
+
+![Report tab with the generated PDF and its download log](images/audits/33-report-tab-with-pdf.png)
+
+The PDF is generated automatically in the background the moment both
+conditions are met — completing the audit, or closing/rejecting the last
+open finding, whichever happens second — nobody has to click a "generate"
+button. **View report** opens it inline; **Download report** downloads it
+and logs the download (who, when, from which IP) in the card right below,
+and in the full **Report Download Log** under Audits in the sidebar:
+
+![Audit Report Download Log, filterable and exportable](images/audits/34-report-download-log-index.png)
+
+If the audit isn't there yet, the card explains exactly what's still
+outstanding (audit not completed yet, or how many findings remain open)
+instead of just hiding the button.
+
 ## Comments and attachments
 
 Every major record in the app (not just audits) has the same **Comments**
