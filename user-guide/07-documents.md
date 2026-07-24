@@ -1,0 +1,151 @@
+# Documents
+
+Sidebar → **Documents → Documents**. Controlled documents with sequential
+review/publish approvals, immutable published revisions, distribution and
+acknowledgement tracking, and generated Control/Master copy PDFs with a
+cover sheet and approval signatures baked in. Who can create, review, and
+publish for each department is configured once in the
+[Document Workflow Designer](01-masters-and-admin.md#document-workflow-designer).
+
+## List and create
+
+![Documents index](images/documents/01-index.png)
+
+**New Document** picks a category (which sets the `DOC-<category>-NNN`
+numbering and default review frequency), title, department (only
+departments you're a configured creator for are offered, unless you can
+manage documents globally), owner, confidentiality, review frequency, QMS
+level, and related standards/clauses:
+
+![New document form](images/documents/02-new-form.png)
+
+A document with no revisions yet has nothing to view or download:
+
+![Show, no version yet](images/documents/03-show-no-version.png)
+
+## First revision → review → publish
+
+**Start new revision** (Current Version tab) takes a label, change
+summary, and a `.docx` file:
+
+![Start revision form](images/documents/04-start-revision-form.png)
+
+It saves as an editable **Draft** revision — edit it freely, replace the
+file, or re-save until it's ready:
+
+![Draft revision, editable](images/documents/05-current-tab-draft-revision.png)
+
+**Submit for approval** shows exactly who the configured reviewers and
+publishers are for this department before you submit (and warns if none
+are configured), plus lets you add extra approvers for this submission
+only:
+
+![In review](images/documents/06-current-tab-in-review.png)
+
+The Approval History tab shows both stages — **every** reviewer must
+approve before it moves to the publish stage, and **every** publisher must
+approve before it goes effective:
+
+![Approval history, review stage pending, publish stage queued](images/documents/07-approvals-tab-review-stage.png)
+
+Reviewers and publishers approve from **My Approval Requests**, same as
+everywhere else. Once the last publisher approves, the revision becomes
+the document's **effective, current version** — immutable from here on:
+
+![Current version, effective](images/documents/09-current-tab-effective.png)
+
+## The generated Control/Master Copy PDFs
+
+Publishing kicks off a background job that renders a **Control Copy** and
+a **Master Copy** PDF, each with an auto-generated cover sheet — document
+number, title, department, revision, issue date, and a full approval
+signature table with real timestamps — watermarked accordingly:
+
+![Preview tab, control copy with signatures](images/documents/11-preview-tab.png)
+
+**Download Control Copy** / **Download Master Copy** on the document's
+header stay disabled/show a "still generating" message until that job
+finishes; every download (not just view) is logged.
+
+## Version Control and other tab visibility
+
+Every past revision stays visible on the **Version Control** tab, with its
+status, author, submission and effective dates, and what it superseded:
+
+![Version Control tab](images/documents/10-history-tab.png)
+
+**Record periodic review** (Current Version tab) logs a review outcome
+("No change" or otherwise) with an optional note against the effective
+version, independent of starting a new revision:
+
+![Review recorded](images/documents/16-show-review-recorded.png)
+
+Not everyone sees every tab on a document's page. Two rules apply, and
+they're independent of each other:
+
+**View Department / View All** (`document_access_level`) only ever see
+**Current Version**, **Distribution & Acknowledgements**, and, where
+applicable, **Preview** — nothing else:
+
+![Tabs for a View Department user](images/documents/19-tabs-view-department.png)
+
+**Admin Department / Admin All** see every tab *except* Version
+Control — Approval History, Comments & Activity, and Download Log join
+the set above:
+
+![Tabs for an Admin Department user](images/documents/20-tabs-admin-department.png)
+
+**Version Control** is a tab that isn't governed by `document_access_level`
+at all — it's its own row in the
+[Access Control Matrix](01-masters-and-admin.md#non-model-rows-feature-level-toggles-not-just-whole-records)
+("Documents — Version Control tab"), seeded by default so the **Document
+Controller** role sees it and no one else does, but from there it's a
+normal matrix cell — an admin can grant it to another role, or to one
+specific user, from Masters & admin → Access Control Matrix without any
+code change:
+
+![Tabs for a Document Controller (Version Control included)](images/documents/21-tabs-document-controller.png)
+
+Approval History/Comments & Activity/Download Log have a second matrix row
+of their own too — **"Documents — Approval/Activity/Download Log
+tabs"** — but unlike Version Control it ships with no default rule, since
+Admin Department/Admin All already show these three tabs on their own.
+Use this row when you need to widen access *without* promoting someone to
+an admin tier — e.g. granting one particular auditor visibility into
+approval history on documents, while everyone else with their role stays
+on the narrow View-tier tab set.
+
+## Distribution and acknowledgement
+
+Distribute the effective version to a department, location, role, or
+individual user, optionally **requiring acknowledgement**:
+
+![Distribution form filled in](images/documents/12-distribution-form-filled.png)
+![Distribution added](images/documents/13-distribution-tab-added.png)
+
+A distributed user sees the version in their own **My Work → Documents
+Awaiting Acknowledgement** (see [Getting Started](00-getting-started.md))
+and can acknowledge it directly from the Distribution tab; acknowledgement
+timestamps accumulate below the distribution list:
+
+![Acknowledged](images/documents/15-distribution-tab-acknowledged.png)
+
+## Download log
+
+Every control/master copy download (who, when, which copy) is logged per
+document — and in full across the whole app from the sidebar's own
+**Download Log**:
+
+![Download log tab](images/documents/14-download-log-tab.png)
+
+## Archiving
+
+**Archive** removes a document from the active list (a soft state, not a
+delete — its history and downloads stay intact) with a confirmation
+prompt:
+
+![Document archived](images/documents/17-show-archived.png)
+![Index filtered to the demo documents](images/documents/18-index-filtered.png)
+
+---
+Previous: [Management Reviews](06-management-reviews.md) · Next: [Context & Interested Parties](08-context-and-interested-parties.md)
