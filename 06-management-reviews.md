@@ -28,6 +28,24 @@ category, and optional presenter:
 
 ![Agenda item added](images/meetings/05-agenda-tab-item-added.png)
 
+**Add standard IMS agenda** fills in the standard, ISO-aligned 16-point
+integrated review agenda in one click — consolidated from the actual
+review-input clauses of ISO 9001:2015 §9.3.2, ISO 14001:2015 §9.3, and
+ISO 45001:2018 §9.3 (previous actions, changes, interested parties,
+customer feedback, objectives, process/environmental/OH&S performance,
+NC/CAPA, monitoring & measurement, audit results, supplier performance,
+resources, risks & opportunities, communications, and improvement
+opportunities). Each item shows which standard clause(s) it comes from:
+
+![Empty agenda with the "Add standard IMS agenda" button](images/meetings/30-agenda-tab-before-standard.png)
+![Standard 16-point agenda populated, with clause badges](images/meetings/31-agenda-tab-standard-populated.png)
+
+It's additive and safe to click more than once — a category you've
+already added an item for (by hand, or from a previous click) is left
+alone rather than duplicated. You can still add your own one-off items
+alongside the standard ones, or skip it entirely and build the agenda
+by hand as before.
+
 ## Scheduling and running the meeting
 
 **Draft → Scheduled** needs a start/end time (a chair, secretary, and at

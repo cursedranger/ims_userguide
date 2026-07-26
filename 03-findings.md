@@ -25,19 +25,35 @@ Search by title/reference, and filter by status, kind, or department:
 
 ### Root Cause Analysis
 
-**Assigned/RCA Required → RCA Review**: from the **Root Cause Analysis**
-tab, pick a method (5 Whys, Fishbone, Fault Tree, Bow-Tie, Barrier
-Analysis, or Other), write the problem statement, analysis, identified
-root cause, contributing causes, and immediate correction, and pick an
-approver:
+From the **Root Cause Analysis** tab, pick a method (5 Whys, Fishbone,
+Fault Tree, Bow-Tie, Barrier Analysis, or Other), write the problem
+statement, analysis, identified root cause, contributing causes, and
+immediate correction. The **Approver** field doubles as the draft/submit
+switch: leave it blank and **Save** just saves your progress as an
+editable draft; pick an approver and the same **Save** button submits it
+for approval instead:
 
-![RCA form filled in](images/findings/06-rca-form-filled.png)
+![RCA form filled in, with fishbone causes expanded](images/findings/20-rca-draft-form-fishbone.png)
 
-Submitting moves the finding to **RCA Review** and creates an approval
-request — visible on the RCA tab itself alongside the form (now hidden
-until the decision comes back):
+For **Fishbone** and **5 Whys**, expand the matching section (**Fishbone
+causes** / **5 Whys chain**) to enter structured data instead of just free
+text — one cause per fishbone category, or an ordered chain of why-steps
+with the deepest one flagged as the root cause. Saving renders it as a
+real diagram right on the tab:
 
-![RCA pending approval](images/findings/08-rca-tab-pending-approval.png)
+![Fishbone (Ishikawa) diagram, rendered from the entered causes](images/findings/21-rca-fishbone-chart.png)
+
+While the RCA is still a draft, an **Add a fishbone cause** / **Add a
+why-step** card lets you keep adding entries one at a time — useful for
+coming back to it later, or adding one more cause someone raised in a
+review meeting, without redoing the whole form.
+
+**Assigned/RCA Required → RCA Review**: submitting (with an approver
+picked) moves the finding to **RCA Review** and creates an approval
+request — the chart stays visible above it, now read-only, alongside the
+approval history:
+
+![5 Whys chain, submitted for approval](images/findings/22-rca-five-whys-chart.png)
 
 The approver reviews and approves it from **My Approval Requests** exactly
 as shown in [Audits](02-audits.md#approvals) — once approved, the finding

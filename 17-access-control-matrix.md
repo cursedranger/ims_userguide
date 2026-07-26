@@ -195,4 +195,4 @@ Neither role is narrowed by an explicit **None** row that happens to
 exist for them, consistent with "the matrix only ever adds."
 
 ---
-Previous: [Dashboards & Reports](16-dashboards-and-reports.md) · Back to [Getting Started](00-getting-started.md)
+Previous: [Dashboards & Reports](16-dashboards-and-reports.md) · Next: [Environmental Aspects & Impacts](18-environmental-aspects.md)

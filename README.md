@@ -47,6 +47,18 @@ Sample/demo login credentials are printed by the seed tasks — see
 18. [How the Access Control Matrix works](17-access-control-matrix.md) —
     role vs. user rows, the four scopes, resolution order, a worked
     before/after example, and the non-model tab-toggle rows.
+19. [Environmental Aspects & Impacts](18-environmental-aspects.md) —
+    ISO 14001 aspect/impact register, significance determination
+    (computed + overridable), periodic review, and auto-raised findings.
+20. [Worker Participation](19-worker-participation.md) — ISO 45001 §5.4
+    consultation log: hazard reports, suggestions, and safety committee
+    input, with an auto-raised finding for confirmed hazards.
+21. [Safety Meetings](20-safety-meetings.md) — toolbox talks and safety
+    committee meetings: schedule, participants, actions, no formal
+    minutes approval.
+22. [Award & Reward](21-award-and-reward.md) — nominate, approve, award,
+    individual/team recognitions, optional link to a worker
+    participation record, notification on award.
 
 ## Conventions used throughout
 
