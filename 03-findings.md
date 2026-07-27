@@ -37,16 +37,23 @@ for approval instead:
 
 For **Fishbone** and **5 Whys**, expand the matching section (**Fishbone
 causes** / **5 Whys chain**) to enter structured data instead of just free
-text — one cause per fishbone category, or an ordered chain of why-steps
-with the deepest one flagged as the root cause. Saving renders it as a
-real diagram right on the tab:
+text — one cause per fishbone category, or your first chain of why-steps.
+Saving renders it as a real diagram right on the tab:
 
 ![Fishbone (Ishikawa) diagram, rendered from the entered causes](images/findings/21-rca-fishbone-chart.png)
 
 While the RCA is still a draft, an **Add a fishbone cause** / **Add a
 why-step** card lets you keep adding entries one at a time — useful for
 coming back to it later, or adding one more cause someone raised in a
-review meeting, without redoing the whole form.
+review meeting, without redoing the whole form. **5 Whys is a branching
+tree, not just a straight chain**: the add-why-step form has a **Parent**
+select — leave it blank to start a new top-level why, or pick an existing
+step to nest a deeper why underneath it (why 1 → why 1.1, why 1.2, ...).
+Each step's position is numbered accordingly (`1`, `1.1`, `1.2`, `1.1.1`),
+and more than one leaf can be flagged as an identified root cause when a
+branching investigation surfaces more than one independent cause:
+
+![5 Whys tree with a branch, submitted for approval](images/findings/22-rca-five-whys-chart.png)
 
 **Assigned/RCA Required → RCA Review**: submitting (with an approver
 picked) moves the finding to **RCA Review** and creates an approval
@@ -79,6 +86,13 @@ plan/actions become visible with **Mark complete** per action (with a
 completion note):
 
 ![CAPA tab, approved plan and actions](images/findings/14-capa-tab-approved-plan.png)
+
+While in Implementation, the **Add action** form gains a **Root cause
+addressed** select whenever the RCA identified structured fishbone causes
+or 5-Whys steps — pick the specific one this action addresses, or leave
+it blank for an action broader than a single identified cause. Linked
+actions show an **Addresses: ...** line beneath their description. Same
+selector, same behavior as [CAPA Cases](04-capa-cases.md#capa-plan-and-actions).
 
 You can also **Add action** to the plan at any time while the finding is
 in Implementation, beyond the initial set.

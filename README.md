@@ -59,6 +59,12 @@ Sample/demo login credentials are printed by the seed tasks — see
 22. [Award & Reward](21-award-and-reward.md) — nominate, approve, award,
     individual/team recognitions, optional link to a worker
     participation record, notification on award.
+23. [PSSR (Pre-Startup Safety Review)](22-pssr.md) — standard 12-point
+    checklist, draft/in-review/authorized/started lifecycle, optional
+    MOC/asset linkage, reject with auto-raised finding.
+24. [HAZOP (Hazard and Operability Study)](23-hazop.md) — nodes, guide
+    word/parameter deviations, risk ranking, recommended actions tracked
+    to closure, optional auto-raised finding.
 
 ## Conventions used throughout
 

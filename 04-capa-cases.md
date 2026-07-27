@@ -56,9 +56,15 @@ records (a Finding, Incident, etc.) so the case shows what triggered it:
 
 **Investigation → RCA Review**: the RCA form is richer than a Finding's —
 immediate/direct/underlying/systemic cause fields — and takes **multiple
-approvers**, each of whom must approve in sequence:
+approvers**, each of whom must approve in sequence. It also supports the
+same structured **Fishbone**/**5 Whys** entry a Finding's RCA does
+(expand the matching section to add causes or a branching why-step tree)
+— since a CAPA case's RCA has no draft state, the whole diagram is built
+in this one submit form rather than added incrementally afterward:
 
 ![RCA form filled in, two approvers selected](images/capa-cases/08-rca-form-filled.png)
+![Fishbone entered on a CAPA case's RCA, expanded inline on the submit form](images/capa-cases/28-rca-fishbone-form-filled.png)
+![Fishbone diagram rendered on the RCA revisions list](images/capa-cases/29-rca-fishbone-chart.png)
 
 The Approvals tab shows every step's position — later approvers stay
 **Queued** until the one ahead of them decides:
@@ -78,9 +84,14 @@ method/monitoring period):
 ![Plan draft form filled in](images/capa-cases/12-plan-draft-form-filled.png)
 
 Add one or more actions to the draft, then submit the whole plan (again
-with one or more approvers):
+with one or more approvers). When the RCA identified structured causes or
+why-steps, each action can optionally be linked to the specific one it
+addresses via a **Root cause addressed** select — left blank for actions
+broader than a single identified cause:
 
 ![Plan action added, ready to submit](images/capa-cases/14-plan-action-added.png)
+![Root cause addressed selected on a new action](images/capa-cases/30-plan-action-with-root-cause-selected.png)
+![Action list showing which root cause it addresses](images/capa-cases/31-plan-action-addresses-root-cause.png)
 
 Once approved, the case moves to **Implementation** and each action gets a
 **Complete** button; a completed action then gets a **Verify** button

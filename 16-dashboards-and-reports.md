@@ -15,6 +15,15 @@ Everything shown is scoped through `accessible_by(current_ability)` —
 what you see reflects only what you're authorized to see, same as every
 list in the app.
 
+A **Process Safety** card (visible to anyone who can read incidents)
+tracks open LOPC incidents, Process Safety Events, PSE Tier 1/2/3 counts,
+Fire incidents, and chemical releases recorded this year — each number
+links straight to the incident list pre-filtered to match. See
+[Incidents](11-incidents.md#process-safety-lopc) for how these are
+classified:
+
+![Process Safety dashboard card](images/dashboards/08-process-safety-tile.png)
+
 ## My Work
 
 Covered in [Getting Started](00-getting-started.md#my-work--your-personal-queue)
