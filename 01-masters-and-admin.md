@@ -133,9 +133,16 @@ touching code. A module with no row at all defaults to **on**:
 
 A small, growing table of system-wide toggles — reachable only by a super
 admin, same as Module flags above. Flip **Active** on a row to turn that
-behavior on; a setting with no row yet, or with **Active** off, behaves as
-if it were off. The first one, **Require Master Register link**, is
-described in [Documents](07-documents.md#requiring-every-document-to-declare-its-register):
+behavior on or off; most settings default to off with no row yet, but a
+few (like **Master Document Register**, since that feature already
+existed before this toggle did) default to **on** instead, so installing
+the toggle never silently turns off something an organization already
+relies on — see each setting's own description in the table for its
+default. Two so far, both described in
+[Documents](07-documents.md#requiring-every-document-to-declare-its-register):
+**Master Document Register** (on by default — turn off if this
+organization doesn't use it at all) and **Require Master Register link**
+(off by default):
 
 ![Settings index](images/masters-admin/16-settings-index.png)
 

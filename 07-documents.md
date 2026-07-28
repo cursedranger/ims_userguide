@@ -157,6 +157,17 @@ after creation, same as Category/Department):
 
 ![Master Register created](images/documents/22-register-created.png)
 
+This entire feature is on by default, org-wide, but a super admin can turn
+it off from Masters & admin → [Settings](01-masters-and-admin.md#settings)
+(**Master Document Register**) for an organization that doesn't want it at
+all. Once off: **Master Register** disappears from the Type choices on new
+documents, the **Master Register** dropdown (below) is no longer offered
+on ordinary documents either, and no more documents can be linked in —
+either by hand or automatically. Nothing already saved is deleted or
+hidden beyond the Linked Documents tab itself — an existing register's
+other tabs (Version Control, Approval History, etc.) keep working exactly
+like any other document's.
+
 ### Linking documents
 
 The **Linked Documents** tab (only shown on a register) lets you add any
@@ -255,6 +266,50 @@ A super admin can turn on the **Require Master Register link** setting
 This is an addition, not a replacement: manually linking documents into a
 register (above) still works regardless of this setting, and a document can
 still be linked into other registers beyond its own declared one.
+
+### Gated release — publishing waits for MR approval
+
+Once a controlled document has declared its primary **Master Register**
+(above), finishing its normal reviewer/publisher approval no longer makes
+that revision effective right away. It rests **Approved**, gets folded
+into the register's revision in progress automatically, and only goes live
+once the Management Representative approves that register revision — the
+same MR approval this register already goes through for any other reason.
+Everyone else keeps seeing the previous effective version, completely
+unaware anything is even in progress, until release:
+
+![A Document Controller's view of a revision approved and awaiting MR release, with a link to the register carrying it](images/documents/33-gated-controller-view.png)
+
+The Version Control tab (Document Controller and similarly authorized
+roles only) shows exactly where it stands, right alongside the full
+history:
+
+![Version history distinguishing an approved-awaiting-release revision from an effective one](images/documents/34-gated-version-control.png)
+
+The moment the MR approves the register, release happens in the same
+action — the document becomes effective, its Control/Master Copy PDFs
+generate with the correct release date, and it's now visible to everyone
+exactly like any other published document:
+
+![The same document, now released and visible to an ordinary user](images/documents/35-gated-released.png)
+
+A few things worth knowing:
+
+- Only a document's **declared primary register** ever gates its release.
+  Manually linking a document into *other* registers (as described above)
+  never blocks or delays it — those stay purely informational, refreshed
+  only once the document is actually effective.
+- If the register rejects instead, the revision stays exactly where it
+  was — still Approved, still unreleased, still safe. Nothing is lost:
+  correct the register (or resubmit it as-is) and it releases cleanly on
+  the next approval.
+- A document already carrying a revision through this gate can't have its
+  primary register swapped out from under it, and can't have that revision
+  unlinked from the register — it always rides through to release.
+- This only applies while the **Master Document Register** setting is on
+  and the document has a primary register set. Otherwise, publishing works
+  exactly as it always has — straight to effective the moment the last
+  publisher approves.
 
 ---
 Previous: [Management Reviews](06-management-reviews.md) · Next: [Context & Interested Parties](08-context-and-interested-parties.md)
