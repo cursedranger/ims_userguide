@@ -147,5 +147,68 @@ prompt:
 ![Document archived](images/documents/17-show-archived.png)
 ![Index filtered to the demo documents](images/documents/18-index-filtered.png)
 
+## Master Document Register
+
+A Master Document Register is a controlled document that lists other
+controlled documents — same version control, approvals, and publishing as
+any document above, plus its own linked-document bookkeeping. Pick
+**Master Register** as the Type when creating it (Type can't be changed
+after creation, same as Category/Department):
+
+![Master Register created](images/documents/22-register-created.png)
+
+### Linking documents
+
+The **Linked Documents** tab (only shown on a register) lets you add any
+published controlled document — adding one automatically starts a draft
+revision of the register if none is in progress, the same
+**Start new revision** mechanism used above:
+
+![Document linked to the register](images/documents/23-linked-document-added.png)
+
+Document number, title, current revision, effective date, owner, status,
+and next review date are all shown live from the linked document — never
+typed in by hand, and never a draft/in-review/rejected version, since only
+a document's currently effective revision can ever be linked.
+
+### MR-only approval
+
+Submitting a register's revision skips the usual reviewer/publisher
+roster entirely — it goes to whoever holds the **Management
+Representative** role only:
+
+![Register submitted for MR approval](images/documents/24-register-submitted-for-mr.png)
+
+MR approval works exactly like every other approval queue in this
+app — from **My Approval Requests**:
+
+![MR's approval queue](images/documents/25-mr-approval-queue.png)
+![Approving the register](images/documents/26-mr-approval-detail.png)
+
+Once approved, the register publishes like any document — a new revision
+of the **register itself**, with its own Control/Master Copy PDFs:
+
+![Register published](images/documents/27-register-published.png)
+
+### Automatic Pending Update
+
+Whenever a document linked into a register publishes a *new* revision,
+the register detects it automatically: a fresh draft revision is created
+(or an already in-progress one is refreshed) with the linked document's
+latest revision/effective date already filled in, and the register is
+flagged **Pending Update** until the MR reviews and approves that draft:
+
+![Register flagged Pending Update after a linked document republished](images/documents/28-register-pending-update.png)
+
+The Linked Documents tab on that draft already shows the refreshed
+revision — nothing to re-enter by hand:
+
+![Linked document entry refreshed to the new revision](images/documents/29-linked-documents-refreshed.png)
+
+Publishing the register's own next revision (same MR approval flow above)
+clears **Pending Update** and, as always, never touches the linked
+document's own revision history — that stays governed entirely by its own
+review/publish workflow, completely unchanged by any of this.
+
 ---
 Previous: [Management Reviews](06-management-reviews.md) · Next: [Context & Interested Parties](08-context-and-interested-parties.md)

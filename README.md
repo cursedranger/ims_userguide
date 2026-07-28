@@ -29,7 +29,8 @@ Sample/demo login credentials are printed by the seed tasks — see
 7. [Management Reviews](06-management-reviews.md) — agenda, minutes,
    decisions, action items.
 8. [Documents](07-documents.md) — controlled revisions, review/publish
-   approval, Control/Master copies, distribution & acknowledgement.
+   approval, Control/Master copies, distribution & acknowledgement, Master
+   Document Register with MR-only approval and automatic Pending Update.
 9. [Context & Interested Parties](08-context-and-interested-parties.md)
 10. [Risks & Opportunities](09-risks-and-opportunities.md) — scoring,
     treatment, monitoring, review history.
