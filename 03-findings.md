@@ -6,7 +6,9 @@ NC** — the last two are nonconformities and always require a Root Cause
 Analysis; the other three can optionally bypass RCA with a justified,
 approved exception. Findings are usually raised from an [Audit](02-audits.md)
 (as shown there) but can also arrive from a noncompliant Compliance
-Evaluation or a serious Incident, reusing this exact same workflow.
+Evaluation, a serious Incident, or a "No" answer on a
+[PSSR](22-pssr.md#a-no-answer-and-its-finding) checklist, reusing this
+exact same workflow.
 
 ## List and filter
 

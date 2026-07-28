@@ -34,16 +34,36 @@ Site-specific questions can be added ad hoc alongside the standard set:
 ![Checklist populated](images/pssr/05-checklist-populated.png)
 
 Each item is answered Yes / No / Not Applicable, with an optional note
-and evidence attachments:
+and evidence attachments. Clicking a response updates that item in
+place — no page reload:
 
 ![Checklist fully answered](images/pssr/06-checklist-fully-answered.png)
+
+### A "No" answer and its finding
+
+Answering an item **No** reveals a **Raise finding** button. Raising one
+creates a real Finding (title/description drawn from the item, the same
+[Findings](03-findings.md) RCA/CAPA/closure workflow as anywhere else in
+the app) and locks that item to a read-only "No" — no re-answering it by
+hand while the finding is open:
+
+![Checklist item answered No, with a finding raised and open](images/pssr/10-item-no-finding-open.png)
+
+Once that finding is **closed** or **rejected**, the item converts to
+**Yes** automatically — no one has to remember to come back and fix the
+checklist. Every response change, including this automatic one, stays on
+the item's own **History** disclosure with who (or "System," for the
+automatic conversion) and when:
+
+![History showing No, the finding, and the automatic conversion back to Yes](images/pssr/11-item-history.png)
 
 ## The lifecycle: Draft → In Review → Authorized → Started
 
 **Submit for review** moves a draft into review. From there, **Authorize
-startup** is only available once every checklist item has a response —
-attempting it earlier shows a reminder instead of the button being
-silently disabled, so the requirement is always visible:
+startup** is only available once every checklist item has a response
+*and* none is still stuck on "No" — attempting it earlier shows a
+reminder instead of the button being silently disabled, so the
+requirement is always visible:
 
 ![In review, ready to authorize](images/pssr/07-show-in-review.png)
 

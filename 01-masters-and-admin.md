@@ -129,6 +129,16 @@ touching code. A module with no row at all defaults to **on**:
 
 ![Module flags index](images/masters-admin/15-module-flags-index.png)
 
+## Settings
+
+A small, growing table of system-wide toggles — reachable only by a super
+admin, same as Module flags above. Flip **Active** on a row to turn that
+behavior on; a setting with no row yet, or with **Active** off, behaves as
+if it were off. The first one, **Require Master Register link**, is
+described in [Documents](07-documents.md#requiring-every-document-to-declare-its-register):
+
+![Settings index](images/masters-admin/16-settings-index.png)
+
 ## Organization profile
 
 A singleton — one row, editable, never creatable/deletable again once it

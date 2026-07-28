@@ -162,14 +162,43 @@ after creation, same as Category/Department):
 The **Linked Documents** tab (only shown on a register) lets you add any
 published controlled document — adding one automatically starts a draft
 revision of the register if none is in progress, the same
-**Start new revision** mechanism used above:
+**Start new revision** mechanism used above. This stays available even
+after the register has already published — adding a document once there's
+no revision in progress starts a fresh draft that carries every
+already-published entry forward first, so nothing is ever lost:
 
 ![Document linked to the register](images/documents/23-linked-document-added.png)
 
 Document number, title, current revision, effective date, owner, status,
 and next review date are all shown live from the linked document — never
 typed in by hand, and never a draft/in-review/rejected version, since only
-a document's currently effective revision can ever be linked.
+a document's currently effective revision can ever be linked. **Remove**
+only appears on a revision still in progress — once a revision has
+published, its entries are read-only history, same as any other document.
+Adding straight after a publish, with no revision in progress, looks like
+this — the **Add** panel is there, and both the carried-forward and the
+newly linked document already show as entries on the new Rev 3 draft:
+
+![Adding a document once the register has already published, with previously published entries carried forward](images/documents/31-add-after-publish.png)
+
+**Download Index (PDF)**, in the same tab's card header, generates a
+standalone PDF listing every currently linked document with those same
+columns — the exact same content, built fresh from the live entries each
+time it's downloaded (no waiting, nothing to regenerate).
+
+### No file to upload
+
+Unlike an ordinary document, a register's **Start new revision** and
+**Save draft** forms never ask for a `.docx` file — a register has nothing
+to upload:
+
+![A register's revision-in-progress panel, with no file field](images/documents/32-register-no-file-needed.png)
+
+The Linked Documents Index *is* its content: once MR approves, it's
+rendered straight into the register's own Control/Master Copy PDFs, cover
+sheet and watermark included, exactly like every other document's:
+
+![Linked documents index PDF](images/documents/30-linked-documents-index-pdf.png)
 
 ### MR-only approval
 
@@ -209,6 +238,23 @@ Publishing the register's own next revision (same MR approval flow above)
 clears **Pending Update** and, as always, never touches the linked
 document's own revision history — that stays governed entirely by its own
 review/publish workflow, completely unchanged by any of this.
+
+### Requiring every document to declare its register
+
+A super admin can turn on the **Require Master Register link** setting
+(RailsAdmin → Settings — see
+[Masters & Admin](01-masters-and-admin.md#settings)). Once on:
+
+- Creating or editing a controlled document shows a required **Master
+  Register** dropdown (never shown on a register itself).
+- The first time that document publishes a revision, it's added to its
+  declared register automatically — no manual "Add" step needed — flagging
+  the register **Pending Update** exactly as if someone had linked it by
+  hand. Every later revision keeps auto-refreshing that entry the same way.
+
+This is an addition, not a replacement: manually linking documents into a
+register (above) still works regardless of this setting, and a document can
+still be linked into other registers beyond its own declared one.
 
 ---
 Previous: [Management Reviews](06-management-reviews.md) · Next: [Context & Interested Parties](08-context-and-interested-parties.md)
