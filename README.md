@@ -66,6 +66,12 @@ Sample/demo login credentials are printed by the seed tasks — see
 24. [HAZOP (Hazard and Operability Study)](23-hazop.md) — nodes, guide
     word/parameter deviations, risk ranking, recommended actions tracked
     to closure, optional auto-raised finding.
+25. [Safety Observations & BBS](24-safety-observations-and-bbs.md) —
+    Behavior-Based Safety programmes; a learning and prevention system,
+    not a disciplinary one. Programmes, versioned checklist templates,
+    observations with per-item results and contributing factors, and now
+    actions with the hierarchy of controls, segregation-of-duties
+    verification, and stop-work.
 
 ## Conventions used throughout
 

@@ -98,4 +98,4 @@ causes, consequences, existing safeguards, risk score, recommendation,
 and action owner/status.
 
 ---
-Previous: [PSSR](22-pssr.md) · Back to [Getting Started](00-getting-started.md)
+Previous: [PSSR](22-pssr.md) · Next: [Safety Observations & BBS](24-safety-observations-and-bbs.md)
