@@ -70,6 +70,12 @@ focused, printable page with its own **Export CSV**:
 
   ![Calibration due report](images/dashboards/07-calibration-due-report.png)
 
+- **BBS Coverage & Trends** — observations by programme/department/result,
+  actions by status, top contributing factors, open high-potential
+  observations, and active stop-work orders — see
+  [Safety Observations & BBS](24-safety-observations-and-bbs.md#coverage--trends-report)
+  for the full walkthrough.
+
 Every report and every module index supports **Export CSV** for
 offline/spreadsheet use, and every printable page respects the same
 authorization scope as its interactive counterpart — there's no

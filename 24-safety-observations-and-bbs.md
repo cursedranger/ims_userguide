@@ -10,13 +10,16 @@ disciplinary or surveillance one — see
 (ISO 45001/45002/45003/45004) and non-negotiable design principles behind
 it.
 
-Four slices are built so far: the **programme**, **checklist templates**
+Seven slices are built so far: the **programme**, **checklist templates**
 with a lightweight versioning system that protects a checklist's history
 once it's been used, **observations** — the actual walkdown, with per-item
-results, contributing factors, and a coordinator review step — and now
-**actions**, with a configurable priority, the hierarchy of controls, a
-segregation-of-duties verification step, and stop-work. This chapter will
-keep growing alongside the module.
+results, contributing factors, and a coordinator review step — **actions**,
+with a configurable priority, the hierarchy of controls, a
+segregation-of-duties verification step, and stop-work — **cross-module
+links** to a related change, incident, training session, or document — a
+**coverage & trends report** — and now **observer competency**, shown as of
+the observation's own date. This chapter will keep growing alongside the
+module.
 
 ## List and create
 
@@ -117,6 +120,24 @@ at-risk finding is never left to default to "worker error":
 
 ![An at-risk item with a flag, comment, and contributing factor](images/bbs/13-observation-item-at-risk.png)
 
+## Observer competency
+
+If the observer has any training attendance records, an **Observer
+competency** card shows each one against the observation's own date — not
+today's date. A record completed and still unexpired *as of when the
+observation actually happened* is marked **Valid as of observation date**;
+one that had already lapsed by then (even if it looks fine at a glance
+today) is marked **Not valid as of observation date**:
+
+![Observer competency, one valid record and one that had already expired by the observation date](images/bbs/24-observer-competency.png)
+
+This is supporting evidence, not a gate — nothing here blocks anyone from
+observing or reviewing. It's only visible to someone who could already see
+the observer's training records on their own terms (their own records, or
+an elevated role) — a department head, for instance, doesn't gain visibility
+into someone else's training history just because they can see this
+observation.
+
 ## Review and closure
 
 Once submitted, a coordinator can review the observation — notes, and a
@@ -174,6 +195,50 @@ observer, if no one has reviewed it yet); declaring a stop-work notifies
 the programme owner — the one BBS event urgent enough to alert someone
 beyond the assignee.
 
+## Cross-module links
+
+Sometimes an observation genuinely belongs to a wider context — it was
+made during an MOC implementation walkdown, it followed up on a reported
+incident, it's evidence a training requirement was met, or it references a
+specific controlled document. The **Links** panel records that connection
+without duplicating data: pick a source type (Management of Change,
+Incident, Training Session, or Document), the record's ID, and a role
+(Related To, Follow-Up Of, Resulted In):
+
+![A link added, showing its snapshot text and a working link to the source](images/bbs/21-link-added.png)
+
+Anyone who can read the linked record can click through to it directly.
+If the source is a confidential incident, the link shows only its neutral
+label (e.g. "Near Miss (#42)"), never its title or description — the same
+protection CAPA's own cross-module links already give a confidential
+source:
+
+![Following a link through to the related incident's own page](images/bbs/22-followed-link-to-incident.png)
+
+The same four record types (and a BBS observation itself) can also link
+the other way — a CAPA case or a management review agenda item can
+reference a BBS observation as one of its own sources.
+
+## Coverage & trends report
+
+[Reports](16-dashboards-and-reports.md) → **BBS Coverage & Trends**. A
+single page of unranked breakdowns — checklist items by result, observations
+by programme and by department, observations by status, actions by status,
+and the top recorded contributing factors — plus two actionable lists: open
+high-potential observations, and any active stop-work orders. Every
+breakdown is grouped by a stable key and left in that order rather than
+sorted by count, and nothing is ever broken down by individual worker — a
+BBS dashboard that ranked people, or that treated a quiet department as "well
+behaved," would defeat the module's own purpose:
+
+![BBS Coverage & Trends report](images/bbs/23-coverage-trends-dashboard.png)
+
+The positive-practice count is always shown against the total number of
+answered items, not as a standalone percentage, so it's never read out of
+context. Like every other report, the counts only ever reflect what the
+signed-in viewer can already read — a department member sees their own
+department's numbers, not the whole organization's.
+
 ## Who can see what
 
 A department head can manage their own department's programmes; a plain
@@ -197,4 +262,4 @@ Like every other module, a super admin can turn **Safety Observations &
 BBS** off entirely from Masters & admin → Module flags.
 
 ---
-Previous: [HAZOP](23-hazop.md) · Back to [Getting Started](00-getting-started.md)
+Previous: [HAZOP](23-hazop.md) · Next: [Nonconforming Output](25-nonconforming-output.md)

@@ -69,9 +69,14 @@ Sample/demo login credentials are printed by the seed tasks — see
 25. [Safety Observations & BBS](24-safety-observations-and-bbs.md) —
     Behavior-Based Safety programmes; a learning and prevention system,
     not a disciplinary one. Programmes, versioned checklist templates,
-    observations with per-item results and contributing factors, and now
-    actions with the hierarchy of controls, segregation-of-duties
-    verification, and stop-work.
+    observations with per-item results and contributing factors, actions
+    with the hierarchy of controls, segregation-of-duties verification,
+    and stop-work, cross-module links to MOC/Incident/Training/Document,
+    a coverage & trends report, and now observer competency shown as of
+    the observation's own date.
+26. [Nonconforming Output](25-nonconforming-output.md) — ISO 9001 §8.7:
+    containment, disposition (with approval required for Use As Is),
+    verification/closure, and an optional linked Finding for RCA/CAPA.
 
 ## Conventions used throughout
 
