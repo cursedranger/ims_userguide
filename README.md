@@ -7,7 +7,10 @@ running copy of the app. To reproduce the data behind these screenshots:
 bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
+
 To gain context, read the [ISO Mapping guide](iso-standards-mapping.md) and then read the user documentation
+
+
 
 
 
@@ -80,9 +83,10 @@ Sample/demo login credentials are printed by the seed tasks — see
 26. [Nonconforming Output](25-nonconforming-output.md) — ISO 9001 §8.7:
     containment, disposition (with approval required for Use As Is),
     verification/closure, and an optional linked Finding for RCA/CAPA.
+27. [Customer Satisfaction](26-customer-satisfaction.md) — ISO 9001 §9.1.2:
+    customer feedback/surveys, an optional linked Finding for a poor
+    result, and a trends report.
 
-    
-    
 ## Conventions used throughout
 
 - Every screenshot is a real screen from the running app — none are

@@ -83,6 +83,7 @@ outputs get configured and tracked.
 | 8.6 | Release of products and services | `NonconformingOutput#disposition` (§11.16) | A "use as is" disposition is the release-with-concession case; every other disposition (rework/regrade/scrap/return-to-supplier/repair) implicitly withholds release until corrected. |
 | **8.7** | **Control of nonconforming outputs** | **`NonconformingOutput`** (§11.16) | Detection stage, containment, disposition (with mandatory approval for "use as is"), verification/closure, optional linked Finding. |
 | 9.1.1 | Monitoring, measurement, analysis and evaluation | Reports/dashboards (§15); `ObjectiveResult` (§8); `BbsObservation` trend report (§11.15) | Org-wide and "My Work" dashboards, CSV export, printable reports. |
+| **9.1.2** | **Customer satisfaction** | **`Customer` / `CustomerFeedback`** (§11.17) | Survey/direct-feedback/repeat-business/complaint/warranty-claim log, satisfaction trends report, optional linked Finding for a poor result; references (not duplicates) `Incident#incident_kind == "customer_complaint"` for a complaint already formally investigated. |
 | 9.2 | Internal audit | `Audit` / `AuditChecklist` / `AuditChecklistItem` (§6) | Full schedule → execute → report → approve workflow, team roles, findings raised from checklist items. |
 | 9.3 | Management review | `ManagementReviewMeeting` / `MeetingAgendaItem` / `MeetingActionItem` (§9) | `STANDARD_AGENDA_POINTS` is the consolidated Quality/Environment/OH&S 16-point agenda, one item per §9.3.2 input. |
 | 10.1 | General (improvement) | Cross-cutting — Findings, CAPA, objectives, all "opt-in raise a Finding" points across §11 | Improvement is the connective tissue between every module, not a standalone one. |
@@ -96,11 +97,6 @@ outputs get configured and tracked.
   change control for a design). A manufacturer whose products are
   entirely to a fixed, externally-supplied specification may not need
   this; one that does its own product/process design does.
-- **§9.1.2 Customer satisfaction** — no model captures customer feedback,
-  satisfaction surveys, or complaint trend analysis as a distinct
-  dataset. `Incident#incident_kind == "customer_complaint"` records an
-  individual complaint through the incident workflow, but there is no
-  aggregate customer-satisfaction monitoring yet.
 - **§8.2 Requirements for products and services** (contract/order review)
   — no dedicated module; would sit naturally alongside a future
   Design & Development or Customer module.
