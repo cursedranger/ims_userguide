@@ -54,4 +54,4 @@ and record feedback. Like every other module, a super admin can turn
 **Customer Satisfaction** off entirely from Masters & admin → Module flags.
 
 ---
-Previous: [Nonconforming Output](25-nonconforming-output.md) · Back to [Getting Started](00-getting-started.md)
+Previous: [Nonconforming Output](25-nonconforming-output.md) · Next: [Design & Development](27-design-and-development.md)

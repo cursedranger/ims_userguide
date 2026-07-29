@@ -8,11 +8,7 @@ bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
-To gain context, read the [ISO Mapping guide](iso-standards-mapping.md) and then read the user documentation
-
-
-
-
+For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 Sample/demo login credentials are printed by the seed tasks — see
 [Getting Started](00-getting-started.md#signing-in).
@@ -86,6 +82,10 @@ Sample/demo login credentials are printed by the seed tasks — see
 27. [Customer Satisfaction](26-customer-satisfaction.md) — ISO 9001 §9.1.2:
     customer feedback/surveys, an optional linked Finding for a poor
     result, and a trends report.
+28. [Design & Development](27-design-and-development.md) — ISO 9001 §8.3:
+    inputs, outputs, review, verification, validation, and approval for a
+    design project; a design change is raised as an MOC request rather
+    than a duplicate mechanism.
 
 ## Conventions used throughout
 
