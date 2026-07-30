@@ -7,8 +7,8 @@ running copy of the app. To reproduce the data behind these screenshots:
 bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
-For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
+For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 Sample/demo login credentials are printed by the seed tasks — see
 [Getting Started](00-getting-started.md#signing-in).
@@ -86,11 +86,6 @@ Sample/demo login credentials are printed by the seed tasks — see
     inputs, outputs, review, verification, validation, and approval for a
     design project; a design change is raised as an MOC request rather
     than a duplicate mechanism.
-29. [OHC / Employee Health Records](28-ohc-employee-health-records.md) —
-    Slice 1 of a larger planned OHC platform: employee medical master,
-    OPD/clinic visits, and basic fitness management. A department head
-    gets no special access here — the one deliberate deviation from every
-    other module's ability shape.
 
 ## Conventions used throughout
 

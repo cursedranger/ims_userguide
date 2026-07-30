@@ -1,6 +1,6 @@
 # ISO Standards & Clause Mapping
 
-**Last reviewed: 2026-07-29 — update this alongside any new module.**
+**Last reviewed: 2026-07-30 — update this alongside any new module.**
 
 ## Scope and how to read this document
 
@@ -55,6 +55,15 @@ used for everything else:
 - **`Asset` / `CalibrationRecord`** (§11.7) is where Legal Metrology
   calibration/verification obligations for weighing and measuring
   instruments are tracked alongside ordinary calibration.
+- **`EmployeeMedicalProfile` / `OhcExamination` / `OhcExaminationRequirement`**
+  (§11.19) is where the statutory Periodic Medical Examination (Factories
+  Act 1948 §41C/Third Schedule, continued under the OSH Code 2020) is
+  tracked — a configurable frequency-by-hazard-category master drives each
+  employee's next due date, with an overdue report. Structured PME lab
+  protocols (spirometry, audiometry, vision, ECG, chest X-ray, lab tests)
+  and fitness certificates are also built; hazard-based *surveillance
+  programs* (exposure history timelines, trend analysis) are a later
+  phase.
 
 None of the above is legal advice or a substitute for site-specific
 regulatory review — it's a description of *where in the app* that review's
@@ -78,6 +87,7 @@ outputs get configured and tracked.
 | 7.4 | Communication | `Notification` + email (§5.3); `SafetyMeeting` (§11.11); Management Review (§9) | Every assignment/approval/due-date event notifies via the same pipeline. |
 | 7.5 | Documented information | `Document` / `DocumentVersion` (§10) | Sequential approvals, effective/current version, immutable approved revisions, controlled distribution/acknowledgement. |
 | 8.1 | Operational planning and control | `MocRequest` (§11.8); `PssrReview` (§11.13); `HazopStudy` (§11.14) | Change, pre-startup, and hazard-study controls for planned/modified operations. |
+| **8.3** | **Design and development of products and services** | **`DesignProject`** (§11.18) | Inputs, outputs, review, verification, validation, and approval; a design change is raised as an `MocRequest` (§8.3.6, "change management") rather than a duplicate mechanism. |
 | 8.4 | Control of externally provided processes, products, and services | `Supplier` / `SupplierEvaluation` (§11.6) | Approval status, risk rating, periodic evaluation; poor results can raise a Finding. |
 | 8.5.1 | Control of production and service provision | `IncidentChemicalRelease` / process-related `Incident` records (§11.4) where relevant | Broader shop-floor process control (SOPs, work instructions) is document-managed via §10, not a separate production-execution module — out of scope for this app. |
 | 8.6 | Release of products and services | `NonconformingOutput#disposition` (§11.16) | A "use as is" disposition is the release-with-concession case; every other disposition (rework/regrade/scrap/return-to-supplier/repair) implicitly withholds release until corrected. |
@@ -92,14 +102,11 @@ outputs get configured and tracked.
 
 ### ISO 9001 — Not yet covered
 
-- **§8.3 Design and development** — no module models a design/development
-  control gate (inputs, outputs, review, verification, validation,
-  change control for a design). A manufacturer whose products are
-  entirely to a fixed, externally-supplied specification may not need
-  this; one that does its own product/process design does.
 - **§8.2 Requirements for products and services** (contract/order review)
-  — no dedicated module; would sit naturally alongside a future
-  Design & Development or Customer module.
+  — no dedicated module for reviewing and confirming an order's
+  requirements before committing to supply; distinct from `DesignProject`
+  (§11.18), which covers requirements for something being designed, not
+  every order taken against an existing catalog.
 
 ---
 
@@ -149,6 +156,7 @@ outputs get configured and tracked.
 | 7.4 | Communication | `Notification` + email; `SafetyMeeting` (§11.11) | Toolbox talks and safety committee meetings. |
 | 8.1.1 | General operational planning and control | `PssrReview` (§11.13); `HazopStudy` (§11.14); `MocRequest` (§11.8) | Pre-startup review, hazard study, and change control together cover planned/modified operations. |
 | 8.1.2 | Eliminating hazards and reducing OH&S risks | `BbsAction#control_hierarchy` (§11.15); `HazopDeviation` recommended actions (§11.14) | BBS actions force an explicit hierarchy-of-controls pick (elimination/substitution/engineering/administrative/PPE) rather than defaulting to retraining or PPE. |
+| **8.1 (general)** | **Health surveillance / occupational health monitoring** | **`EmployeeMedicalProfile` / `OhcVisit` / `OhcExamination`** (§11.19) | Employee medical master, OPD/clinic visits, Pre-Employment and Periodic Medical Examinations with structured test results (spirometry/audiometry/vision/ECG/chest X-ray/lab), an examination-frequency master by hazard category driving auto-scheduled due dates and an overdue report, and fitness certificates. Hazard-based *surveillance programs* (exposure history timelines, trend analysis) are a later phase. |
 | 8.2 | Emergency preparedness and response | `Incident` (§11.4); `IncidentMedicalTask`/Form B/B1/E (§11.4.2) | Reactive response and the full medical-treatment workflow; no proactive drill register yet (see EMS "Not yet covered," shared gap). |
 | 9.1 | Monitoring, measurement, analysis, evaluation | BBS Coverage & Trends report (§11.15); reports/dashboards (§15) | Deliberately never ranks individuals or treats a quiet department as "well behaved" — every rate states its denominator. |
 | 9.2 | Internal audit | `Audit` (§6) | Same audit engine, OH&S-scoped. |
