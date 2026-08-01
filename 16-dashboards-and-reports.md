@@ -112,6 +112,10 @@ focused, printable page with its own **Export CSV**:
 - **Medical Examination Register** — the statutory PME register per
   employee, with a printable PDF — see
   [OHC / Employee Health Records](28-ohc-employee-health-records.md#medical-examination-register).
+- **Emergency Preparedness** — response plans by scenario type and
+  status, drill coverage and effectiveness over a date range, and the
+  plans overdue for a drill or a plan review — see
+  [Emergency Preparedness & Response](29-emergency-preparedness.md#reminders-report-and-dashboard).
 
 Every report and every module index supports **Export CSV** for
 offline/spreadsheet use, and every printable page respects the same

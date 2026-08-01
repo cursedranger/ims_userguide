@@ -8,8 +8,8 @@ bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
-For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
+For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 
 Sample/demo login credentials are printed by the seed tasks — see
@@ -102,6 +102,12 @@ Sample/demo login credentials are printed by the seed tasks — see
     all rolled into one dashboard card. A department head gets no special
     access here — the one deliberate deviation from every other module's
     ability shape.
+30. [Emergency Preparedness & Response](29-emergency-preparedness.md) —
+    ISO 14001/45001 §8.2: the register of potential emergency situations
+    and their planned response, the named response team, announced and
+    unannounced drills with response/evacuation timings and an
+    effectiveness verdict, and the review-and-revise loop that keeps a
+    plan honest after a drill or a real emergency.
 
 ## Conventions used throughout
 

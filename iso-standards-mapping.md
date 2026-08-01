@@ -1,6 +1,6 @@
 # ISO Standards & Clause Mapping
 
-**Last reviewed: 2026-07-30 — update this alongside any new module.**
+**Last reviewed: 2026-08-01 — update this alongside any new module.**
 
 ## Scope and how to read this document
 
@@ -155,7 +155,7 @@ outputs get configured and tracked.
 | 6.2 | Environmental objectives | `QualityObjective` (§8), used generically | The objective model is not standard-specific; an environmental KPI is just an objective with an environmental metric. |
 | 7.2 / 7.3 | Competence; awareness | `CompetencyRequirement` / `TrainingSession` / `TrainingAttendance` (§11.5) | Shared competence register, not environment-specific. |
 | 8.1 | Operational control | `MocRequest` (§11.8); `EnvironmentalAspect#control_measures` (§11.9) | Change management covers planned changes with environmental impact; control measures are recorded directly on the significant aspect. |
-| 8.2 | Emergency preparedness and response | `Incident` with `incident_kind: environmental_event` (§11.4); `SafetyMeeting` toolbox talks (§11.11) | No standalone emergency-drill/preparedness-plan model yet — see "Not yet covered" below. |
+| **8.2** | **Emergency preparedness and response** | **`EmergencyScenario` / `EmergencyResponseTeamMember` / `EmergencyDrill` / `EmergencyPlanReview`** (§11.20); `Incident` with `incident_kind: environmental_event` (§11.4) | Register of identified potential emergency situations (optionally linked to the `emergency`-condition `EnvironmentalAspect` behind them) with a scored risk rating, the planned response, required resources, external agencies and the named response team; periodic testing through announced/unannounced drills with response and evacuation timings, effectiveness evaluation and an opt-in Finding raise; and the review-and-revise loop §8.2 requires — periodic, post-drill or post-emergency, with a plan parked at `under_review` until it is actually revised. |
 | 9.1 | Monitoring, measurement, analysis, evaluation | `EnvironmentalAspectReview` (§11.9); reports/dashboards (§15) | Periodic reassessment history mirrors `RiskReview`. |
 | 9.2 | Internal audit | `Audit` (§6) | Same audit engine as the QMS — an EMS-scoped audit is an `Audit` tagged to the relevant department/clause set. |
 | 9.3 | Management review | `ManagementReviewMeeting` (§9) | `environmental_performance` is one of the standard 16 agenda categories. |
@@ -168,10 +168,6 @@ outputs get configured and tracked.
   aspects/obligations/risks — each of those three registers has its own
   treatment/action tracking today, but there is no single cross-register
   environmental action plan view.
-- **§8.2 Emergency preparedness and response** as a standalone plan/drill
-  register — emergency events are captured reactively via `Incident`;
-  there is no proactive drill-scheduling or emergency-plan-document model
-  beyond what `Document` (§10) can hold as an uploaded procedure.
 
 ---
 
@@ -191,7 +187,7 @@ outputs get configured and tracked.
 | 8.1.1 | General operational planning and control | `PssrReview` (§11.13); `HazopStudy` (§11.14); `MocRequest` (§11.8) | Pre-startup review, hazard study, and change control together cover planned/modified operations. |
 | 8.1.2 | Eliminating hazards and reducing OH&S risks | `BbsAction#control_hierarchy` (§11.15); `HazopDeviation` recommended actions (§11.14) | BBS actions force an explicit hierarchy-of-controls pick (elimination/substitution/engineering/administrative/PPE) rather than defaulting to retraining or PPE. |
 | **8.1 (general)** | **Health surveillance / occupational health monitoring** | **`EmployeeMedicalProfile` / `OhcVisit` / `OhcExamination` / `OhcVaccination`** (§11.19) | Employee medical master, OPD/clinic visits, Pre-Employment and Periodic Medical Examinations with structured test results (spirometry/audiometry/vision/ECG/chest X-ray/lab), an examination-frequency master by hazard category driving auto-scheduled due dates and an overdue report, fitness certificates, and vaccination/immunisation tracking with batch/expiry compliance. **`SurveillanceProgram`/`HazardExposure`** (Slice 6) add hazard-based surveillance programs proper: multi-hazard enrolment with dated exposure periods, per-program examination clocks, exposure history timelines and test-result trend analysis. **`ContractorWorker`/`ContractorMedicalClearance`** (Slice 7) extend health monitoring to contract labour with gate-pass clearance. **`HealthCampaign`** (Slice 8) covers proactive health promotion — camps, screening drives and awareness sessions with coverage and outcome tracking. Slice 9 adds the statutory layer: two-tier PME and vaccination due reminders (employee, then OHC) plus a printable Medical Examination Register. Structured *laboratory* integration is deliberately out of scope. |
-| **8.2** | **Emergency preparedness and response** | `Incident` (§11.4); `IncidentMedicalTask`/Form B/B1/E (§11.4.2); **`FirstAidCase` / `FirstAidKit`** (§11.19) | Reactive response and the full medical-treatment workflow, plus a first aid / medical emergency register (response time, ambulance and hospital referral, stakeholder alerting, optional link to a reportable incident) and first aid box readiness via periodic kit inspections with an overdue reminder. No proactive **drill** register yet (see EMS "Not yet covered," shared gap). |
+| **8.2** | **Emergency preparedness and response** | **`EmergencyScenario` / `EmergencyDrill`** (§11.20); `Incident` (§11.4); `IncidentMedicalTask`/Form B/B1/E (§11.4.2); **`FirstAidCase` / `FirstAidKit`** (§11.19) | The proactive half — response plans, named response teams, drills and plan reviews — is shared with ISO 14001 §8.2 (§11.20); the reactive half is the incident/medical-treatment workflow plus the first aid / medical emergency register (response time, ambulance and hospital referral, stakeholder alerting, optional link to a reportable incident) and first aid box readiness via periodic kit inspections. |
 | 9.1 | Monitoring, measurement, analysis, evaluation | BBS Coverage & Trends report (§11.15); reports/dashboards (§15) | Deliberately never ranks individuals or treats a quiet department as "well behaved" — every rate states its denominator. |
 | 9.2 | Internal audit | `Audit` (§6) | Same audit engine, OH&S-scoped. |
 | 9.3 | Management review | `ManagementReviewMeeting` (§9) | `ohs_performance` is one of the standard 16 agenda categories. |
@@ -205,8 +201,6 @@ outputs get configured and tracked.
   (§11.6) covers general supplier evaluation but nothing OH&S-specific
   (permit-to-work integration, contractor induction records beyond what
   `TrainingAttendance` can hold generically).
-- **§8.2 Emergency preparedness** as a standalone plan/drill register —
-  shared gap with ISO 14001, noted above.
 
 ---
 
