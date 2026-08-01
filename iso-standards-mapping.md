@@ -61,9 +61,43 @@ used for everything else:
   tracked — a configurable frequency-by-hazard-category master drives each
   employee's next due date, with an overdue report. Structured PME lab
   protocols (spirometry, audiometry, vision, ECG, chest X-ray, lab tests)
-  and fitness certificates are also built; hazard-based *surveillance
-  programs* (exposure history timelines, trend analysis) are a later
-  phase.
+  and fitness certificates are also built, along with vaccination/
+  immunisation tracking (`OhcVaccination`) for booster/batch/expiry
+  compliance and a batch-tracked pharmacy/first-aid medicine inventory
+  (`PharmacyItem`/`PharmacyStockBatch`/`PharmacyDispensation`) supporting
+  the Factories Act's first-aid/dispensary stocking requirements.
+- **`FirstAidCase` / `FirstAidKit` / `FirstAidKitInspection`** (§11.19
+  Slice 5) is where the Factories Act 1948 §45 first-aid appliance and
+  register obligations are tracked — a first aid case register covering
+  employees, contractors and visitors alike (with emergency response,
+  ambulance and hospital-referral detail, and a computed response time),
+  plus a first aid box register with periodic inspections, an overdue
+  report and a daily reminder job.
+- **`SurveillanceProgram` / `HazardExposure`** (§11.19 Slice 6) is where
+  hazard-based occupational health surveillance is configured and run —
+  a named protocol per hazard with its own examination frequency and test
+  set, workers enrolled by recording a dated exposure (several at once,
+  each running an independent clock), an exposure history timeline, and
+  test-result trends across successive surveillance examinations. This is
+  the register that answers "who is exposed to what, since when, and when
+  were they last examined for it".
+- **`ContractorWorker` / `ContractorMedicalClearance`** (§11.19 Slice 7)
+  covers contract labour medical fitness under the Contract Labour
+  (Regulation and Abolition) Act 1970 and the OSH Code 2020 — a per-firm
+  worker roster held separately from the employee population, dated
+  medical clearances with printable certificates, revocation, and a
+  computed gate-pass status backed by a daily expiry reminder.
+- **`HealthCampaign` / `HealthCampaignParticipation`** (§11.19 Slice 8) is
+  where health camps, screening drives and awareness sessions are planned
+  and their participation, coverage and outcomes recorded — for employees,
+  contract labour and visitors alike.
+- **The statutory PME register and reminders** (§11.19 Slice 9) close the
+  Factories Act §41C loop: `Ohc::ExaminationDueReminderJob` and
+  `Ohc::VaccinationDueReminderJob` notify the employee and the OHC ahead
+  of each due date and once overdue, and
+  `Ohc::MedicalExaminationRegisterPdf` renders the printable register —
+  last examination, fitness verdict and next due date per employee, with
+  overdue and never-examined rows called out separately.
 
 None of the above is legal advice or a substitute for site-specific
 regulatory review — it's a description of *where in the app* that review's
@@ -156,8 +190,8 @@ outputs get configured and tracked.
 | 7.4 | Communication | `Notification` + email; `SafetyMeeting` (§11.11) | Toolbox talks and safety committee meetings. |
 | 8.1.1 | General operational planning and control | `PssrReview` (§11.13); `HazopStudy` (§11.14); `MocRequest` (§11.8) | Pre-startup review, hazard study, and change control together cover planned/modified operations. |
 | 8.1.2 | Eliminating hazards and reducing OH&S risks | `BbsAction#control_hierarchy` (§11.15); `HazopDeviation` recommended actions (§11.14) | BBS actions force an explicit hierarchy-of-controls pick (elimination/substitution/engineering/administrative/PPE) rather than defaulting to retraining or PPE. |
-| **8.1 (general)** | **Health surveillance / occupational health monitoring** | **`EmployeeMedicalProfile` / `OhcVisit` / `OhcExamination`** (§11.19) | Employee medical master, OPD/clinic visits, Pre-Employment and Periodic Medical Examinations with structured test results (spirometry/audiometry/vision/ECG/chest X-ray/lab), an examination-frequency master by hazard category driving auto-scheduled due dates and an overdue report, and fitness certificates. Hazard-based *surveillance programs* (exposure history timelines, trend analysis) are a later phase. |
-| 8.2 | Emergency preparedness and response | `Incident` (§11.4); `IncidentMedicalTask`/Form B/B1/E (§11.4.2) | Reactive response and the full medical-treatment workflow; no proactive drill register yet (see EMS "Not yet covered," shared gap). |
+| **8.1 (general)** | **Health surveillance / occupational health monitoring** | **`EmployeeMedicalProfile` / `OhcVisit` / `OhcExamination` / `OhcVaccination`** (§11.19) | Employee medical master, OPD/clinic visits, Pre-Employment and Periodic Medical Examinations with structured test results (spirometry/audiometry/vision/ECG/chest X-ray/lab), an examination-frequency master by hazard category driving auto-scheduled due dates and an overdue report, fitness certificates, and vaccination/immunisation tracking with batch/expiry compliance. **`SurveillanceProgram`/`HazardExposure`** (Slice 6) add hazard-based surveillance programs proper: multi-hazard enrolment with dated exposure periods, per-program examination clocks, exposure history timelines and test-result trend analysis. **`ContractorWorker`/`ContractorMedicalClearance`** (Slice 7) extend health monitoring to contract labour with gate-pass clearance. **`HealthCampaign`** (Slice 8) covers proactive health promotion — camps, screening drives and awareness sessions with coverage and outcome tracking. Slice 9 adds the statutory layer: two-tier PME and vaccination due reminders (employee, then OHC) plus a printable Medical Examination Register. Structured *laboratory* integration is deliberately out of scope. |
+| **8.2** | **Emergency preparedness and response** | `Incident` (§11.4); `IncidentMedicalTask`/Form B/B1/E (§11.4.2); **`FirstAidCase` / `FirstAidKit`** (§11.19) | Reactive response and the full medical-treatment workflow, plus a first aid / medical emergency register (response time, ambulance and hospital referral, stakeholder alerting, optional link to a reportable incident) and first aid box readiness via periodic kit inspections with an overdue reminder. No proactive **drill** register yet (see EMS "Not yet covered," shared gap). |
 | 9.1 | Monitoring, measurement, analysis, evaluation | BBS Coverage & Trends report (§11.15); reports/dashboards (§15) | Deliberately never ranks individuals or treats a quiet department as "well behaved" — every rate states its denominator. |
 | 9.2 | Internal audit | `Audit` (§6) | Same audit engine, OH&S-scoped. |
 | 9.3 | Management review | `ManagementReviewMeeting` (§9) | `ohs_performance` is one of the standard 16 agenda categories. |

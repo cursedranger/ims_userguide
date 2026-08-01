@@ -24,6 +24,12 @@ classified:
 
 ![Process Safety dashboard card](images/dashboards/08-process-safety-tile.png)
 
+An **OHC** card (visible to anyone who can read employee medical
+profiles) shows PME overdue profiles, vaccinations expiring soon /
+overdue, and (for those who can also read pharmacy inventory) items
+below reorder level and batches expiring/expired — see
+[OHC / Employee Health Records](28-ohc-employee-health-records.md#dashboard).
+
 ## My Work
 
 Covered in [Getting Started](00-getting-started.md#my-work--your-personal-queue)
@@ -75,6 +81,37 @@ focused, printable page with its own **Export CSV**:
   observations, and active stop-work orders — see
   [Safety Observations & BBS](24-safety-observations-and-bbs.md#coverage--trends-report)
   for the full walkthrough.
+- **OHC Examinations Due** — employee medical profiles by their latest
+  periodic exam's next due date, with an Overdue badge — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#overdue-tracking).
+- **OHC Vaccinations Due** — recorded vaccinations by next dose due date,
+  with Overdue/Expiring Soon badges — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#vaccination-due-tracking).
+- **Pharmacy Stock Alerts** — items below reorder level, and batches
+  expiring soon or expired — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#pharmacy-reports).
+- **Pharmacy Consumption** — dispensed quantity by item over a date range
+  you choose — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#pharmacy-reports).
+- **First Aid Summary** — first aid and emergency cases by nature and
+  outcome over a date range, with average response time and ambulance
+  count — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#first-aid-reports).
+- **First Aid Kit Inspections Due** — first aid boxes overdue for
+  inspection or due within 30 days — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#first-aid-reports).
+- **Surveillance Due** — open hazard exposures whose surveillance
+  examination is overdue or due within 60 days — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#surveillance-reports).
+- **Contractor Medical Compliance** — gate-pass status across every
+  engaged contractor worker, by contractor firm — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#contractor-reports).
+- **Health Campaign Summary** — campaign participation, coverage against
+  target, and outcomes over a date range — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#campaign-reports).
+- **Medical Examination Register** — the statutory PME register per
+  employee, with a printable PDF — see
+  [OHC / Employee Health Records](28-ohc-employee-health-records.md#medical-examination-register).
 
 Every report and every module index supports **Export CSV** for
 offline/spreadsheet use, and every printable page respects the same
