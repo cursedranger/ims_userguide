@@ -8,8 +8,8 @@ bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
-
 For larger context, see [ISO Mapping](iso-standards-mapping.md)
+
 
 
 Sample/demo login credentials are printed by the seed tasks — see
@@ -108,6 +108,13 @@ Sample/demo login credentials are printed by the seed tasks — see
     unannounced drills with response/evacuation timings and an
     effectiveness verdict, and the review-and-revise loop that keeps a
     plan honest after a drill or a real emergency.
+31. [Visitor Management](30-visitor-management.md) — site gate control:
+    pre-registering a future visitor, admin-defined dynamic fields on the
+    visitor form, a configurable multi-level approval chain (including the
+    built-in reporting-manager level), the security Gate Console with
+    walk-in registration and mandatory photo capture, check-in/check-out,
+    the 12-hour automatic close, and the drag-and-drop visitor pass
+    designer with QR codes.
 
 ## Conventions used throughout
 
