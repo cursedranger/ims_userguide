@@ -66,7 +66,15 @@ different sidebars.
 
 The topbar (present on every page) has: the accessibility-mode toggle, a
 role switcher (if you hold more than one role or a per-user access
-override), the notification bell, and your account menu.
+override), the **site picker** (only if you can reach more than one site),
+the notification bell, and your account menu.
+
+If your organization runs more than one plant, everything you see —
+dashboard counts included — is limited to the site(s) you are posted at.
+The site picker lets a corporate user switch between **All sites** and one
+plant at a time, re-scoping every page at once. See
+[Sites](31-sites.md). With a single site there is no picker and nothing
+changes.
 
 ## My Work — your personal queue
 

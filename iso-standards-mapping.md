@@ -111,7 +111,7 @@ outputs get configured and tracked.
 |---|---|---|---|
 | 4.1 | Understanding the organization and its context | `ContextIssue` (§11.1) | Internal/external issues, category, impact, owner, periodic review. |
 | 4.2 | Understanding the needs and expectations of interested parties | `InterestedParty` (§11.1) | Needs/expectations, compliance relevance, owner, review date. |
-| 4.3 / 4.4 | Scope of the QMS; QMS and its processes | Organization Profile (§4.1) | Single-organization scope; no multi-tenant process map beyond the modules themselves. |
+| 4.3 / 4.4 | Scope of the QMS; QMS and its processes | Organization Profile (§4.1); `Site` (§3A) | One organization per deployment, which may run a corporate office and multiple sites — so scope can be stated and evidenced per site. Still not multi-tenant: one database serves one organization. |
 | 5.1–5.3 | Leadership, policy, roles/responsibilities/authorities | Users, roles, department heads (§4.2); Management Review (§9) | Roles are assignable per user; management review agenda item categories map directly to §9.3 inputs. |
 | 6.1 | Actions to address risks and opportunities | `RiskOpportunity` (§11.2) | `kind: risk/opportunity`, scored, treatment actions, review history. |
 | 6.2 | Quality objectives and planning to achieve them | `QualityObjective` / `ObjectiveAssignment` / `ObjectiveResult` (§8) | Target/comparator/frequency, periodic actual results, achievement calculation. |

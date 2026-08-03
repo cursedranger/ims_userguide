@@ -34,6 +34,15 @@ Comments & Activity, and Attachments:
 
 ![Show, draft status](images/audits/05-show-draft.png)
 
+In a multi-site organization the audit belongs to the site you are working
+at. A corporate-led audit covering more than one plant can be marked
+**spans all sites**, which makes it visible from every site — one of only
+two things in the app that deliberately cross the site boundary (the other
+is a document shared with all sites). The Departments & Locations tab still
+records which areas are actually in scope, and since every location belongs
+to a site, that is where the audit's real coverage is recorded. See
+[Sites](31-sites.md).
+
 ## The lifecycle: Draft → Planned → Scheduled → In Progress → Report Review → Completed
 
 Each stage's action lives on the **Overview** tab and only appears to users

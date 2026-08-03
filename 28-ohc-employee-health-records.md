@@ -17,7 +17,7 @@ management** (contractor workers, medical clearances and gate-pass
 compliance), and now **health campaigns** plus **statutory examination
 reminders and the Medical Examination Register**. Laboratory/diagnostics
 integration is the one piece deliberately left out — see
-[architecture.md](../architecture.md) §11.19 for the full roadmap.
+[architecture.md](../../architecture.md) §11.19 for the full roadmap.
 
 **This is a confidential module.** Only the OHC doctor and org-wide admin
 roles can create or edit a record; safety leadership can read but not

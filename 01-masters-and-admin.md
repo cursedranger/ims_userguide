@@ -49,9 +49,9 @@ encrypted password, tokens — excluded, never displayed anywhere):
 
 **Edit** exposes exactly the fields an admin should be touching:
 active/locked state, name/email/title, **Super admin**, per-user
-**Document access level** overrides, the two document-download toggles, and
-**Must change password** — each with inline help text explaining what it
-does:
+**Document access level** overrides, **Site access level**, the two
+document-download toggles, and **Must change password** — each with inline
+help text explaining what it does:
 
 ![User edit form](images/masters-admin/05-user-edit-form.png)
 
@@ -62,10 +62,20 @@ in:
 
 ![Reset password action](images/masters-admin/06-user-reset-password.png)
 
-**User roles** and **Department memberships** (visible from the Users list
-navigation) are where multi-role, multi-department assignment lives — a
-single user can hold several roles and belong to several departments
-(exactly one marked primary).
+**User roles**, **Department memberships** and **User sites** (visible from
+the Users list navigation) are where multi-role, multi-department and
+multi-site assignment lives — a single user can hold several roles, belong
+to several departments and be posted at several sites (exactly one of each
+marked primary).
+
+**Site access level** decides how far a user can see across sites: **Own
+sites** limits them to the sites listed under **User sites**, while **All
+sites** gives the corporate cross-site view and the topbar site picker. It
+is a deliberate per-person grant rather than something a senior-sounding
+role confers automatically — a regional manager is simply an "Own sites"
+user with three sites listed. A user with **Own sites** and no sites listed
+sees no operational records at all; the system fails closed rather than
+guessing. See [Sites](31-sites.md).
 
 ## Roles
 
@@ -78,6 +88,19 @@ editable here:
 
 ![Roles index](images/masters-admin/07-roles-index.png)
 
+## Sites
+
+**Sites** are the tenancy boundary: one row per plant, plus one marked
+**Corporate** for the head office (only one row may carry that flag). A
+site's users see only that site's records; corporate sees all of them.
+
+This is the master to set up *first* in a multi-site organization, because
+Locations, Departments and Users all hang off it. The full walkthrough —
+including what a site user can and cannot see, and how upgrading an
+existing single-site installation behaves — is in [Sites](31-sites.md).
+
+Sites are also available under **Bulk import** below.
+
 ## Departments and locations
 
 **Departments** support a parent department (Production is a child of
@@ -87,7 +110,19 @@ and report groups by:
 ![Departments index](images/masters-admin/08-departments-index.png)
 ![New department form](images/masters-admin/09-department-new-form.png)
 
-**Locations** are the physical sites audits and assets get tagged with:
+A department's **Site** is optional, and the choice is meaningful:
+
+- **left blank** — a *corporate* department, one row, selectable from every
+  site. Right for Legal, Finance, Corporate HSE.
+- **set to a site** — that plant's own department. Right for functions each
+  plant runs separately, so Plant 1 and Plant 2 can each have their own
+  Production with its own head.
+
+Department codes therefore only need to be unique within a site (and among
+corporate departments).
+
+**Locations** are areas or buildings — a shop floor, a warehouse, a gate —
+that audits and assets get tagged with. Each belongs to exactly one **Site**:
 
 ![Locations index](images/masters-admin/10-locations-index.png)
 

@@ -115,6 +115,12 @@ Sample/demo login credentials are printed by the seed tasks — see
     walk-in registration and mandatory photo capture, check-in/check-out,
     the 12-hour automatic close, and the drag-and-drop visitor pass
     designer with QR codes.
+32. [Sites (Corporate & Plants)](31-sites.md) — the multi-site layer: how a
+    site, a location and a department differ, what a site user can and
+    cannot see, corporate access and the topbar site switcher, the two
+    things that deliberately cross the boundary (documents shared with all
+    sites, audits spanning all sites), and what happens when an existing
+    single-site installation is upgraded.
 
 ## Conventions used throughout
 

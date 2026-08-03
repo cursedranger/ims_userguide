@@ -11,6 +11,13 @@ expiring, calibration overdue):
 
 ![Organization dashboard](images/dashboards/01-org-dashboard.png)
 
+Every number here is already filtered to what you are allowed to see, and
+in a multi-site organization that includes the site boundary — a Plant 1
+user's dashboard counts Plant 1 only. A corporate user on **All sites**
+sees the organization total; picking a plant in the topbar site switcher
+re-scopes every card, chart, report and CSV export on this page at once,
+with no per-report filter to set. See [Sites](31-sites.md).
+
 Everything shown is scoped through `accessible_by(current_ability)` —
 what you see reflects only what you're authorized to see, same as every
 list in the app.

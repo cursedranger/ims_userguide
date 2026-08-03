@@ -30,6 +30,23 @@ matrix row exists, a Viewer already sees their own department's Assets
 (the app's ordinary department-based rule); the matrix is what widens that
 to every department, for a whole role or for one specific person.
 
+### The one thing that does take away: sites
+
+If your organization runs more than one plant, the **site** boundary sits
+underneath all of this and it *is* restrictive — that is its whole job. A
+matrix row set to **All** means "all of it **at the sites this person can
+reach**", never "all of it everywhere".
+
+So the two layers answer different questions, and both have to say yes:
+
+> **What may I do?** — built-in rules OR matrix rows (only ever adds).
+> **Whose records are these?** — the site boundary (only ever narrows).
+
+Granting a Plant 1 user an **All** row for Findings does not let them see
+Plant 2's findings, and there is no matrix setting that will. Cross-site
+access is a separate, deliberate per-user field — **Site access level** on
+the user record. See [Sites](31-sites.md).
+
 ## Role rows vs. user rows
 
 Every row in the matrix belongs to **exactly one** of:

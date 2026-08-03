@@ -23,6 +23,19 @@ A document with no revisions yet has nothing to view or download:
 
 ![Show, no version yet](images/documents/03-show-no-version.png)
 
+### Documents that go to every site
+
+In a multi-site organization a document belongs to the site it was created
+at, like every other record. A corporate-issued document — a group HSE
+policy, a company-wide procedure — can instead be marked **shared with all
+sites**: it is then readable, downloadable and acknowledgeable at every
+plant while still being owned, revised and approved centrally. Shared
+documents carry an **All sites** badge on the list.
+
+This is one of only two things in the app that deliberately cross the site
+boundary (the other is an audit that spans all sites). See
+[Sites](31-sites.md).
+
 ## First revision → review → publish
 
 **Start new revision** (Current Version tab) takes a label, change
@@ -117,8 +130,8 @@ on the narrow View-tier tab set.
 
 ## Distribution and acknowledgement
 
-Distribute the effective version to a department, location, role, or
-individual user, optionally **requiring acknowledgement**:
+Distribute the effective version to a **site**, department, location, role,
+or individual user, optionally **requiring acknowledgement**:
 
 ![Distribution form filled in](images/documents/12-distribution-form-filled.png)
 ![Distribution added](images/documents/13-distribution-tab-added.png)
