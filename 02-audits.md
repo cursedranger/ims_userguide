@@ -3,6 +3,23 @@
 Sidebar → **Audits**. Covers both internal and external (certification
 body) audits, from scheduling through report approval.
 
+Audits can be raised one at a time here, or planned a year in advance and
+opened automatically — see [Audit Programme](32-audit-programme.md) for the
+ISO 9001 §9.2.2 a) planning side. An audit created that way is an ordinary
+audit from the moment it appears, and everything below applies to it
+unchanged; its Overview tab additionally shows which programme planned it.
+
+Two things on this page come from that work and apply to *every* audit,
+however it was raised:
+
+- **Standards and clauses** are recorded on the audit alongside the free-text
+  criteria, shown on the Overview tab, and filterable (and CSV-exportable)
+  from the index — so "which audits covered ISO 9001 §8.4?" is a filter.
+- **The lead auditor can be handed over** from the Schedule & Team tab with a
+  reason, keeping a visible history of every change, rather than being
+  removed and re-added. See
+  [Changing the lead auditor](32-audit-programme.md#changing-the-lead-auditor-after-the-audit-opens).
+
 ## List, filter, export
 
 The index is search/filter/sort/paginate like every list in the app, with a

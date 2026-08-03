@@ -55,7 +55,8 @@ alerts (serious incidents, training expiry, calibration overdue).
 ![Organization dashboard](images/getting-started/03-dashboard.png)
 
 The left sidebar is the map of the whole app, grouped exactly the way the
-business groups the work: **Audits**; **Findings & CAPA** (Findings, CAPA
+business groups the work: **Audits** (Audit Programme, Audits, Report
+Download Log); **Findings & CAPA** (Findings, CAPA
 Cases); **Objectives**; **Management Review**; **Documents**; **Risks &
 Compliance** (Context & Issues, Interested Parties, Risks & Opportunities,
 Compliance); **Operations** (Incidents, Management of Change, Competency

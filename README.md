@@ -8,9 +8,14 @@ bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
+
+
 For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 
+`sample_data:seed` loads everything for a single site (the first one), so on
+a multi-site install the demo lives at one plant — switch site in the topbar
+to see the boundary, as [Sites](31-sites.md) describes.
 
 Sample/demo login credentials are printed by the seed tasks — see
 [Getting Started](00-getting-started.md#signing-in).
@@ -23,7 +28,8 @@ Sample/demo login credentials are printed by the seed tasks — see
    Document Workflow Designer, Email Template Designer, Access Control
    Matrix.
 3. [Audits](02-audits.md) — scheduling, team, checklist, report approval,
-   comments/attachments.
+   comments/attachments. (Planning a year of them up front is
+   [Audit Programme](32-audit-programme.md).)
 4. [Findings](03-findings.md) — raise, assign, RCA, CAPA plan/actions,
    effectiveness, close/reject.
 5. [CAPA Cases](04-capa-cases.md) — the standalone triage → investigation
@@ -121,6 +127,14 @@ Sample/demo login credentials are printed by the seed tasks — see
     things that deliberately cross the boundary (documents shared with all
     sites, audits spanning all sites), and what happens when an existing
     single-site installation is upgraded.
+33. [Audit Programme (Planning)](32-audit-programme.md) — ISO 9001 §9.2.2 a)
+    / ISO 19011 §5: the year's audits agreed and approved up front, and the
+    lead-time automation that opens each real audit from its planned entry,
+    with the checklist, team, departments and dates already filled in.
+    Repeating audits (monthly through annual) expand into one dated audit per
+    interval on approval; standards and clauses are linked as records so
+    programme coverage is a filter, not a reading exercise; and the lead
+    auditor can be handed over on the live audit with the change recorded.
 
 ## Conventions used throughout
 
