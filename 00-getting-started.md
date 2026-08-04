@@ -84,7 +84,16 @@ together every audit you're a participant on, every finding/CAPA action
 you own or are assigned, every objective result that's due from you, every
 meeting action item assigned to you, every approval decision waiting on
 you, and every document awaiting your acknowledgement — each in its own
-card, each linking straight to the record:
+card, each linking straight to the record.
+
+Work permits sit at the top rather than in the alphabetical run, and only
+when the module is on: a permit that has expired, or is about to, is the one
+item on this page that cannot wait until tomorrow, because it can mean
+equipment is still isolated with nobody accountable for restoring it. Both
+permit panels list only permits that name *you* (issuer, acceptor, field
+operator or raiser) — a much smaller list than the register, and the one
+that matters at shift handover. See
+[Permit to Work](33-permit-to-work.md#the-permit-board).
 
 ![My Work, populated](images/getting-started/04-my-work.png)
 

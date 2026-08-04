@@ -9,7 +9,6 @@ bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
 
-
 For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 
@@ -135,6 +134,17 @@ Sample/demo login credentials are printed by the seed tasks — see
     interval on approval; standards and clauses are linked as records so
     programme coverage is a filter, not a reading exercise; and the lead
     auditor can be handed over on the live audit with the change recorded.
+34. [Permit to Work](33-permit-to-work.md) — ISO 45001 §8.1.2/§8.1.4: the
+    controlled authorisation of non-routine work. A **versioned, admin-editable
+    permit form** (sections, Yes/No/NA checkpoints, enforceable numeric ranges,
+    per-permit-type visibility) rather than a hard-coded one; permit types that
+    can be clubbed onto a single permit and fold to the shortest validity; a
+    configurable permit-type x approver-level matrix that escalates by shift; an
+    acceptor who is usually contractor roster staff, gate-pass checked; a gas
+    test log where an out-of-limits reading suspends the job; renewal as
+    re-approval rather than a date edit; four-signature closure with the
+    30-minute fire watch; coded cancellation reasons; the permit board, the
+    printable permit with a download log, and a compliance report.
 
 ## Conventions used throughout
 

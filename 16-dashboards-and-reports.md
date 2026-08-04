@@ -123,6 +123,12 @@ focused, printable page with its own **Export CSV**:
   status, drill coverage and effectiveness over a date range, and the
   plans overdue for a drill or a plan review — see
   [Emergency Preparedness & Response](29-emergency-preparedness.md#reminders-report-and-dashboard).
+- **Work Permit Compliance** — how the permit system is being run rather
+  than how many permits exist: permits by status, type and department,
+  cancellations by coded reason, permits expired without closure, permits
+  currently suspended, gas tests that came back outside limits, and the
+  count of people named by typed name only (so their gate pass could not be
+  checked) — see [Permit to Work](33-permit-to-work.md#reports).
 
 Every report and every module index supports **Export CSV** for
 offline/spreadsheet use, and every printable page respects the same
