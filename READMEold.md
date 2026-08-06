@@ -7,8 +7,8 @@ running copy of the app. To reproduce the data behind these screenshots:
 bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
+For larger context, see [ISO Mapping](iso-standards-mapping.md) and [CFR21 compliance](cfr21-part11-mapping.md)
 
-For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 Sample/demo login credentials are printed by the seed tasks — see
 [Getting Started](00-getting-started.md#signing-in).
