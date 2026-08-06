@@ -10,7 +10,7 @@ bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 
 
 
-For larger context, see [ISO Mapping](iso-standards-mapping.md) and [CFR21 compliance](cfr21-part11-mapping.md)
+For larger context, see [ISO Mapping](iso-standards-mapping.md) and [CFR21 compliance](cfr21-part11-mapping.md) and [GMP](ich-q7-haccp-harpc-mapping.md)
 
 
 `sample_data:seed` loads everything for a single site (the first one), so on
