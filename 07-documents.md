@@ -143,6 +143,81 @@ timestamps accumulate below the distribution list:
 
 ![Acknowledged](images/documents/15-distribution-tab-acknowledged.png)
 
+## Read & Understood assessments
+
+Acknowledgement above records that somebody *clicked* to say they had read
+a revision. For a safety-critical procedure that often isn't enough — a
+**Read & Understood assessment** puts a real multiple-choice paper against
+a specific revision, and only a pass counts.
+
+The **Read & Understood** tab lists every assessment raised against the
+document, and **Read & Understood** in the sidebar lists them across the
+whole app (searchable, filterable, CSV-exportable like every other list):
+
+![Read & Understood tab](images/documents/36-read-understood-tab.png)
+
+### Raising one
+
+**Trigger assessment** takes a title, optional instructions shown to
+candidates, a pass mark, attempts allowed, and a due date:
+
+![New assessment form](images/documents/37-new-assessment-form.png)
+
+**The revision is pinned when you create it, and never moves.** The form
+tells you which one it will be. If the document is revised later, this
+assessment still refers to the revision people actually read — a new
+revision gets its own assessment. Raising several against one document
+over time is normal, and each has its own `DAS-YYYY-NNNN` reference.
+
+A document with no effective version yet can't be assessed — there's
+nothing to be assessed on.
+
+### Who takes it
+
+Add **individual people**, whole **departments**, or both:
+
+![Participants](images/documents/38-assessment-participants.png)
+
+Picking a department adds its active members as real rows there and then,
+so the list is a fixed, auditable roster rather than something that
+silently changes underneath you. **Refresh from departments** pulls in
+anyone who joined since — it only ever *adds*: someone who has left is
+never quietly dropped, because they may already have sat it.
+
+A participant who has already sat it can't be removed at all — the attempt
+is the evidence.
+
+### The paper, and sitting it
+
+Questions work exactly as they do for training — single-answer and
+multiple-answer, the latter marked all-or-nothing — see
+[Competency & Training](13-competency-and-training.md#building-the-question-paper):
+
+![Question paper](images/documents/39-assessment-questions.png)
+
+**Trigger assessment** releases it to everyone on the list and notifies
+them. It refuses without at least one participant and one answerable
+question. Each participant gets their own panel, with a link to read the
+document first:
+
+![Participant's view](images/documents/40-participant-view.png)
+![Sitting the assessment](images/documents/41-sitting-the-assessment.png)
+
+**Passing records the acknowledgement for you** — the participant does not
+have to pass the assessment *and* separately click "I have read this". The
+acknowledgement is against the pinned revision:
+
+![Passed](images/documents/42-assessment-passed.png)
+
+Outstanding participants are chased daily while the assessment is open,
+and once the due date passes whoever triggered it is told how many are
+still outstanding. Open assessments also appear in each participant's
+**My Work → Documents To Read & Confirm**.
+
+A triggered assessment can't be edited or deleted — only **closed**, which
+stops further attempts and grades anything still in progress. Only a draft
+can be deleted.
+
 ## Download log
 
 Every control/master copy download (who, when, which copy) is logged per

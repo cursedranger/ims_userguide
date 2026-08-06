@@ -9,6 +9,7 @@ bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
 
+
 For larger context, see [ISO Mapping](iso-standards-mapping.md)
 
 
@@ -38,8 +39,9 @@ Sample/demo login credentials are printed by the seed tasks — see
 7. [Management Reviews](06-management-reviews.md) — agenda, minutes,
    decisions, action items.
 8. [Documents](07-documents.md) — controlled revisions, review/publish
-   approval, Control/Master copies, distribution & acknowledgement, Master
-   Document Register with MR-only approval and automatic Pending Update.
+   approval, Control/Master copies, distribution & acknowledgement,
+   Read & Understood assessments pinned to a revision, Master Document
+   Register with MR-only approval and automatic Pending Update.
 9. [Context & Interested Parties](08-context-and-interested-parties.md)
 10. [Risks & Opportunities](09-risks-and-opportunities.md) — scoring,
     treatment, monitoring, review history.
@@ -49,7 +51,9 @@ Sample/demo login credentials are printed by the seed tasks — see
     external notifications, closure.
 13. [Management of Change](12-management-of-change.md) — the full
     assessment → approval → implementation → verification workflow.
-14. [Competency & Training](13-competency-and-training.md)
+14. [Competency & Training](13-competency-and-training.md) — the
+    attendance register (self check-in, trainer validation), the optional
+    MCQ assessment, and auto-issued participation certificates.
 15. [Suppliers](14-suppliers.md) — evaluations, auto-raised findings.
 16. [Assets](15-assets.md) — calibration and maintenance records.
 17. [Dashboards & Reports](16-dashboards-and-reports.md) — the

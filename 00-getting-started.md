@@ -97,6 +97,14 @@ that matters at shift handover. See
 
 ![My Work, populated](images/getting-started/04-my-work.png)
 
+Training gets the same treatment as permits, for the same reason: on the
+day of a training you're booked on, a **mark your attendance** prompt
+appears here so you don't have to go hunting for the session. Below it,
+**Assessments To Take** and **Documents To Read & Confirm** list any
+assessment still open to you, with the attempts you've used. See
+[Competency & Training](13-competency-and-training.md#the-attendance-register)
+and [Documents](07-documents.md#read--understood-assessments).
+
 A user with nothing outstanding sees the same cards with a plain "No
 assigned audits." / "Nothing awaiting acknowledgement." empty state instead
 of an error or a blank page — every list in this app follows that rule.
