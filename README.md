@@ -8,11 +8,6 @@ bin/rails db:prepare
 bin/rails sample_data:seed   # ~10-20 sample records per module, skips Documents
 ```
 
-
-
-For larger context, see [ISO Mapping](iso-standards-mapping.md) and [CFR21 compliance](cfr21-part11-mapping.md) and [GMP](ich-q7-haccp-harpc-mapping.md)
-
-
 `sample_data:seed` loads everything for a single site (the first one), so on
 a multi-site install the demo lives at one plant — switch site in the topbar
 to see the boundary, as [Sites](31-sites.md) describes.
@@ -149,6 +144,19 @@ Sample/demo login credentials are printed by the seed tasks — see
     re-approval rather than a date edit; four-signature closure with the
     30-minute fire watch; coded cancellation reasons; the permit board, the
     printable permit with a download log, and a compliance report.
+
+## Standards & regulatory mapping
+
+Clause-by-clause mappings of what this app covers, for nine frameworks across
+five documents — ISO 9001/14001/45001, Factories Act 1948, OSHA, ISO/IEC 17025,
+21 CFR Part 11, ICH Q7, HACCP and HARPC.
+
+**[Start at the standards index →](standards/README.md)** — a one-screen summary
+of where the app stands against each, which document answers which question, and
+the cross-cutting gaps that appear in several at once.
+
+These are working gap analyses rather than a compliance claim: every row states
+plainly what is missing as well as what is built.
 
 ## Conventions used throughout
 

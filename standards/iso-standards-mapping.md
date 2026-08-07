@@ -1,0 +1,223 @@
+# ISO Standards & Clause Mapping
+
+**Last reviewed: 2026-08-01 — update this alongside any new module.**
+
+## Scope and how to read this document
+
+This document maps ISO 9001:2015 (Quality Management), ISO 14001:2015
+(Environmental Management), and ISO 45001:2018 (Occupational Health &
+Safety) clauses to the specific application module or model that supports
+them. It exists to answer one question repeatedly, as the app grows: *if
+we're certifying against this clause, what in the software actually backs
+it up?*
+
+**ISO/IEC 17025:2017** is an ISO standard but is deliberately *not* in this
+file — it is an accreditation standard for a laboratory rather than a
+management system for an organization, and half of it has no counterpart
+here. It has its own mapping in
+[iso-17025-mapping.md](iso-17025-mapping.md).
+
+This is a mapping of built functionality, not a certification checklist
+and not a legal reference. It reflects the codebase as of the date above —
+cross-reference [architecture.md](../../../architecture.md) §11 for the full
+technical description of each module, and treat this file as the thing
+that goes stale first when a module changes shape. Every table row below
+was checked against the actual current models/services, not against what
+was originally planned.
+
+### A note for manufacturing companies in India
+
+This app models a single organization's *management system* — audits,
+findings, CAPA, objectives, documents, and the operational modules in
+§11. It does not itself encode any Indian statute or regulation, and
+never will: obligations differ by state, sector, and site, and belong in
+data the organization configures, not in application code. What this app
+gives an Indian manufacturer is a place to **register and track** those
+obligations against the same evaluation/evidence/nonconformity machinery
+used for everything else:
+
+- **`ComplianceObligation` / `ComplianceEvaluation`** (§11.3) is where a
+  site records its own applicable statutory and regulatory requirements —
+  the Factories Act 1948 (state Factory Rules), the Legal Metrology Act
+  2009 (for any product sold by weight/measure), BIS product certification
+  (mandatory under the relevant Quality Control Order for many
+  manufactured goods), the Water (Prevention and Control of Pollution) Act
+  and Air (Prevention and Control of Pollution) Act consents issued by the
+  State Pollution Control Board, Hazardous & Other Wastes (Management &
+  Transboundary Movement) Rules, the Extended Producer Responsibility (EPR)
+  rules under the Plastic Waste Management Rules and the Battery Waste
+  Management Rules, the Environment (Protection) Act 1986, and the
+  Occupational Safety, Health and Working Conditions Code 2020 as it comes
+  into force state by state — each becomes one `ComplianceObligation` row
+  with its own owner, evaluation frequency, and evidence trail. A
+  noncompliant evaluation can raise a Finding through the same
+  `Findings::RaiseFromSource` path every other module uses.
+- **`Incident`** (§11.4) is where a reportable environmental release,
+  workplace injury, or process safety event is logged, investigated, and
+  — where an Indian statute requires external notification (e.g. a
+  factory-act-reportable injury to the Chief Inspector of Factories, a
+  pollution-control-board-reportable release) — that notification is
+  tracked as part of the incident record, not hardcoded as a rule.
+- **`Asset` / `CalibrationRecord`** (§11.7) is where Legal Metrology
+  calibration/verification obligations for weighing and measuring
+  instruments are tracked alongside ordinary calibration.
+- **`EmployeeMedicalProfile` / `OhcExamination` / `OhcExaminationRequirement`**
+  (§11.19) is where the statutory Periodic Medical Examination (Factories
+  Act 1948 §41C/Third Schedule, continued under the OSH Code 2020) is
+  tracked — a configurable frequency-by-hazard-category master drives each
+  employee's next due date, with an overdue report. Structured PME lab
+  protocols (spirometry, audiometry, vision, ECG, chest X-ray, lab tests)
+  and fitness certificates are also built, along with vaccination/
+  immunisation tracking (`OhcVaccination`) for booster/batch/expiry
+  compliance and a batch-tracked pharmacy/first-aid medicine inventory
+  (`PharmacyItem`/`PharmacyStockBatch`/`PharmacyDispensation`) supporting
+  the Factories Act's first-aid/dispensary stocking requirements.
+- **`FirstAidCase` / `FirstAidKit` / `FirstAidKitInspection`** (§11.19
+  Slice 5) is where the Factories Act 1948 §45 first-aid appliance and
+  register obligations are tracked — a first aid case register covering
+  employees, contractors and visitors alike (with emergency response,
+  ambulance and hospital-referral detail, and a computed response time),
+  plus a first aid box register with periodic inspections, an overdue
+  report and a daily reminder job.
+- **`SurveillanceProgram` / `HazardExposure`** (§11.19 Slice 6) is where
+  hazard-based occupational health surveillance is configured and run —
+  a named protocol per hazard with its own examination frequency and test
+  set, workers enrolled by recording a dated exposure (several at once,
+  each running an independent clock), an exposure history timeline, and
+  test-result trends across successive surveillance examinations. This is
+  the register that answers "who is exposed to what, since when, and when
+  were they last examined for it".
+- **`ContractorWorker` / `ContractorMedicalClearance`** (§11.19 Slice 7)
+  covers contract labour medical fitness under the Contract Labour
+  (Regulation and Abolition) Act 1970 and the OSH Code 2020 — a per-firm
+  worker roster held separately from the employee population, dated
+  medical clearances with printable certificates, revocation, and a
+  computed gate-pass status backed by a daily expiry reminder.
+- **`HealthCampaign` / `HealthCampaignParticipation`** (§11.19 Slice 8) is
+  where health camps, screening drives and awareness sessions are planned
+  and their participation, coverage and outcomes recorded — for employees,
+  contract labour and visitors alike.
+- **The statutory PME register and reminders** (§11.19 Slice 9) close the
+  Factories Act §41C loop: `Ohc::ExaminationDueReminderJob` and
+  `Ohc::VaccinationDueReminderJob` notify the employee and the OHC ahead
+  of each due date and once overdue, and
+  `Ohc::MedicalExaminationRegisterPdf` renders the printable register —
+  last examination, fitness verdict and next due date per employee, with
+  overdue and never-examined rows called out separately.
+
+None of the above is legal advice or a substitute for site-specific
+regulatory review — it's a description of *where in the app* that review's
+outputs get configured and tracked.
+
+---
+
+## ISO 9001:2015 — Quality Management System
+
+| Clause | Requirement | Application module(s) | Notes |
+|---|---|---|---|
+| 4.1 | Understanding the organization and its context | `ContextIssue` (§11.1) | Internal/external issues, category, impact, owner, periodic review. |
+| 4.2 | Understanding the needs and expectations of interested parties | `InterestedParty` (§11.1) | Needs/expectations, compliance relevance, owner, review date. |
+| 4.3 / 4.4 | Scope of the QMS; QMS and its processes | Organization Profile (§4.1); `Site` (§3A) | One organization per deployment, which may run a corporate office and multiple sites — so scope can be stated and evidenced per site. Still not multi-tenant: one database serves one organization. |
+| 5.1–5.3 | Leadership, policy, roles/responsibilities/authorities | Users, roles, department heads (§4.2); Management Review (§9) | Roles are assignable per user; management review agenda item categories map directly to §9.3 inputs. |
+| 6.1 | Actions to address risks and opportunities | `RiskOpportunity` (§11.2) | `kind: risk/opportunity`, scored, treatment actions, review history. |
+| 6.2 | Quality objectives and planning to achieve them | `QualityObjective` / `ObjectiveAssignment` / `ObjectiveResult` (§8) | Target/comparator/frequency, periodic actual results, achievement calculation. |
+| 6.3 | Planning of changes | `MocRequest` (§11.8, "Change management") | Impact/risk assessment, implementation plan, generic approvals, closure requires verification. |
+| 7.1.5 | Monitoring and measuring resources (calibration) | `Asset` / `CalibrationRecord` / `MaintenanceRecord` (§11.7) | Overdue assets are visible and cannot be marked compliant without a record. |
+| 7.1.6 / 7.2 | Organizational knowledge; competence | `Competency` / `CompetencyRequirement` / `UserCompetency` / `TrainingSession` / `TrainingAttendance` / `AssessmentQuestion` / `AssessmentAttempt` (§11.5, §11.5.3) | Renewal periods, expiring/expired competence dashboard, and a Competency Gaps report. Competence is **enforced, not just recorded**: a `blocking` `CompetencyRequirement` refuses a role assignment while the person does not hold the competency, and completing a training session confers the competencies it declares, dated and expiring on the strictest renewal period. Competence is also **evidenced, not asserted**: an attendance register with self check-in and trainer validation, an optional MCQ assessment whose score is frozen at submission (so editing the paper later cannot move a past result), and an auto-issued participation certificate that requires validated presence plus — where an assessment was required — a pass. |
+| 7.4 | Communication | `Notification` + email (§5.3); `SafetyMeeting` (§11.11); Management Review (§9) | Every assignment/approval/due-date event notifies via the same pipeline. |
+| 7.5 | Documented information | `Document` / `DocumentVersion` / `DocumentAssessment` (§10) | Sequential approvals, effective/current version, immutable approved revisions, controlled distribution/acknowledgement. **Read & Understood assessments** go beyond a click-through acknowledgement: an MCQ paper pinned to one specific revision, so a pass is evidence about the text the person actually read, and passing records the acknowledgement itself. |
+| 8.1 | Operational planning and control | `MocRequest` (§11.8); `PssrReview` (§11.13); `HazopStudy` (§11.14) | Change, pre-startup, and hazard-study controls for planned/modified operations. |
+| **8.3** | **Design and development of products and services** | **`DesignProject`** (§11.18) | Inputs, outputs, review, verification, validation, and approval; a design change is raised as an `MocRequest` (§8.3.6, "change management") rather than a duplicate mechanism. |
+| 8.4 | Control of externally provided processes, products, and services | `Supplier` / `SupplierEvaluation` (§11.6) | Approval status, risk rating, periodic evaluation; poor results can raise a Finding. |
+| 8.5.1 | Control of production and service provision | `IncidentChemicalRelease` / process-related `Incident` records (§11.4) where relevant | Broader shop-floor process control (SOPs, work instructions) is document-managed via §10, not a separate production-execution module — out of scope for this app. |
+| 8.6 | Release of products and services | `NonconformingOutput#disposition` (§11.16) | A "use as is" disposition is the release-with-concession case; every other disposition (rework/regrade/scrap/return-to-supplier/repair) implicitly withholds release until corrected. |
+| **8.7** | **Control of nonconforming outputs** | **`NonconformingOutput`** (§11.16) | Detection stage, containment, disposition (with mandatory approval for "use as is"), verification/closure, optional linked Finding. |
+| 9.1.1 | Monitoring, measurement, analysis and evaluation | Reports/dashboards (§15); `ObjectiveResult` (§8); `BbsObservation` trend report (§11.15) | Org-wide and "My Work" dashboards, CSV export, printable reports. |
+| **9.1.2** | **Customer satisfaction** | **`Customer` / `CustomerFeedback`** (§11.17) | Survey/direct-feedback/repeat-business/complaint/warranty-claim log, satisfaction trends report, optional linked Finding for a poor result; references (not duplicates) `Incident#incident_kind == "customer_complaint"` for a complaint already formally investigated. |
+| **9.2.2 a)** | **Plan, establish, implement and maintain an audit programme** | **`AuditProgram` / `AuditProgramEntry`** (§6.0) | The programme itself, distinct from the audits: a period, an owner, an approved schedule of planned audits (kind, scope, criteria, departments, locations, dates, lead auditor, checklist template), and lead-time automation that opens each real `Audit` from its planned entry. Coverage % (opened vs. non-cancelled entries) is the "is it being implemented?" evidence; closing a programme is refused while any planned audit is neither opened nor cancelled-with-a-reason. **Frequency** is a first-class field per §9.2.2 a): a planned audit set to monthly/quarterly/half-yearly/annual expands on approval into one dated audit per interval across the period, so "audited at planned intervals" is enforced by the schedule rather than by someone remembering. **Criteria and scope** are records too — `AuditProgramEntryStandard`/`AuditProgramEntryClause`, copied to `AuditStandard`/`AuditClause` — making per-clause coverage across the programme a filter on the audits index. ISO 19011:2018 §5 is used as implementation guidance only. |
+| 9.2 | Internal audit | `Audit` / `AuditChecklist` / `AuditChecklistItem` (§6) | Full schedule → execute → report → approve workflow, team roles, findings raised from checklist items. Audits arrive either ad hoc or opened automatically from an approved `AuditProgram` (row above). |
+| 9.3 | Management review | `ManagementReviewMeeting` / `MeetingAgendaItem` / `MeetingActionItem` (§9) | `STANDARD_AGENDA_POINTS` is the consolidated Quality/Environment/OH&S 16-point agenda, one item per §9.3.2 input. |
+| 10.1 | General (improvement) | Cross-cutting — Findings, CAPA, objectives, all "opt-in raise a Finding" points across §11 | Improvement is the connective tissue between every module, not a standalone one. |
+| 10.2 | Nonconformity and corrective action | `Finding` / `RootCauseAnalysis` / `CapaPlan` / `CapaAction` (§7) | Minor/major NC requires approved RCA and approved CAPA before closure. |
+| 10.3 | Continual improvement | `SafetyRecognition` (§11.12); management review decisions (§9) | Recognition program plus the management-review decision/action-item loop. |
+
+### ISO 9001 — Not yet covered
+
+- **§8.2 Requirements for products and services** (contract/order review)
+  — no dedicated module for reviewing and confirming an order's
+  requirements before committing to supply; distinct from `DesignProject`
+  (§11.18), which covers requirements for something being designed, not
+  every order taken against an existing catalog.
+
+---
+
+## ISO 14001:2015 — Environmental Management System
+
+| Clause | Requirement | Application module(s) | Notes |
+|---|---|---|---|
+| 4.1–4.2 | Context; interested parties | `ContextIssue` / `InterestedParty` (§11.1) | Shared with the QMS — this app does not duplicate context/interested-party registers per management system. |
+| 6.1.1 | General (risks and opportunities) | `RiskOpportunity` with `domain: environment` (§11.2) | Same scoring/treatment/review mechanism as quality and OH&S risk. |
+| **6.1.2** | **Environmental aspects and impacts** | **`EnvironmentalAspect`** (§11.9) | Likelihood × severity scoring, computed significance (`score >= threshold \|\| legal_requirement_linked?`) with a justified override, periodic review. |
+| 6.1.3 | Compliance obligations | `ComplianceObligation` / `ComplianceEvaluation` (§11.3) | Shared register across all three standards — see "A note for manufacturing companies in India" above. |
+| 6.2 | Environmental objectives | `QualityObjective` (§8), used generically | The objective model is not standard-specific; an environmental KPI is just an objective with an environmental metric. |
+| 7.2 / 7.3 | Competence; awareness | `CompetencyRequirement` / `TrainingSession` / `TrainingAttendance` (§11.5); `DocumentAssessment` (§10.5) | Shared competence register, not environment-specific. Awareness in particular is evidenced by the optional training assessment and by document Read & Understood assessments, rather than by attendance alone. |
+| 8.1 | Operational control | `MocRequest` (§11.8); `EnvironmentalAspect#control_measures` (§11.9) | Change management covers planned changes with environmental impact; control measures are recorded directly on the significant aspect. |
+| **8.2** | **Emergency preparedness and response** | **`EmergencyScenario` / `EmergencyResponseTeamMember` / `EmergencyDrill` / `EmergencyPlanReview`** (§11.20); `Incident` with `incident_kind: environmental_event` (§11.4) | Register of identified potential emergency situations (optionally linked to the `emergency`-condition `EnvironmentalAspect` behind them) with a scored risk rating, the planned response, required resources, external agencies and the named response team; periodic testing through announced/unannounced drills with response and evacuation timings, effectiveness evaluation and an opt-in Finding raise; and the review-and-revise loop §8.2 requires — periodic, post-drill or post-emergency, with a plan parked at `under_review` until it is actually revised. |
+| 9.1 | Monitoring, measurement, analysis, evaluation | `EnvironmentalAspectReview` (§11.9); reports/dashboards (§15) | Periodic reassessment history mirrors `RiskReview`. |
+| 9.2 | Internal audit | `Audit` (§6); `AuditProgram` (§6.0) | Same audit engine and same audit programme as the QMS — an EMS-scoped audit is an `Audit` tagged to the relevant department/clause set, planned in the same programme. |
+| 9.3 | Management review | `ManagementReviewMeeting` (§9) | `environmental_performance` is one of the standard 16 agenda categories. |
+| 10.2 | Nonconformity and corrective action | `Finding` / CAPA (§7) | `EnvironmentalAspectReview` can raise a Finding when a review finds existing controls inadequate. |
+| 10.3 | Continual improvement | Management review decisions (§9) | Same mechanism as the QMS. |
+
+### ISO 14001 — Not yet covered
+
+- **§6.1.4 Planning action** as a distinct integrated action plan across
+  aspects/obligations/risks — each of those three registers has its own
+  treatment/action tracking today, but there is no single cross-register
+  environmental action plan view.
+
+---
+
+## ISO 45001:2018 — Occupational Health & Safety Management System
+
+| Clause | Requirement | Application module(s) | Notes |
+|---|---|---|---|
+| 4.1–4.2 | Context; interested parties | `ContextIssue` / `InterestedParty` (§11.1) | Shared register, as above. |
+| 5.1–5.2 | Leadership and worker participation, OH&S policy | Roles (§4.2); `WorkerParticipationRecord` (§11.10) | `corporate_safety_head`/`corporate_safety_team` roles exist specifically for OH&S leadership. |
+| **5.4** | **Consultation and participation of workers** | **`WorkerParticipationRecord`** (§11.10); Safety Observations & BBS (§11.15) | Hazard reports, suggestions, safety-committee input, risk-assessment involvement; BBS observations are a second, structured consultation channel. |
+| 6.1.1 | General (risks and opportunities) | `RiskOpportunity` with `domain: ohs` (§11.2) | Shared risk register. |
+| **6.1.2** | **Hazard identification, risk assessment** | `HazopStudy` (§11.14); `RiskOpportunity`; BBS observations (§11.15) | HAZOP is the structured process-hazard method; BBS covers behavioral/condition-level hazard identification. |
+| 6.1.3 | Legal and other requirements | `ComplianceObligation` (§11.3) | Shared register — OH&S obligations (Factories Act, the OSH Code as it commences) are configured here. |
+| 6.2 | OH&S objectives | `QualityObjective` (§8), used generically | As with EMS objectives. |
+| 7.2 / 7.3 | Competence; awareness | `CompetencyRequirement` / `TrainingSession` / `TrainingAttendance` (§11.5); `DocumentAssessment` (§10.5); BBS observer competency (§11.15) | The training assessment and document Read & Understood assessments evidence awareness rather than assuming it from attendance — directly relevant to §7.3, where a worker must be aware of the hazards and controls that apply to them. BBS additionally shows observer competency **as of the observation's own date**, not today's. |
+| 7.4 | Communication | `Notification` + email; `SafetyMeeting` (§11.11) | Toolbox talks and safety committee meetings. |
+| 8.1.1 | General operational planning and control | `PssrReview` (§11.13); `HazopStudy` (§11.14); `MocRequest` (§11.8) | Pre-startup review, hazard study, and change control together cover planned/modified operations. |
+| **8.1.2** | **Eliminating hazards and reducing OH&S risks** | `BbsAction#control_hierarchy` (§11.15); `HazopDeviation` recommended actions (§11.14); **`WorkPermit`** (§11.22) | BBS actions force an explicit hierarchy-of-controls pick (elimination/substitution/engineering/administrative/PPE) rather than defaulting to retraining or PPE. Permit to Work is the administrative control for non-routine work itself: a versioned permit form, a permit-type x approver-level matrix that escalates by shift, critical checkpoints and enforceable gas-test limits that block issue, an approval chain that refuses rather than auto-approving when unconfigured, shift renewal as re-approval, and four-signature closure with a mandatory fire-watch observation. |
+| **8.1.4** | **Procurement / contractors (on-site control of contracted work)** | **`WorkPermit`** (§11.22); `ContractorWorker`/`ContractorMedicalClearance` (§11.19) | Partly covered. On-site contractor **work control** is now real: a permit names its acceptor, contractor supervisor, fire watcher, stand-by person and crew against the existing contractor roster, and `WorkPermits::Issue` refuses a permit whose roster-linked crew does not hold a valid gate pass — so an unfit or lapsed worker cannot be signed onto a job. A free-text worker is still allowed (a permit at 2 a.m. must not be blocked by a missing roster row) but is surfaced and printed as unverified, and counted as such on the compliance report. See below for what remains. |
+| **8.1 (general)** | **Health surveillance / occupational health monitoring** | **`EmployeeMedicalProfile` / `OhcVisit` / `OhcExamination` / `OhcVaccination`** (§11.19) | Employee medical master, OPD/clinic visits, Pre-Employment and Periodic Medical Examinations with structured test results (spirometry/audiometry/vision/ECG/chest X-ray/lab), an examination-frequency master by hazard category driving auto-scheduled due dates and an overdue report, fitness certificates, and vaccination/immunisation tracking with batch/expiry compliance. **`SurveillanceProgram`/`HazardExposure`** (Slice 6) add hazard-based surveillance programs proper: multi-hazard enrolment with dated exposure periods, per-program examination clocks, exposure history timelines and test-result trend analysis. **`ContractorWorker`/`ContractorMedicalClearance`** (Slice 7) extend health monitoring to contract labour with gate-pass clearance. **`HealthCampaign`** (Slice 8) covers proactive health promotion — camps, screening drives and awareness sessions with coverage and outcome tracking. Slice 9 adds the statutory layer: two-tier PME and vaccination due reminders (employee, then OHC) plus a printable Medical Examination Register. Structured *laboratory* integration is deliberately out of scope. |
+| **8.2** | **Emergency preparedness and response** | **`EmergencyScenario` / `EmergencyDrill`** (§11.20); `Incident` (§11.4); `IncidentMedicalTask`/Form B/B1/E (§11.4.2); **`FirstAidCase` / `FirstAidKit`** (§11.19) | The proactive half — response plans, named response teams, drills and plan reviews — is shared with ISO 14001 §8.2 (§11.20); the reactive half is the incident/medical-treatment workflow plus the first aid / medical emergency register (response time, ambulance and hospital referral, stakeholder alerting, optional link to a reportable incident) and first aid box readiness via periodic kit inspections. |
+| 9.1 | Monitoring, measurement, analysis, evaluation | BBS Coverage & Trends report (§11.15); reports/dashboards (§15) | Deliberately never ranks individuals or treats a quiet department as "well behaved" — every rate states its denominator. |
+| 9.2 | Internal audit | `Audit` (§6); `AuditProgram` (§6.0) | Same audit engine and audit programme, OH&S-scoped. |
+| 9.3 | Management review | `ManagementReviewMeeting` (§9) | `ohs_performance` is one of the standard 16 agenda categories. |
+| **10.2** | **Incident investigation, nonconformity, corrective action** | `Incident` / `IncidentInvestigation` / `Finding` / CAPA (§11.4, §7) | Full LOPC/Process Safety Event tiering (§11.4.1) and OHC Doctor/Medical workflow (§11.4.2) on top of the base investigation. |
+| 10.3 | Continual improvement | `SafetyRecognition` (§11.12); management review decisions | Recognition program plus decision/action-item loop. |
+
+### ISO 45001 — Not yet covered
+
+- **§8.1.4 Procurement / contractors** — the *pre-qualification* half.
+  On-site work control and gate-pass-checked crew are covered by Permit to
+  Work (§11.22), and medical clearance by `ContractorMedicalClearance`
+  (§11.19), but there is still no OH&S-specific contractor pre-qualification
+  or scoring record: `Supplier`/`SupplierEvaluation` (§11.6) covers general
+  supplier evaluation only, and contractor induction is still whatever
+  `TrainingAttendance` can hold generically.
+
+---
+
+## Keeping this document current
+
+Update this file whenever a module in `architecture.md` §11 (or any future
+section) changes its clause coverage — a new module, a renamed status, a
+newly-added "opt-in raise a Finding" path, or a gap from "Not yet covered"
+getting built. Treat a stale row here the same as a stale line in
+`architecture.md`: fix it in the same change that touches the code.

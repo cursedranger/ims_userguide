@@ -127,6 +127,29 @@ Progress** if one is:
 
 ![Show, actions in progress](images/incidents/08-show-actions-in-progress.png)
 
+### When no investigation is warranted
+
+Not every incident earns one. A housekeeping near miss corrected on the
+spot produces paperwork, not learning. From the Actions panel of a triaged
+incident, **No investigation required** records that decision with a
+mandatory reason; it is stamped with who decided it and when, appears on
+the Overview and Investigation tabs, and is written to the comment thread.
+
+It is only available to the people who hold full control of the incident
+(Incident Manager, IMS Admin, Top Management, or the head of the
+incident's department) — not to the reporter or the lead investigator of
+that incident. It is not offered at all for a **high or critical severity**
+incident, when triage decided CAPA was **required**, or once an
+investigation has been completed.
+
+The waiver does not close anything. It removes exactly one closure
+condition — the completed investigation — so the incident can go
+**Request closure → Closure Review → Close incident** with no
+investigation, no finding and no CAPA case. Every other closure check
+below still applies. **Reinstate investigation** withdraws the waiver
+while the incident is still open, and reopening a closed incident
+reinstates it automatically.
+
 ## Root Cause Analysis
 
 Once an investigation is recorded, the **Root Cause Analysis** tab offers

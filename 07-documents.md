@@ -156,6 +156,16 @@ whole app (searchable, filterable, CSV-exportable like every other list):
 
 ![Read & Understood tab](images/documents/36-read-understood-tab.png)
 
+### Who can raise one
+
+The **Management Representative** — for any document in the organization —
+and the **publisher** of the document's department (the Document Workflow
+Roles set up in Masters & admin), plus the IMS Admin. Deliberately not the
+document's creator or the Document Controller: asking people to prove they
+have understood a revision is a decision about the *released* text, so it
+belongs to whoever released it. If you cannot see the **Trigger
+assessment** button, that is why.
+
 ### Raising one
 
 **Trigger assessment** takes a title, optional instructions shown to
