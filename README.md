@@ -144,6 +144,14 @@ Sample/demo login credentials are printed by the seed tasks — see
     re-approval rather than a date edit; four-signature closure with the
     30-minute fire watch; coded cancellation reasons; the permit board, the
     printable permit with a download log, and a compliance report.
+35. [Designing a Permit Form](34-designing-a-permit-form.md) — the form
+    designer in depth, for the administrator who has to make the system ask
+    what *your* permit sheet asks: sections and who fills them, the five
+    section behaviours, question types, what makes a checkpoint **critical**
+    and a gas limit **enforceable**, per-permit-type visibility, copying a
+    block out of another form, reading the printed sheet as you build,
+    signature declarations, publishing and revising. Ends with a worked hot
+    work permit and a pre-publish checklist.
 
 ## Standards & regulatory mapping
 

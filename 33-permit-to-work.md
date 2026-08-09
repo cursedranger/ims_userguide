@@ -30,6 +30,23 @@ Two roles are new with this module: `hsef_officer` and `permit_issuer`.
 
 **Permit to Work → Work Permits → Raise a Permit.**
 
+**Permit form.** Pick the format this job is raised on. A plant runs more
+than one — a hazardous-job format and a non-hazardous one are different
+controlled documents asking different questions — and the choice decides which
+sections the permit then shows you. It is **frozen once the permit exists**, so
+reprinting it years later shows the questions it was actually issued against;
+cancel and raise a new permit to change it. If only one form is published the
+picker is filled in for you.
+
+Three formats ship seeded, and an admin can add or edit any of them from
+**Permit Forms**:
+
+| Form | Document number |
+|---|---|
+| Permit to Work | `DPLD-G00-GEN-402-0033` |
+| Permit to Work — Hazardous job (Category 1) | `HSE F 42/02/01.04.2026` |
+| Permit to Work — Non-hazardous job (Category 2) | `HSE F 43/02/01.04.2026` |
+
 **Section A — type of permit.** Tick every type that applies. Several types
 may be clubbed onto one permit *for the same location, team and agency*, as
 the form's own note allows. When you do, the permit takes the **shortest**
@@ -112,6 +129,9 @@ the issuer and field operator.
 **Check sheets** attach themselves to the permit from the types you chose,
 and their questions are *copied onto the permit* at that moment. Revising a
 check sheet template next year never rewrites a sheet completed last year.
+Eight ship seeded — hot work, confined space entry, work at height, excavation
+clearance, LOTOTO, lifting & shifting, radiography work and line breaking — and
+**Check Sheets** is where you edit them or add your own.
 
 **The toolbox talk** is its own signed record with the crew-facing
 checkpoints, not a tick box — "was a TBT given" is the first question asked
@@ -175,11 +195,51 @@ an expiring-or-expired panel above it.
 
 ## Printing
 
-**Print** renders the whole permit — Sections A–H from the form it was issued
-against, the gas test grid, the renewal log and every signature with its
-declaration text — laid out for A4. Each print is logged against the permit
-with who took it and when, because the form is a controlled document issued
-in triplicate.
+**Print** gives you the permit as the controlled format **it was raised on** —
+each form prints as itself.
+
+A form describes its own sheet: as well as its questions, it can carry its
+particulars grid, its signature blocks (with the wording each authority signs
+against), its attachments menu and its overleaf approval log. So a Category 1
+permit prints "Name of the Permit Issuer" above HSE F 42's own declaration and
+an overleaf with that form's normal and extension approval columns, while the
+DPL form keeps its Sections A–H. A form that says nothing about its sheet
+prints the built-in Sections A–H layout described below.
+
+- **Sheet 1 (A4 portrait)** — the header block with your document number and
+  the permit number, Section A's type boxes, Section B's job particulars, then
+  every section of the form it was issued against: the nature-of-work and
+  hazard tick grids, the issuer and acceptor preparation columns side by side,
+  the clearing gas test, the PPE block and remarks. Sections F and H follow
+  with every authority's declaration above its name/sign/date/time box, then
+  the documents and check sheets menu.
+- **Sheet 2 (A4 portrait, read sideways)** — the gas test log running
+  alongside the shift extension block, then the closing confirmation that
+  hazards and controls were ensured by the issuer, the area executive, the
+  acceptor and the contractor. The table is twenty-eight columns wide, so it is
+  **rotated within the page**: turn the sheet clockwise to read it. The log is
+  ruled all the way down the sheet — rows already recorded print filled in and
+  the rest print blank, because the permit is carried to the job and written on
+  there. A permit renewed past the end of one sheet gets another.
+
+The two sheets are the two sides of one piece of paper, which is why both are
+portrait. Print **A4 portrait, double-sided, at 100% scale**, with "print
+backgrounds" on so the section bands come out grey. Don't set the print dialog
+to landscape — the overleaf table turns itself.
+
+The toolbox talk is not printed. It is a signed record in its own right and is
+read on the permit's screen; the paper form's overleaf has no room for it once
+the shift log is laid out upright.
+
+Each print is logged against the permit with who took it and when, because the
+form is a controlled document issued in triplicate.
+
+Two settings control how it prints, both under **Permit to Work**:
+
+| Setting | Where | What it does |
+|---|---|---|
+| **Controlled document number** | Permit Forms → edit the form | Fills the "Doc. No." box at the head of every permit. |
+| **Print cols** | Permit Forms → version builder → each section | How many items that section lays across the A4 sheet. Separate from **Cols**, which is the on-screen data-entry width — the paper form runs its hazard list seven across but the entry screen never should. Leave it blank to use the screen width. |
 
 ## Setting your permit format
 
@@ -196,6 +256,32 @@ IMS Admin / Top Management:
 | **Approval Matrix** | Which approvers each type needs, and when |
 | **Check Sheets** | The named check sheets that attach to a permit |
 | **Shifts** | The working day, which the approval matrix escalates by |
+
+### The form designer
+
+> **Building or revising a form?** [Designing a Permit
+> Form](34-designing-a-permit-form.md) walks the whole job through with
+> screenshots — deciding your sections and who fills them, making a checkpoint
+> critical and a gas limit enforceable, copying blocks between forms,
+> signature declarations, publishing and revising. What follows here is the
+> reference summary.
+
+The version builder is a designer, not just a list of settings.
+
+**The sheet it will print sits beside the form you are building**, rendered
+through the print's own code rather than a lookalike — so what you see is what
+comes out of the printer. Every edit redirects back to the builder, so the
+preview is rebuilt on each change with no "refresh" to remember. A badge says
+whether the form is using **its own layout** or the **built-in Sections A–H**
+one, and a block with no questions on it is called out rather than silently
+missing from the sheet.
+
+**Copy a block from another form** is the fastest way to build a new format.
+Your formats overlap heavily — the same PPE grid, the same hazard list, the
+same declarations — so pick any block from any other form and it is copied in
+whole, questions and all. It is a **copy, never a link**: change it here and
+the form it came from is untouched. Copy the same block twice and the keys are
+made unique for you.
 
 ### Editing the form itself
 
