@@ -37,6 +37,31 @@ record protection and retention (G2 — 44 controllers still expose `destroy`) a
 the validation package (G7), neither of which is a signature problem. The
 audit-trail gaps (G4) sit just behind them.
 
+**As of 2026-08-10 the EBMR module (architecture.md §11.23) brings the two
+highest-value predicate-rule records into that signing scope**:
+`MasterBatchRecordVersion` (§211.186) and `ProductionBatch` (§211.188/§211.192).
+Both route their decision through `Approvals::Approve`, which is what makes it a
+signature rather than a click — a direct `released_by` write would have been
+simpler and would not have been one.
+
+**Gap G11 was closed on the same day it was opened.** `Part11::Sign` gained a
+second entry point, `for_decision`, which signs a single-party decision without
+an `ApprovalStep` and writes an `ElectronicSignature`. Four EBMR decisions are
+now signed that way — **material lot release**, **material lot rejection**,
+**deviation batch-impact assessment** and **batch record review** — alongside
+the two that go through the approval engine (master batch record approval and
+batch release). All six take password re-entry, render a §11.50 declaration
+frozen at signing time, and record a `SignatureAttempt` whether they succeed or
+fail.
+
+Two EBMR actions remain unsigned by deliberate choice, and a site should know
+which: **placing a lot or a batch on hold**, and **closing a deviation**. A hold
+is reversible, precautionary and not a predicate-rule decision — making every
+cautious act cost a password discourages caution, which is the wrong incentive
+to build. Deviation closure follows the assessment that was already signed, by
+the same quality unit, and adds no new determination. Both are attributable,
+timestamped and under PaperTrail.
+
 Every row below was checked against the current models/services, not against
 what was planned. Cross-reference [architecture.md](../../../architecture.md) for the
 technical description of each module.
@@ -49,6 +74,12 @@ likely to be predicate-rule records for an FDA-regulated site are:
 - **`Document` / `DocumentVersion` / `DocumentAcknowledgement`** (§10) — SOPs,
   specifications, batch record templates. Almost certainly in scope under
   §211.100/§211.180 or §820.40.
+- **`MasterBatchRecordVersion`** (§11.23) — the master production and control
+  record under §211.186, which explicitly requires a second, independent
+  signature by the quality unit.
+- **`ProductionBatch`** (§11.23) — the batch production and control record and
+  its review under §211.188 / §211.192. This is the record an FDA inspector
+  asks for by name.
 - **`Finding` / `RootCauseAnalysis` / `CapaPlan` / `CapaAction`** (§7) and
   **`CapaCase`** — the CAPA record under §820.100 / §211.192.
 - **`NonconformingOutput`** (§11.16) — §820.90 / §211.192 nonconformance.
@@ -126,7 +157,7 @@ here — where the app currently cannot hold them.
 | 11.10(b) | Ability to generate accurate and complete copies in both human-readable and electronic form for FDA inspection | Printable reports and PDF services (`Audits::ReportPdf`, `HazopStudies::ReportPdf`, `Ohc::MedicalExaminationRegisterPdf`, document Master/Control copy PDFs, §15.3); CSV export (§15) | **Partial** | Human-readable copies exist for the major modules. What is missing is (i) a *complete* record export — the record plus its full audit trail plus its signatures plus its attachments, as one artifact — and (ii) an electronic-form export in a non-proprietary structured format. Today an inspector asking "give me this CAPA and everything that ever happened to it" cannot be served from the UI. See gap G3. |
 | 11.10(c) | Protection of records to enable accurate and ready retrieval throughout the retention period | Approved/effective `DocumentVersion` immutability (§10.2); `Finding`/CAPA state guards (§7.2); Active Storage; PaperTrail | **Partial** | Controlled-document immutability is genuinely good. But 44 controllers expose `destroy`, `dependent: :destroy` cascades physically remove child rows (and their PaperTrail versions are orphaned rather than preserved as deletions of a retained parent), there is no retention period concept anywhere in the schema, and no archival tier. CLAUDE.md's "archive rather than hard-delete" rule is honoured by convention in workflow states, not enforced structurally. See gap G2. |
 | 11.10(d) | Limiting system access to authorized individuals | Devise (`database_authenticatable`, `lockable`, `timeoutable`, `trackable`, `confirmable`); CanCanCan on every controller/view/query/export (§12); `SiteScoped`/`SiteScopable::REGISTRY` (§3A); `User#active`; `must_change_password` | **Covered** | This is the strongest area. 30-minute session timeout, 10-attempt lockout with 1-hour unlock, per-site isolation enforced by registry and regression-tested in `spec/abilities/site_isolation_spec.rb`, and an active-user check. RailsAdmin is authorization-gated too. |
-| 11.10(e) | Secure, computer-generated, time-stamped audit trails recording operator entries and actions that create, modify, or delete records; changes must not obscure previous values; retained as long as the record and available for review and copying | PaperTrail 17.0 on 175 of 196 models; `set_paper_trail_whodunnit` in `ApplicationController`; `DocumentDownloadLog` / `AuditReportDownloadLog` / `WorkPermitDownloadLog` | **Partial — and this is the highest-risk partial** | `object_changes` is stored so prior values are not obscured, and whodunnit is the acting user. But: **(1)** there is no audit-trail viewer anywhere in the UI — the "Comments & Activity" tabs are comments, not PaperTrail, and only two views (`audits/_team`, `pssr_checklist_items/_item`) read `.versions` at all, for one field each; **(2)** the `versions` table has no reason-for-change column, so *why* a GxP record changed is never captured; **(3)** no IP address or user agent is recorded on the version despite §17 claiming "PaperTrail records actor and request context"; **(4)** `whodunnit` is a bare user-id string with no name snapshot, so the trail degrades if a user is renamed or removed; **(5)** the only index is on `[item_type, item_id]` — an audit-trail review by user or by date range will table-scan; **(6)** nothing prevents an application-level or DBA-level delete of a `versions` row. See gaps G1 and G4. |
+| 11.10(e) | Secure, computer-generated, time-stamped audit trails recording operator entries and actions that create, modify, or delete records; changes must not obscure previous values; retained as long as the record and available for review and copying | PaperTrail 17.0 on 196 of 241 models (every EBMR model carries it); `set_paper_trail_whodunnit` in `ApplicationController`; `DocumentDownloadLog` / `AuditReportDownloadLog` / `WorkPermitDownloadLog` | **Partial — and this is the highest-risk partial** | `object_changes` is stored so prior values are not obscured, and whodunnit is the acting user. But: **(1)** there is no audit-trail viewer anywhere in the UI — the "Comments & Activity" tabs are comments, not PaperTrail, and only two views (`audits/_team`, `pssr_checklist_items/_item`) read `.versions` at all, for one field each; **(2)** the `versions` table has no reason-for-change column, so *why* a GxP record changed is never captured; **(3)** no IP address or user agent is recorded on the version despite §17 claiming "PaperTrail records actor and request context"; **(4)** `whodunnit` is a bare user-id string with no name snapshot, so the trail degrades if a user is renamed or removed; **(5)** the only index is on `[item_type, item_id]` — an audit-trail review by user or by date range will table-scan; **(6)** nothing prevents an application-level or DBA-level delete of a `versions` row. See gaps G1 and G4. |
 | 11.10(e) — coverage holes | *(same requirement, enumerated)* | Models **without** `has_paper_trail` | **Not covered for these** | `AccessControlRule`, `Setting`, `ModuleFlag` (security and configuration changes — Part 11 and Annex 11 care about these *specifically*), `EnvironmentalAspectReview`, `RootCauseAnalysisCause`, `RootCauseAnalysisWhyStep`, `IncidentInvestigationTeamMember`, `NumberSequence`, `AuditDepartment`, `AuditLocation`, `DocumentStandard`, `DocumentClause`. The RCA cause/why-step omissions matter most: the reasoning inside a CAPA's root cause analysis is exactly what an investigator reads, and it is currently unversioned. |
 | 11.10(f) | Use of operational system checks to enforce permitted sequencing of steps and events | Service objects for every state transition (§3, §5.2); `Approvals::Approve` step-position guard; `WorkPermits::Issue` gas-test and gate-pass guards (§11.22); `DocumentVersion::EDITABLE_STATUSES`; `MasterDocumentRegisters::GateForRelease` (§10.4); "no workflow-changing callbacks" rule | **Covered** | Sequencing is enforced in transactional services with explicit guard errors rather than in callbacks or the UI, which is the right architecture for this clause. `Approvals::Approve` refusing anything but the current pending step is a textbook §11.10(f) control. |
 | 11.10(g) | Use of authority checks to ensure only authorized individuals can use the system, sign a record, access the operation or device, or perform the operation at hand | CanCanCan abilities per module (§12); `Approvals::Approve` `SelfApprovalError`; permit-type × approver-level matrix that *refuses* rather than auto-approves when unconfigured (§11.22); `can_download_master_copy` / `can_download_control_copy`; `document_access_level` | **Covered** | Segregation of duties is real: the submitter cannot approve their own item, and the approval chain refuses to proceed when its authority matrix is unconfigured rather than silently degrading. |
@@ -328,6 +359,30 @@ Bring `architecture.md` and the operating/maintenance documentation under the
 app's own controlled-document workflow, or under an equivalent externally
 controlled system, and link deployed releases to their authorising `MocRequest`
 (§11.8).
+
+### G11 — Single-party decisions could not be signed — **CLOSED (2026-08-10)**
+**§11.50, §11.200; predicate §211.84 · was Medium**
+
+`Part11::Sign` could originally only sign an `ApprovalStep`, so a signature was
+reachable only through a multi-party approval chain. That is the right shape for
+a document revision and the wrong one for a material lot release: ICH Q7 §2.2
+gives that decision to the quality unit alone, and a busy receiving day is dozens
+of them, so an approval request per lot with a single step and no second party
+would have been ceremony rather than control.
+
+Option (a) from the original entry was taken: `Part11::Sign.for_decision` signs a
+decision named in `Part11Scoped::DIRECT_DECISIONS` and writes an
+`ElectronicSignature` — polymorphic `signable`, append-only (`update` and
+`destroy` both raise), with the §11.50 declaration frozen as rendered. The same
+verification core serves both entry points, so the two-component rule, the
+15-minute continuous signing period, the lockout on a wrong password and the
+`SignatureAttempt` log are identical whichever path a signature takes.
+
+`material_lot.release`, `material_lot.reject`, `deviation.assess` and
+`production_batch.review` are in that registry. A cascade — the output lot
+leaving quarantine because the batch release was signed — passes `cascade_from:`
+and is not signed twice; the upstream signature is named in the lot's release
+note instead.
 
 ---
 

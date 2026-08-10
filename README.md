@@ -152,6 +152,26 @@ Sample/demo login credentials are printed by the seed tasks — see
     block out of another form, reading the printed sheet as you build,
     signature declarations, publishing and revising. Ends with a worked hot
     work permit and a pre-publish checklist.
+36. [Batch Manufacturing Records (EBMR)](35-batch-manufacturing-records.md) —
+    ICH Q7 §6.4–6.7/§8, 21 CFR 211.184–211.192, Schedule M Part I: the
+    electronic batch record. One **material master** covering raw material
+    through finished product; goods receipt with quarantine and quality-unit
+    lot release; a structured, versioned, **immutable-once-effective Master
+    Batch Record** with a bill of materials, process steps and enforceable
+    in-process limits; batch execution with FEFO dispensing, **lot genealogy**,
+    second-person checks the database itself enforces, blocking limits and
+    yield reconciliation; deviations that name the batch they affected and
+    block its release; quality-unit review and release under 21 CFR Part 11
+    electronic signature; and the printable batch record an inspector asks for
+    by name.
+37. [Recalls & Traceability](36-recalls-and-traceability.md) — ICH Q7 §10.2/§15,
+    21 CFR 117.139, Codex §7, FSSAI (Food Recall) Regulations 2017: the
+    despatch register that answers *who has it*, recalls and market actions
+    whose affected lots are resolved by **walking the genealogy chain** rather
+    than from memory, consignee notification built from despatch records,
+    recovery reconciled against a stated target, and **mock recall exercises**
+    that run the identical procedure and are timed — which is what a GFSI
+    auditor actually asks you to demonstrate.
 
 ## Standards & regulatory mapping
 

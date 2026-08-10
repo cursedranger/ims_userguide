@@ -40,27 +40,44 @@ buried in a gap list.
 
 ### Current overall position, stated plainly
 
-**This application does not implement ICH Q7, HACCP, or HARPC, and no amount of
-configuration will make it do so.** It is not a partial implementation waiting
-to be finished — the central object all three standards regulate does not exist
-in the schema. There is no `Product`, no `Material`, no `Batch`/`Lot`, no
-`Specification`, no `TestResult`, no `Recall`. `NonconformingOutput` — the model
-that comes closest to touching product — holds `item_description` as free text
-and `batch_or_lot_number` as an unvalidated string precisely *because* no
-product master exists to point at (architecture.md §11.16 says so explicitly).
+**As of 2026-08-10 the EBMR module (architecture.md §11.23) exists, and this
+document's central premise has changed.** The object all three standards
+regulate — the thing that is made — is now in the schema: `Material` (raw,
+packaging, intermediate, finished product), `MaterialLot` with quarantine and
+quality-unit release, `MasterBatchRecord`/`MasterBatchRecordVersion` with an
+approved immutable instruction, `ProductionBatch` with its steps, dispensings,
+in-process results and yield reconciliation, and `Deviation` naming the batch it
+affected. Genealogy is a lot-to-lot chain that can be walked in both
+directions, so a mock recall is answerable from the UI. Gaps **P1**, **P7** and
+**P9** below are closed; the rest are not.
 
-What the app does have is the entire **supporting quality system** all three
-standards require *around* that missing core, and it has it to an unusually high
-standard: document control with immutable approved revisions and a Master
-Register, a real CAPA engine with structured RCA, a generic sequential approval
-engine, change control, internal audit programme with frequency expansion,
-competence with frozen assessment scores, calibration and maintenance, supplier
+**What is still absent is the laboratory and the market.** There is no
+`Specification` with numerical acceptance criteria (P2), no `Sample`/
+`TestResult`, no Certificate of Analysis, no OOS investigation, no cleaning or line-clearance *record*
+independent of a batch step (P5), no equipment qualification or process
+validation (P6), no per-material supplier approval (P8), no Product Quality
+Review (P10), no label reconciliation or allergen sequencing (P11). A site
+cannot release product against a specification the system does not hold.
+
+**P4 is now also built** (2026-08-10): recall, market action and timed mock
+recall, with affected lots resolved by walking the genealogy chain. It was
+cheap once P1 existed, which is exactly what the ordering of this list
+predicted.
+
+What the app has always had is the entire **supporting quality system** all
+three standards require around that core, to an unusually high standard:
+document control with immutable approved revisions and a Master Register, a
+real CAPA engine with structured RCA, a generic sequential approval engine,
+change control, internal audit programme with frequency expansion, competence
+with frozen assessment scores, calibration and maintenance, supplier
 evaluation, complaint handling, and per-site isolation.
 
-So the honest summary is: **this app can be the QMS layer that sits above a
-GMP/food-safety execution system, but it is not that execution system.** The
-prioritized list at the end of this document describes what building it would
-mean, and it is a large multi-slice programme of work, not a set of fixes.
+So the honest summary is now: **this app holds the batch record and the quality
+system around it, but not the laboratory that decides whether a batch meets its
+specification.** A site running it today has a defensible manufacturing record
+and an undefensible release-against-specification story, and P2 is the next
+thing worth building. The prioritized list at the end of this document is
+unchanged in ordering; three entries have moved from "missing" to "built".
 
 ### Which of the three applies to a given site
 
@@ -99,11 +116,11 @@ built a compliant-looking system that fails inspection on the signatures.
 |---|---|---|---|---|
 | 1.1–1.3 | Objective, regulatory applicability, scope; where GMP begins in the API process | — | **N/A — procedural** | Defining the API starting material and the point at which GMP applies is a regulatory determination recorded in the site's Quality Manual. It could live as a controlled `Document` (§10), but there is no field anywhere that asserts it. |
 | 2.1 | Quality management principles; a documented quality policy and quality system | `Document`/`DocumentVersion` (§10); Organization Profile (§4.1) | **Covered** | The quality manual and policy are ordinary controlled documents with sequential approval, effective revisions, and controlled distribution. |
-| 2.2 | **Responsibilities of the Quality Unit(s)** — independent of production; releases/rejects materials, intermediates and APIs; reviews batch records; approves specifications, procedures, deviations, changes, suppliers | `Role::KEYS`; `Abilities::*`; `Approvals::Approve` `SelfApprovalError` | **Not covered** | There is **no Quality Unit role**. `Role::KEYS` has 21 roles and none of them is a quality unit / QA release authority; `capa_manager` is used as the "closest existing quality-process-owner fit" by three modules (§11.16, §11.17, §11.18) precisely because no such role exists. The independence Q7 §2.2 demands is structurally supported — the approval engine refuses self-approval and the permit matrix refuses to auto-approve when unconfigured — but there is nothing to *release a batch*, because there is no batch. |
+| 2.2 | **Responsibilities of the Quality Unit(s)** — independent of production; releases/rejects materials, intermediates and APIs; reviews batch records; approves specifications, procedures, deviations, changes, suppliers | **`quality_unit` role; `Users::QualityUnit`; `MaterialLots::Decide`; `ProductionBatches::Review`; `Deviations::Assess`; `MasterBatchRecords::SubmitVersion`** (§11.23) | **Largely covered** | The `quality_unit` role exists and `Users::QualityUnit` is the single place the question "is this person the quality unit" is asked, deliberately *not* as an ability rule — a permission says who may open a screen, §2.2 says who may take responsibility. It gates material lot release/rejection/hold, batch record review and release, deviation assessment and closure, and the independent second signature on a master batch record (which additionally refuses the same person as both reviewer and quality approver). What it does not yet gate is **specification approval**, because there is no `Specification` (gap P2). |
 | 2.3 | Responsibility for production activities | `Department`/`DepartmentMembership` department heads (§4.1) | **Partial** | Departmental accountability exists and drives most ability rules. Production-specific responsibilities (in-process control, yield reconciliation) have no home. |
 | 2.4 | **Internal audits (self inspection)** — scheduled, documented, findings and corrective actions followed up | `AuditProgram`/`AuditProgramEntry` (§6.0); `Audit`/`AuditChecklist` (§6); `Finding`/CAPA (§7) | **Covered** | The strongest single match in this document. A programme with a period, an owner, an approved schedule, per-entry **frequency** that expands into one dated audit per interval, standard/clause tagging, coverage %, and a close guard that refuses while any planned audit is neither opened nor cancelled-with-a-reason. Findings raised from checklist items run the full RCA → CAPA → effectiveness-verification loop. |
 | 2.5 | **Product Quality Review (APQR)** — annual, per product: batch trends, OOS, deviations, changes, stability, returns/complaints/recalls, with a documented conclusion and corrective action | — | **Not covered** | Nothing aggregates by product because there is no product. `ManagementReviewMeeting` (§9) is an organization-level review on a 16-point agenda, not a per-product annual review. This is a genuine, distinct module. See gap **P10**. |
-| 2.6–2.18 | Deviations investigated and documented; quality-critical deviations investigated with conclusions | `Incident` (`incident_kind: quality_incident`) (§11.4); `Finding` (§7); `CapaCase` (§7) | **Partial** | The investigation machinery is real and good — structured fishbone/5-Whys RCA with draft-then-approve, CAPA plans, effectiveness checks. What is missing is the **deviation record itself as a distinct object**: a planned/unplanned deviation raised against a specific batch, step, and specification, with a quality-unit impact assessment on that batch's disposition. Today a deviation is either a `quality_incident` or a `Finding`, neither of which can name the batch it affected. See gap **P9**. |
+| 2.6–2.18 | Deviations investigated and documented; quality-critical deviations investigated with conclusions | **`Deviation`/`Deviations::Assess`/`Deviations::Escalate`** (§11.23); `Finding`/`RootCauseAnalysis`/`CapaCase` (§7) | **Covered** | A deviation is now its own record: planned or unplanned, raised against a batch, step, in-process control or lot, with immediate action, the quality unit's `batch_impact` determination and a `disposition`. The systemic half escalates into the existing findings/RCA/CAPA engine rather than duplicating it, and §2.18's "quality-critical deviations investigated" is a guard — a major or critical deviation cannot be closed until it has been escalated. What a deviation still cannot name is the **specification** it departed from, because there is none (gap **P2**). |
 | 3.1 | Personnel qualifications — adequate education, training, experience; training records kept | `CompetencyRequirement`/`TrainingSession`/`TrainingAttendance`/`AssessmentQuestion`/`AssessmentAttempt` (§11.5) | **Covered** | Evidenced rather than asserted: an attendance register with self check-in and trainer validation, an optional MCQ whose score is frozen at submission, and a certificate that requires validated presence plus a pass. The free-text limitation previously recorded here is **closed** (§11.5.3): `CompetencyRequirement` points at a real `Competency` master, a session declares the competencies it confers, `UserCompetency` records who holds what and until when with evidence or a stated basis, and a `blocking` requirement refuses a role assignment the person is not qualified for. |
 | 3.2 | **Personnel hygiene** — clean clothing, gowning, illness reporting and exclusion from production, restriction of persons with infectious disease or open lesions | `EmployeeMedicalProfile`/`OhcExamination`/`OhcVisit` (§11.19); `Visitor` (§11.21) | **Partial** | Pre-employment and periodic medical examinations, fitness certificates, and a clinic visit log all exist, and the module's confidentiality boundary (no department-scoped read for anyone) is correct. But there is **no fitness-to-work-in-a-production-area determination** — nothing links a medical finding to an exclusion from a specific area, no gowning qualification, no daily illness declaration. `ContractorMedicalClearance` computes a gate-pass status, which is the right *shape* for this and the obvious thing to generalize. See gap **P12**. |
 | 3.3 | Consultants — records of name, address, qualifications, and service provided | `ExternalParty` (`party_type: other`) (§4.1) | **Partial** | An external party can be registered; there is no qualification evidence, no scope-of-service field, and no link from a consultant to the work they signed off. |
@@ -123,17 +140,17 @@ built a compliant-looking system that fails inspection on the signatures.
 |---|---|---|---|---|
 | 6.1 | **Documentation system and specifications** — all documents prepared, reviewed, approved, distributed and controlled; retention periods; specifications for materials, intermediates and APIs | `Document`/`DocumentVersion`/`DocumentDistribution`/`DocumentAcknowledgement`/`DocumentAssessment` (§10); Master Document Register (§10.3/§10.4) | **Partial — strong on control, absent on specifications** | Document control is production-grade: sequential approvals, immutable approved revisions, `file_checksum`, effective/current version, controlled distribution with acknowledgement, Read & Understood MCQ assessments pinned to one revision, a Master Register that gates release, and Control/Master Copy PDFs with watermarks. **But a specification is not a document** — Q7 §6.1 wants numerical acceptance criteria a test result can be compared against programmatically. There is no `Specification` model. See gap **P2**. Also: **no retention period exists anywhere in the schema** (Part 11 gap G2). |
 | 6.2 | **Equipment cleaning and use record** — chronological, per equipment | — | **Not covered** | See §5.2 and gap **P5**. |
-| 6.3 | **Records of raw materials, intermediates, labelling and packaging materials** — supplier, receipt, lot/batch, COA, test results, use | — | **Not covered** | No material master, no goods-receipt record, no COA. See gaps **P1**, **P7**, **P8**. |
-| 6.4 | **Master Production Instructions (Master Batch Record)** — prepared, dated and signed by one person, independently checked/dated/signed by the quality unit; product name, code, complete list of materials with quantities, production location, equipment, detailed instructions, in-process controls with limits, yields with limits, packaging/labelling instructions | `Document`/`DocumentVersion` (§10) as a file only | **Not covered** | An MBR can be *uploaded* as a controlled document today — which is genuinely useful and is how many small sites operate — but it is an opaque `.docx`. Nothing in the schema knows the bill of materials, the process steps, the in-process limits, or the expected yield range, so nothing can be enforced or reconciled against them. See gap **P1**. |
-| 6.5 | **Batch production records** — one per batch, prepared from the current MBR, with dates/times, equipment identity, material lots and quantities, in-process results, signatures of the performer and the checker for critical steps, sampling, deviations, yields | — | **Not covered — this is the single largest absence** | There is no batch record and nothing resembling one. Every other gap in this document is downstream of it. |
+| 6.3 | **Records of raw materials, intermediates, labelling and packaging materials** — supplier, receipt, lot/batch, COA, test results, use | **`Material`; `GoodsReceipt`; `MaterialLot`** (§11.23) | **Partial** | The master, the receipt, the lot and the record of use (every `ProductionBatchMaterial` row) all exist, and a COA can be attached to the lot through `Attachable`. What is missing is **test results as data** — a COA is a file, not numbers compared to a specification, so "does this lot meet its spec" is still a human reading a PDF. See gap **P2**. Per-material supplier approval remains gap **P8**. |
+| 6.4 | **Master Production Instructions (Master Batch Record)** — prepared, dated and signed by one person, independently checked/dated/signed by the quality unit; product name, code, complete list of materials with quantities, production location, equipment, detailed instructions, in-process controls with limits, yields with limits, packaging/labelling instructions | **`MasterBatchRecord`/`MasterBatchRecordVersion`/`MbrMaterial`/`MbrStep`/`MbrControl`** (§11.23) | **Covered** | The instruction is structured data, not an opaque file: a bill of materials with quantities, units validated against the material master and overage; positioned steps with phase, equipment, durations, line-clearance and second-check flags; in-process controls with enforceable numeric limits (a numeric control with no limit at either end is refused by a check constraint); and a batch size with theoretical yield and a percentage range. 211.186(a)'s two signatures are a `review` stage and a `quality_approval` stage, the latter required to contain a quality unit member, both Part 11 electronic signatures. An effective revision is immutable; a new revision deep-copies the old one so a one-line change does not mean retyping forty-nine. |
+| 6.5 | **Batch production records** — one per batch, prepared from the current MBR, with dates/times, equipment identity, material lots and quantities, in-process results, signatures of the performer and the checker for critical steps, sampling, deviations, yields | **`ProductionBatch`/`ProductionBatchStep`/`ProductionBatchMaterial`/`ProductionBatchControl`** (§11.23) | **Covered** | A batch pins the effective MBR revision *and* copies its steps and controls onto itself, so "prepared from the current master" is literal and the batch's own record cannot shift under it. Each step records who performed it, start and end times, equipment, the second-person check (refused when it is the same person — in the service, a validation, and a check constraint), and line clearance. Each dispensing names the lot, the quantity, the dispenser and the witness. Each in-process result is judged against the limit frozen on its own row, so amending the instruction later cannot retroactively move a verdict. Deviations name the batch, the step and the control. Yield is reconciled against the snapshotted theoretical figure. |
 | 6.6 | **Laboratory control records** — sample description and source, test method, raw data, calculations, results against acceptance criteria, analyst and reviewer signatures | `OhcExaminationTest` (§11.19) — *unrelated*, clinical only | **Not covered** | The only structured test result in the app is a clinical one on an employee medical examination, and even there the value is free text. There is no QC lab module. Architecture.md §11.19 records that laboratory/diagnostics integration "was explicitly descoped by the site" — that decision was about the OHC clinic, and must not be read as covering QC. See gap **P2**. |
-| 6.7 | **Batch production record review** by the quality unit before release; deviations investigated and closed first | — | **Not covered** | Depends on §6.5 existing. |
+| 6.7 | **Batch production record review** by the quality unit before release; deviations investigated and closed first | **`ProductionBatches::Review`; `Deviation#blocks_batch_release?`** (§11.23) | **Covered** | `Review.blockers` returns everything standing in the way at once — open steps, missing second-person checks, unrecorded or failed in-process results, unwitnessed critical weighing, a BOM line nothing was dispensed against, undispositioned deviations, and an unexplained out-of-range yield. Release then runs through the generic approval engine, which is what makes it a Part 11 signature, and the blocker list is re-checked inside that transaction so a change between submission and signature cannot slip through. |
 | 7.1 | Materials management: written procedures for receipt, identification, quarantine, storage, handling, sampling, testing, approval and rejection | — | **Not covered** | See gap **P7**. |
 | 7.2 | **Receipt and quarantine** — containers examined for damage/labelling, held under quarantine until sampled/examined/tested and released | — | **Not covered** | |
 | 7.3 | **Sampling and testing of incoming production materials** — at least one identity test per lot; supplier COA may substitute for full testing only where supplier reliability is established at appropriate intervals | `Supplier`/`SupplierEvaluation` (§11.6) | **Not covered** | The supplier record exists; the material-level testing and COA it would attach to does not. |
-| 7.4 | **Storage** — conditions, segregation, FIFO/FEFO, periodic re-examination | `PharmacyStockBatch` (§11.19) as a *pattern* only | **Not covered** | The pharmacy module tracks batch/expiry for clinic medicines and is the only batch-with-expiry logic in the app. It is a first-aid inventory, not a warehouse. |
+| 7.4 | **Storage** — conditions, segregation, FIFO/FEFO, periodic re-examination | **`Material#storage_conditions`; `MaterialLot`** (§11.23) | **Partial** | Storage conditions are on the master, a lot records where it is stored, dispensing offers lots first-expiry-first, and `retest_date` drives periodic re-examination (a lot past its re-test date is refused for dispensing even while released). What is absent is a **warehouse model** — no bin locations, no physical segregation of quarantine from released stock, no stock movement between locations. |
 | 7.5 | **Re-evaluation** — materials re-evaluated to determine continued suitability | — | **Not covered** | |
-| 8.1 | Production operations — materials weighed/measured under appropriate controls, critical weighing witnessed or subject to equivalent control, actual yields compared with expected at designated steps | — | **Not covered** | |
+| 8.1 | Production operations — materials weighed/measured under appropriate controls, critical weighing witnessed or subject to equivalent control, actual yields compared with expected at designated steps | **`ProductionBatches::Dispense`; `ProductionBatches::Complete`** (§11.23) | **Covered** | A BOM line flagged `critical` refuses to dispense without a witness who is not the dispenser, enforced in the service and by a check constraint. Actual yield is compared against the theoretical figure snapshotted from the instruction, and a batch outside the approved percentage range cannot be released without a written justification. |
 | 8.2 | Time limits between process steps where specified | — | **Not covered** | |
 | 8.3 | **In-process sampling and controls** — procedures, sampling plans, results recorded, out-of-specification investigated | — | **Not covered** | This is the pharmaceutical equivalent of a HACCP CCP monitoring record. See gap **P3**. |
 | 8.4 | Blending batches; blending out-of-specification batches to bring them into specification is not acceptable | — | **Not covered** | |
@@ -142,7 +159,7 @@ built a compliant-looking system that fails inspection on the signatures.
 | 9.3 | **Label issuance and control** — access restricted, reconciliation of issued/used/returned labels, obsolete labels destroyed with record, printing devices verified | — | **Not covered** | Label control is a discrete, commonly-cited GMP subsystem with no counterpart here. See gap **P11**. |
 | 9.4 | Packaging and labelling operations — line clearance, verification of correct labels, records | — | **Not covered** | |
 | 10.1 | **Warehousing** — quarantine/release status of stored materials, storage conditions | — | **Not covered** | |
-| 10.2 | **Distribution** — batch traceability, records permitting recall, transport conditions | — | **Not covered** | Traceability is the enabling requirement for §15 recalls. See gap **P4**. |
+| 10.2 | **Distribution** — batch traceability, records permitting recall, transport conditions | **`MaterialLotShipment`** (§11.24); `GoodsReceipt#transport_condition` (§11.23) | **Covered** | Every despatch records the lot, the consignee, the quantity, the date and the paperwork reference, and that register is what a recall's consignee list is built from. Inbound transport condition and arrival temperature are captured at goods receipt. What is not held is outbound transport *conditions in transit* — no shipper data logger integration. |
 | 11.1 | **Laboratory controls** — specifications, sampling plans, test procedures, OOS investigations, out-of-specification results documented and investigated | — | **Not covered** | See gap **P2**. |
 | 11.2 | Testing of intermediates and APIs against specification | — | **Not covered** | |
 | 11.3 | Validation of analytical procedures | — | **Not covered** | |
@@ -168,9 +185,9 @@ built a compliant-looking system that fails inspection on the signatures.
 | 14.3 | **Reworking** — investigated, evaluated, additional testing, impurity profile comparison, batch record entry | `NonconformingOutput#disposition` (§11.16) | **Not covered** | As above. |
 | 14.4 | Recovery of materials and solvents — approved procedures, records, suitability demonstrated | — | **Not covered** | |
 | 14.5 | Returns — identified, quarantined, recorded with name, batch, reason, quantity, disposition | `NonconformingOutput` `return_to_supplier` (§11.16) | **Partial** | Outbound returns to a supplier are a disposition; **inbound customer returns** — the case §14.5 is actually about — have no record. |
-| **15** | **Complaints and recalls** — complaint records with name, address, batch, response and investigation; **written recall procedure**; senior management and quality unit involved; regulatory authorities informed | `Incident` (`incident_kind: customer_complaint`) (§11.4); `Customer`/`CustomerFeedback` (§11.17); `IncidentNotification` (§11.4) | **Partial — complaints yes, recalls no** | A complaint is a real investigated record: an `Incident` with severity, confidentiality, triage, structured investigation, RCA, CAPA and external-notification tracking, cross-referenced from `CustomerFeedback` so a formally investigated complaint is not entered twice. But the complaint **cannot name the batch it concerns**, which is the first thing a complaint investigation asks. And there is **no recall capability at all** — no recall record, no distribution data to trace, no mock-recall exercise, no effectiveness check. See gap **P4**. |
+| **15** | **Complaints and recalls** — complaint records with name, address, batch, response and investigation; **written recall procedure**; senior management and quality unit involved; regulatory authorities informed | `Incident` (`incident_kind: customer_complaint`) (§11.4); `Customer`/`CustomerFeedback` (§11.17); **`Recall`/`Recalls::Trace`** (§11.24) | **Covered** | A complaint is a real investigated record with triage, structured investigation, RCA, CAPA and external-notification tracking — and it can now **name the lot or batch it concerns**, which is the first thing a complaint investigation asks. Recall is built: classification, decision authority, affected lots resolved from genealogy, consignee notification with responses, regulator and public-notification tracking, effectiveness measured against a target, and timed mock exercises. The one thing §15 asks for that is not enforced is the **written recall procedure as a controlled document** — a site writes one today, but nothing requires it to exist before a recall can be run. |
 | 16 | **Contract manufacturers and laboratories** — evaluated before contracting, written agreement defining GMP responsibilities, audited, no subcontracting without approval, changes notified | `Supplier`/`SupplierEvaluation` (§11.6); `ExternalParty` (§4.1) | **Partial** | A supplier carries `approval_status` (`pending/approved/suspended/rejected`), a `risk_rating`, free-text `categories`, and periodic evaluations scored on quality/delivery/service with a `next_review_date` and an opt-in Finding raise on a poor result. It cannot express: **what** the supplier is approved *for* (no material master to scope approval to), a quality agreement with its own review date, a supplier audit as a distinct evaluation type, or a contractor's own sub-tier. See gap **P8**. |
-| 17 | Agents, brokers, traders, distributors, repackers, relabellers — traceability of the original manufacturer, transfer of quality information, COA handling, stability where repackaged | — | **Not covered** | Entirely dependent on P1/P4. |
+| 17 | Agents, brokers, traders, distributors, repackers, relabellers — traceability of the original manufacturer, transfer of quality information, COA handling, stability where repackaged | `MaterialLot`/`MaterialLotShipment` (§11.23, §11.24) | **Partial** | Lot-level traceability in both directions now exists, so the manufacturer of an inbound lot and the consignee of an outbound one are both on record. What is absent is COA *handling* as data (gap **P2**) and any repackaging or relabelling record. |
 | 18 | Specific guidance for APIs manufactured by cell culture / fermentation | — | **N/A unless applicable** | Would be built as extensions to the batch record (P1) and environmental monitoring (P13), not as a separate module. |
 | 19 | APIs for use in clinical trials | — | **N/A unless applicable** | |
 
@@ -237,7 +254,7 @@ HACCP plan means anything, and most food-safety findings are GHP findings.
 | 117.130 | **Hazard analysis** — identify known or reasonably foreseeable biological, chemical (including radiological and food allergen) and physical hazards; evaluate severity of illness/injury and probability of occurrence; written, whether or not any hazard requires a preventive control | `HazopStudy`/`HazopDeviation`; `RiskMatrixLevel` (§11.14, §11.2) | **Not covered — engine exists** | Same position as Codex Principle 1. HARPC's severity × probability evaluation is exactly the `RiskMatrixLevel.for_axis` two-axis scoring already used by `RiskOpportunity`, `EnvironmentalAspect` and `HazopDeviation`. |
 | 117.135 | **Preventive controls** — process, food allergen, sanitation, supply-chain, recall plan, and other controls, with parameters and values, written and subject to management components | — | **Not covered** | HARPC's four named control categories are broader than HACCP's CCPs. **Allergen controls and sanitation controls in particular have no home in this app at all.** See gaps **P3**, **P5**, **P11**. |
 | 117.136 / 117.137 | Circumstances in which a preventive control is not required; provision of written assurances from the customer or another entity | — | **Not covered** | A written-assurance record with an expiry and a responsible customer entity. `Customer` (§11.17) exists as an identity to hang it on. |
-| 117.139 | **Recall plan** — written; procedures for direct consignee notification, public notification, effectiveness checks, and appropriate disposition of the recalled food | — | **Not covered** | Mandatory whenever any hazard requires a preventive control. See gap **P4**. |
+| 117.139 | **Recall plan** — written; procedures for direct consignee notification, public notification, effectiveness checks, and appropriate disposition of the recalled food | **`Recall`/`RecallNotification`/`RecallItem`** (§11.24) | **Largely covered** | Direct consignee notification is built from despatch records with responses recorded; public notification and regulator notification are tracked; effectiveness is measured against a stated target and closure is refused short of it without corrective actions; disposition is recorded per affected lot. The **written plan itself** is a controlled document the site authors — the module executes a recall and does not require the procedure to be registered first. |
 | 117.140 | **Preventive control management components** — monitoring, corrective actions and corrections, and verification, as appropriate to the control | — | **Not covered** | |
 | 117.145 | **Monitoring** — written procedures, performed as appropriate, records with actual values/observations | — | **Not covered** | See gap **P3**. |
 | 117.150 | **Corrective actions and corrections** — identify and correct the problem, reduce recurrence, evaluate affected food for safety, prevent adulterated food entering commerce; documented | `Finding`/`CapaPlan`/`CapaAction`/`CapaEffectivenessCheck` (§7); `NonconformingOutput` (§11.16) | **Partial** | The strongest partial in Subpart C. The CAPA machinery — structured RCA, plan approval, actions, effectiveness verification, segregation of duties on verification — genuinely satisfies "reduce the likelihood of recurrence". "Evaluate all affected food" cannot be satisfied without P1 and P4. |
@@ -268,15 +285,34 @@ HACCP plan means anything, and most food-safety findings are GHP findings.
 
 ## What we are missing — prioritized
 
-Ordered by what blocks what, not by effort. **P1 blocks most of the rest**, and
-nothing below it should be started before it. The Standard column marks which of
-the three frameworks each gap belongs to.
+Ordered by what blocks what, not by effort. **P1 blocked most of the rest, and
+it is now built** (architecture.md §11.23) — as are P7 and P9, which are marked
+**BUILT** below and kept in place rather than deleted, because the reasoning
+that motivated them is what the implementation was checked against. Of what
+remains, **P2 is now the blocking one**: nothing else in the laboratory,
+release-to-market or product-review half can be built honestly on top of a
+system that cannot compare a result to a limit. The Standard column marks which
+of the three frameworks each gap belongs to.
 
-### P1 — Product, material, and batch identity
+### P1 — Product, material, and batch identity — **BUILT (2026-08-10)**
 **ICH Q7 §6.3–6.7, §8; Codex Steps 2/4; 21 CFR 117.305, Subpart G · Blocking, all three**
 
-The application has no object representing a thing that is made, received, or
-shipped. Everything else in this document is downstream of that.
+Built as architecture.md §11.23. Kept here with the original requirements so
+the implementation can be read against what was actually asked for.
+
+Every bullet below is delivered. Two decisions worth recording: the "material
+master" and a separate product master were collapsed into **one `Material` with
+a `material_type`**, because a finished product of one batch is an input to the
+next and two masters would break genealogy exactly where a recall needs to
+follow it; and the process route/step model became `MbrStep` on the instruction
+plus `ProductionBatchStep` copied onto each batch, rather than one shared
+model, so a batch's own record cannot shift when the instruction is revised.
+The `NonconformingOutput`/`Incident` retrofit is **not** done — those two still
+hold free-text batch numbers, and pointing them at `MaterialLot` and
+`ProductionBatch` is a small follow-up.
+
+The application had no object representing a thing that is made, received, or
+shipped. Everything else in this document was downstream of that.
 
 - A **material master** (raw material, packaging material, intermediate,
   finished product) with a specification reference, hazard attributes
@@ -344,7 +380,26 @@ The engine exists and is pointed at the wrong domain.
   be **mandatory, not opt-in**, and must also place the affected production on
   hold.
 
-### P4 — Recall, traceability, and market action
+### P4 — Recall, traceability, and market action — **BUILT (2026-08-10)**
+
+Built as architecture.md §11.24 (`MaterialLotShipment`, `Recall`, `RecallItem`,
+`RecallNotification`, `Recalls::Trace`). Delivered: the market-action record
+with classification and decision authority, affected lots resolved from P1
+genealogy by a breadth-first walk that survives a rework loop, consignee
+notification built from despatch records with responses, effectiveness checked
+against a stated target with corrective actions required when it falls short,
+disposition of returned product, regulator and public-notification tracking,
+**mock recall exercises with a measured trace time**, and forward and backward
+traceability.
+
+**Not** built: a recall plan as a controlled document with mandatory
+acknowledgement — a site writes that as an ordinary controlled document today,
+which works, but the module does not require one to exist before a recall can be
+run.
+
+The original entry follows.
+
+### P4 (original) — Recall, traceability, and market action
 **ICH Q7 §10.2, §15; Codex §7; 21 CFR 117.139 · Blocking, all three**
 
 There is no recall capability of any kind, and HARPC makes a written recall plan
@@ -398,7 +453,18 @@ The highest-frequency finding area in food audits, and there is nothing here.
   and should not be conflated, but both are missing and both are mostly
   documentation.
 
-### P7 — Materials management: receipt, quarantine, release, storage
+### P7 — Materials management: receipt, quarantine, release, storage — **BUILT (2026-08-10)**
+
+Built as architecture.md §11.23 (`GoodsReceipt`, `MaterialLot`,
+`MaterialLots::Decide`, `MaterialLots::Consume`). Quarantine-by-default driven
+by the material master, quality-unit-only release, FEFO issue, expiry and
+re-test enforcement at the moment material moves, and a row-locked balance.
+**Not** built: warehouse locations and physical segregation, and stock
+movements between them.
+
+The original entry follows.
+
+### P7 (original) — Materials management: receipt, quarantine, release, storage
 **ICH Q7 §7, §10.1; Codex §7; 21 CFR 117.80, 117.93 · High, all three**
 
 - Goods receipt against a purchase reference, with container examination.
@@ -433,11 +499,17 @@ nothing.
 - **Quality/food-safety agreements** with their own review dates, and
   notification requirements for supplier-side changes.
 
-### P9 — Deviation as a first-class record, and quality-unit disposition
+### P9 — Deviation as a first-class record, and quality-unit disposition — **BUILT (2026-08-10)**
 **ICH Q7 §2.16–2.18, §6.7; Codex Principle 5; 21 CFR 117.150 · High, all three**
 
-A deviation today is either a `quality_incident` `Incident` or a `Finding`.
-Neither can name the batch it affected, and neither carries a batch-impact
+Built as architecture.md §11.23 (`Deviation`, `Deviations::Assess`,
+`Deviations::Escalate`, `ProductionBatches::Review.hold`). All three bullets
+below are delivered, including the batch hold exercised independently of the
+deviation's own closure. The one bullet **not** delivered is the specification
+a deviation departs from, which needs P2.
+
+A deviation used to be either a `quality_incident` `Incident` or a `Finding`.
+Neither could name the batch it affected, and neither carried a batch-impact
 determination.
 
 - `Deviation`: planned/unplanned, the batch/step/specification it departs from,
@@ -568,6 +640,13 @@ genuinely expensive to rebuild:
 | Regulatory obligation register with periodic evaluation | `ComplianceObligation`/`ComplianceEvaluation` (§11.3) |
 | Sequential approval with segregation of duties | `Approvals::Submit`/`Approve` with `SelfApprovalError` and step-position guard (§5.2) |
 | Reference numbering, site isolation, notifications, comments, attachments | `ReferenceNumberService`, `SiteScopable::REGISTRY`, `Notifications::Create`, `Commentable`, `Attachable` |
+| Material, lot and batch identity with two-way genealogy | `Material`, `MaterialLot`, `GoodsReceipt`, `ProductionBatch` (§11.23) |
+| Recall, market action and timed mock recall over genealogy | `Recall`/`RecallItem`/`RecallNotification`/`Recalls::Trace` (§11.24) |
+| Forward traceability — which lot went to which consignee | `MaterialLotShipment` (§11.24) |
+| Structured, approved, immutable manufacturing instruction | `MasterBatchRecord`/`MasterBatchRecordVersion` with `MbrMaterial`/`MbrStep`/`MbrControl` (§11.23) |
+| Executed batch record with second-person checks and enforced in-process limits | `ProductionBatchStep`/`ProductionBatchControl` (§11.23) |
+| Quality unit as a distinct authority for release decisions | `quality_unit` role + `Users::QualityUnit` (§11.23) |
+| Batch-linked deviation with quality-unit batch impact and disposition | `Deviation` (§11.23) |
 
 ---
 
