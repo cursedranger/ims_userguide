@@ -172,6 +172,15 @@ Sample/demo login credentials are printed by the seed tasks — see
     recovery reconciled against a stated target, and **mock recall exercises**
     that run the identical procedure and are timed — which is what a GFSI
     auditor actually asks you to demonstrate.
+38. [Designing a Statutory Form](37-designing-a-statutory-form.md) — Factories
+    Act §112 and 29 CFR 1904: the registers and returns an inspector asks for,
+    printed in **your state's** prescribed format. The Act prescribes almost
+    none of its own forms — the state Rules do — so the format is data you
+    design in the app: pick the register it draws from, tick and label the
+    columns your form has, print it, then mark it **verified** once you have
+    checked it against the published Rules. Explains why no Indian state ships
+    pre-filled, how to bulk-load many jurisdictions, and states plainly which
+    forms cannot yet be produced and why.
 
 ## Standards & regulatory mapping
 

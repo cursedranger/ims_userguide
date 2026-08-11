@@ -1,6 +1,6 @@
 # Factories Act 1948 & OSHA — Occupational Safety Statutory Mapping
 
-**Last reviewed: 2026-08-06 — update this alongside any new module.**
+**Last reviewed: 2026-08-11 — update this alongside any new module.**
 
 ## Scope and how to read this document
 
@@ -37,10 +37,14 @@ statutory periodic medical examinations, first aid registers, contractor medical
 clearance with gate-pass enforcement, behaviour-based safety, worker
 participation, and safety committees.
 
-What is missing is mostly **the clerical layer a labour inspector opens first**:
-the prescribed registers and returns, the working-hours and leave records, the
-welfare-facility evidence, and — the one substantive safety gap — **exposure
-monitoring against permissible limits and a PPE programme**.
+What is missing is now the **prescribed formats** rather than the underlying
+records: the state-prescribed registers and returns (gap S8), and the
+working-hours and leave records (gap S7). Exposure monitoring against
+permissible limits was the one substantive safety gap and is **closed**
+(§11.7.4); the recurring welfare and housekeeping inspection is **closed**
+(§11.25); and the **PPE programme with respirator fit testing** is **closed**
+(§11.26). What remains is clerical: prescribed formats (S8), working hours
+(S7), and the smaller registers in S4, S6, S9 and S10.
 
 ### How to read a status here, and what software can and cannot do
 
@@ -81,15 +85,15 @@ deliberately not asserted below; registers are named by what they contain.
 
 | § | Requirement | Application module(s) | Status | Notes |
 |---|---|---|---|---|
-| 11 | **Cleanliness** — factory kept clean and free from effluvia; floors cleaned, whitewashing/painting at prescribed intervals with a record of the dates | — | **Not covered** | There is no facility sanitation or housekeeping record anywhere in the app, and §11(2) explicitly requires the dates of whitewashing to be **entered in a prescribed register**. This is the same absence the food-safety mapping records as gap P5. See gap **S3**. |
+| 11 | **Cleanliness** — factory kept clean and free from effluvia; floors cleaned, whitewashing/painting at prescribed intervals with a record of the dates | `WorkplaceInspectionRound`/`WorkplaceInspection` (§11.25) | **Covered** | Housekeeping is a scheduled round per area with an owner, a frequency and an overdue report; an area never walked counts as overdue. §11(2)'s whitewashing register is a standard question carrying the statutory reference and a **required note** for the date, held against an immutable form version. The facility *sanitation-schedule* half that food safety asks for (gap P5) is still narrower than this. |
 | 12 | Disposal of wastes and effluents | `EnvironmentalAspect` (§11.9); `ComplianceObligation`/`ComplianceEvaluation` (§11.3) | **Partial** | Waste streams register as environmental aspects with scored significance, control measures and periodic review, and the consent conditions register as compliance obligations with an evaluation frequency and evidence. There is no effluent monitoring result record. |
-| 13 | Ventilation and temperature | — | **Not covered** | No workplace environmental condition monitoring. See gap **S2**. |
+| 13 | Ventilation and temperature | `ExposureLimit`/`ExposureMeasurement` (§11.7.4); `MonitoredCondition` (§11.7.2) | **Partial** | Airborne agents can now be sampled against a permissible limit with an automatic verdict and a mandatory Finding on exceedance. Temperature and general ventilation as *comfort* parameters are `MonitoredCondition`'s territory and need a condition configuring per area. |
 | 14 | **Dust and fume** — effective measures where dust or fume is likely to be injurious; exhaust appliances near the point of origin | `EnvironmentalAspect` (§11.9); `SurveillanceProgram`/`HazardExposure` (§11.19 Slice 6) | **Partial** | The *people* side is genuinely covered: `EmployeeMedicalProfile::HAZARD_EXPOSURE_CATEGORIES` includes `dust` and `chemical`, workers are enrolled in a surveillance programme by recording a dated exposure, each exposure runs its own examination clock, and test-result trends are visible across successive examinations. The *atmosphere* side — measuring the dust concentration and comparing it to a limit — is absent. |
-| 15 | Artificial humidification | — | **Not covered** | Textile-specific; needs the same workplace monitoring gap **S2**. |
+| 15 | Artificial humidification | `MonitoredCondition`/`ConditionReading` (§11.7.2) | **Partial** | Humidity is configurable as a monitored condition with a limit band, an action band and a mandatory Finding on breach. The textile-specific prescribed register format is not rendered — gap **S8**. |
 | 16 | Overcrowding — minimum cubic space per worker | — | **N/A — physical** | A one-time design and licensing determination, not an ongoing record. |
-| 17 | Lighting — sufficient and suitable lighting, prevention of glare and shadows | — | **Not covered** | Would be an inspection-round item under gap **S3**. |
-| 18 | **Drinking water** — suitable points, legibly marked, cool water where over 250 workers | — | **Not covered** | Potability testing and point inspection have no record. |
-| 19 | Latrines and urinals — prescribed number, separate for men and women, maintained clean and sanitary | — | **Not covered** | Sanitary facility inspection; gap **S3**. |
+| 17 | Lighting — sufficient and suitable lighting, prevention of glare and shadows | `WorkplaceInspection` (§11.25) | **Covered** | Two standard questions — general lighting and glare, and emergency/escape-route lighting, the latter **critical** so a No raises a nonconformity automatically. |
+| 18 | **Drinking water** — suitable points, legibly marked, cool water where over 250 workers | `WorkplaceInspection` (§11.25) | **Covered** | Points, marking and separation from washing areas are standard questions; potability testing is a second question with a **required note** so the last result and date are recorded rather than asserted. |
+| 19 | Latrines and urinals — prescribed number, separate for men and women, maintained clean and sanitary | `WorkplaceInspection` (§11.25) | **Covered** | A standard question covering number, separation, cleanliness, lighting and ventilation, walked on the round's own frequency. |
 | 20 | Spittoons | — | **N/A — physical** | |
 
 ### Chapter IV — Safety (§§21–41)
@@ -101,13 +105,13 @@ deliberately not asserted below; registers are named by what they contain.
 | 23 | Employment of young persons on dangerous machines — only after training and under supervision | `TrainingAttendance` (§11.5) | **Partial** | Training is evidenced with validated presence and a frozen assessment score. There is no age or young-person attribute on `User`, so the prohibition cannot be enforced. See gap **S4**. |
 | 24 | Striking gear and devices for cutting off power | `WorkPermit` LOTOTO checklist template (§11.22) | **Partial** | Seeded checklist templates include LOTOTO; the isolation itself is a permit checklist item whose `critical` flag blocks issue when answered "No". No energy-isolation point register. |
 | 25–27 | Self-acting machines; casing of new machinery; cotton openers | — | **N/A — physical** | |
-| 28 | **Hoists and lifts** — of good construction, thoroughly examined **at least once every six months** by a competent person, with a **register of examination** | `Asset`/`MaintenanceRecord` (§11.7) | **Partial** | `Asset` carries a `maintenance_frequency_months`, and `MaintenanceRecord` a due date, completed date, provider, result and evidence, with an overdue report and a daily reminder job. That is a workable statutory examination register *in substance*. What it lacks is the competent-person identity and certification, the prescribed register format, and any distinction between a maintenance visit and a statutory examination. See gap **S1**. |
-| 29 | **Lifting machines, chains, ropes and lifting tackles** — thoroughly examined at prescribed intervals by a competent person, with a register | `Asset`/`MaintenanceRecord` (§11.7) | **Partial** | As §28. Chains and slings are typically not individually registered as `Asset` rows today, and there is no safe-working-load attribute. |
+| 28 | **Hoists and lifts** — of good construction, thoroughly examined **at least once every six months** by a competent person, with a **register of examination** | `Asset`/`MaintenanceRecord` (§11.7.3); `WorkPermits::Submit` (§11.22) | **Covered** | `MaintenanceRecord#kind` distinguishes the statutory examination from a maintenance visit and carries the competent person's name, qualification and employer, the statutory reference, the acceptance criteria, the certificate number and a `fit`/`fit_with_conditions`/`unfit` verdict. `Asset#statutory_examination_state` is derived nightly, treats never-examined as overdue, and — the part that matters — **refuses any work permit raised against the equipment** once it lapses. `ReportsController#statutory_examinations_due` is the register, with a due/overdue reminder job. The one thing still missing is the *state-prescribed register format*, which is gap **S8**, not this row. |
+| 29 | **Lifting machines, chains, ropes and lifting tackles** — thoroughly examined at prescribed intervals by a competent person, with a register | `Asset`/`MaintenanceRecord` (§11.7.3) | **Covered** | As §28, and `Asset#safe_working_load` is now a first-class attribute with its unit rather than free text. Note a practical caveat that is a data-entry matter rather than a software gap: chains and slings have to be registered as individual `Asset` rows to be examined individually. |
 | 30 | Revolving machinery — maximum safe working peripheral speed notified | — | **Not covered** | |
-| 31 | **Pressure plant** — safe working pressure, examined at prescribed intervals, register maintained | `Asset`/`MaintenanceRecord` (§11.7); `PssrReview` (§11.13) | **Partial** | As §28. `PssrReview`'s standard checklist domains explicitly include "mechanical integrity" and "safety/relief devices & interlocks", which is the right structure for a pressure-vessel examination but is scoped to a startup event, not a recurring statutory examination. |
+| 31 | **Pressure plant** — safe working pressure, examined at prescribed intervals, register maintained | `Asset`/`MaintenanceRecord` (§11.7.3); `PssrReview` (§11.13) | **Covered** | As §28, with `Asset#design_pressure` now a first-class attribute. The recurring statutory examination this row asks for is what §11.7.3 added; `PssrReview`'s "mechanical integrity" and "safety/relief devices & interlocks" checklist domains remain the *startup-event* counterpart, and the two are deliberately separate records. |
 | 32 | Floors, stairs and means of access | `BbsObservation` (§11.15) | **Partial** | Condition findings only. |
 | 33–34 | Pits, sumps, openings in floors; excessive weights | `WorkPermit` (§11.22) | **Partial** | Openings are typically a permit condition. Manual handling limits are not modelled. |
-| 35 | Protection of eyes | — | **Not covered** | Part of the PPE gap **S5**. |
+| 35 | Protection of eyes | `PpeHazardAssessment`/`PpeItem`/`PpeIssue` (§11.26) | **Covered** | Eye and face hazards are assessed and certified per workplace, the goggles selected carry their conformity standard, and the issue register records who received which size. The screen itself is physical; the evidence that suitable protection was selected and provided is not. |
 | 36 / 36A | **Precautions against dangerous fumes and gases** — nobody to enter a confined space unless it is certified safe, with a certificate in writing by a competent person; portable electric light restrictions | **`WorkPermit`** confined space type + `WorkPermitGasTest` (§11.22) | **Covered** | This is one of the strongest matches in the document. A confined space permit carries the confined-space type (with its own conditional checklist rows and its own approval levels — confined space inert requires all three approver levels every time), the crew, the stand-by person, and a gas test log where **O₂ and %LEL readings are validated against template `min_value`/`max_value` and `WorkPermits::RecordGasTest` refuses a reading outside the configured range without an explicit override note**. An unacceptable reading on an active permit suspends it and notifies the issuer and field operator. The permit itself is the §36(3) certificate in writing, signed by the issuer and every required approver. |
 | 37 | **Explosive or inflammable dust or gas** — precautions before hot work on any plant that has contained such substances | **`WorkPermit`** hot work type + gas test + fire watch (§11.22) | **Covered** | Hot work requires Approver I every time, escalating to Approver II and III by shift; the fire watch is a `requires_fire_watch` type condition; closure requires four distinct signatures **and** `WorkPermit#fire_watch_release_at` (`fire_watch_completed_at + 30.minutes`) is a computed guard, not a suggestion. |
 | 38 | **Precautions in case of fire** — safe means of escape, fire-fighting equipment, and workers **familiar with the means of escape and trained in the routine to be followed** | `EmergencyScenario`/`EmergencyResponseTeamMember`/`EmergencyDrill`/`EmergencyPlanReview` (§11.20) | **Covered** | Identified emergency situations with a scored risk rating, the planned response, required resources, external agencies and a named response team; announced and unannounced drills with response and evacuation timings, effectiveness evaluation and an opt-in Finding raise; and a periodic/post-drill/post-emergency plan review loop that parks a plan at `under_review` until it is actually revised. A drill due reminder job runs daily. |
@@ -128,7 +132,7 @@ management regime, and it is where this app is strongest.
 | 41C(b) | **Appoint persons with qualifications and experience in handling hazardous substances**, competent to supervise the process | `Competency`/`CompetencyRequirement`/`UserCompetency` (§11.5.3); `TrainingAttendance` (§11.5); `Role` | **Covered** | Competence is evidenced *and* now enforced: a `CompetencyRequirement` set to `blocking` refuses the role assignment while the person does not hold the competency, validated on `UserRole` so RailsAdmin cannot bypass it. `UserCompetency` is the appointment record — who, what, from when, until when, granted by whom, on what evidence. The statutory **notice to the Chief Inspector** naming the appointed person still has no field; see gap **S4**. |
 | 41C(c) | **Medical examination of every worker before employment and thereafter at intervals not exceeding twelve months**, with records maintained | `OhcExamination` (`pre_employment`/`periodic`/`surveillance`); `OhcExaminationRequirement` frequency master; `Ohc::ExaminationDueReminderJob`; `Ohc::MedicalExaminationRegisterPdf` (§11.19 Slice 9) | **Covered** | The single cleanest statutory match in this document. A configurable frequency-by-hazard-category master drives each employee's next due date; a two-tier reminder job notifies the employee then escalates to the OHC ahead of the date and again once overdue; and the printable register calls out overdue and never-examined rows separately. Fitness certificates are issued from the examination. |
 | 41D–41E | Central Government inquiry committee; emergency standards | — | **N/A — external** | |
-| 41F | **Permissible limits of exposure of chemical and toxic substances** — as specified in the Second Schedule | — | **Not covered — the substantive safety gap** | Nothing in the app holds an occupational exposure limit or a workplace measurement to compare against one. The people-side surveillance is built; the atmosphere-side monitoring is not. See gap **S2**. |
+| 41F | **Permissible limits of exposure of chemical and toxic substances** — as specified in the Second Schedule | `ExposureLimit`/`ExposureMeasurement` (§11.7.4); `SurveillanceProgram`/`HazardExposure` (§11.19) | **Covered** | The Second Schedule values are a configurable register with their citations, and a workplace sample — personal or area — is judged against the limit in force and stores the verdict alongside it. An exceedance raises a major NC without asking, and a personal sample at or above the action level enrols the worker in their own site's surveillance programme. Both halves of the duty now exist: who is exposed, and how much. |
 | 41G | **Workers' participation in safety management** — a Safety Committee with equal representation of workers and management, meeting as prescribed | `SafetyMeeting` (`safety_committee` type) / `SafetyMeetingParticipant` / `SafetyMeetingActionItem` (§11.11); `WorkerParticipationRecord` (§11.10) | **Covered** | `SafetyMeeting#meeting_type` includes `safety_committee` specifically; participants are internal users or external names with a `chair`/`attendee` role and an attendance status; action items carry an assignee, due date and status; scheduling sends a real notification and email to every internal participant. `WorkerParticipationRecord` is the separate log of individual participation events — hazard reports, suggestions, safety-committee input, risk-assessment involvement — where any signed-in user may submit and **always retains read access to their own submission's progress regardless of department**, which is what makes the consultation real rather than nominal. The composition rule (equal worker/management representation) is not validated. |
 | 41H | **Right of workers to warn about imminent danger** — workers may bring it to the notice of the occupier, who must take remedial action and inform the Inspector | `WorkerParticipationRecord` (`hazard_report`) (§11.10); `BbsAction` stop-work (§11.15 Slice 4); `WorkPermits::Suspend` (§11.22) | **Covered** | Three independent channels, and the stop-work one has teeth: `BbsAction` carries `stop_work` with declared/lifted timestamps and actors, `DeclareStopWork` notifies the programme owner, and the observation's show page renders a red banner while any stop-work is active. `WorkPermits::Suspend` is deliberately **authorised more widely than approval is** — any signatory plus `hsef_officer` — because the guideline lets any employee with permit knowledge stop a job. A `hazard_report` can raise a Finding for formal RCA/CAPA. The statutory *notification to the Inspector* is not tracked. |
 
@@ -250,8 +254,8 @@ for the PSSR module.
 | 1910.95 | **Occupational noise exposure** — monitoring, a hearing conservation programme where exposure equals or exceeds an 8-hour TWA of 85 dB, **audiometric testing (baseline and annual)**, hearing protectors, training, and recordkeeping | `EmployeeMedicalProfile` (`noise` hazard category); `SurveillanceProgram`/`HazardExposure`; `OhcExaminationTest` (`audiometry`) (§11.19) | **Partial — the people half only** | A noise surveillance programme with its own examination frequency and required test set, workers enrolled by dated exposure, annual audiometry, and test-result trends across successive examinations is genuinely a hearing conservation programme's clinical half. What is missing is the **noise dosimetry** — the exposure measurement that determines who must be enrolled — and the standard threshold shift determination. See gap **S2**. |
 | 1910.119 | Process Safety Management | *(see the dedicated table above)* | **Covered** | |
 | 1910.120 | HAZWOPER — emergency response to hazardous substance releases | `EmergencyScenario`/`EmergencyDrill` (§11.20); `IncidentChemicalRelease` (§11.4.1) | **Partial** | Response planning and drills are covered; the release itself is recorded with the chemical and quantity released and drives PSE tiering. HAZWOPER's tiered responder training levels are not modelled. |
-| 1910.132 | **PPE — hazard assessment, written certification of that assessment, selection, training, and certification of training** | — | **Not covered** | 1910.132(d)(2) requires a **written certification** of the workplace hazard assessment identifying the workplace, the person certifying, the date, and identifying the document as a certification. There is no PPE module at all — no PPE catalogue, no issue record, no hazard assessment certification, and no inspection. `BbsAction#control_hierarchy` includes `ppe` as one of the five hierarchy levels, which is the only mention of PPE anywhere in the schema. See gap **S5**. |
-| 1910.134 | **Respiratory protection** — a written programme, **medical evaluation before fit testing or use**, fit testing initially and annually, training, and cartridge change schedules | `EmployeeMedicalProfile`/`OhcExamination` (§11.19) | **Partial** | The medical evaluation half is well served — a pre-employment and periodic examination with structured tests including spirometry and a fitness verdict, which is exactly what a respirator medical evaluation needs. **Fit testing has no record**, and it is the single most commonly cited element of this standard. Fit test records are the clearest, cheapest addition on this list: a dated record per person per respirator make/model/size with a pass/fail and an annual clock, reusing the `ContractorMedicalClearance` expiry-and-reminder shape verbatim. See gap **S5**. |
+| 1910.132 | **PPE — hazard assessment, written certification of that assessment, selection, training, and certification of training** | `PpeHazardAssessment`/`PpeItem`/`PpeIssue`/`PpeInspection` (§11.26); `TrainingSession` (§11.5) | **Covered** | (d)(2)'s four required fields — workplace evaluated, person certifying, date, and identification as a certification — are each a column, with a check constraint refusing a certified row missing any of them. Selection is recorded per hazard against a catalogue carrying conformity standards, and a hazard with no equipment selected against it is flagged rather than hidden. Certifying supersedes the previous assessment for that workplace and fixes the record. PPE training is an ordinary training session. |
+| 1910.134 | **Respiratory protection** — a written programme, **medical evaluation before fit testing or use**, fit testing initially and annually, training, and cartridge change schedules | `RespiratorFitTest`/`PpeIssue` (§11.26); `EmployeeMedicalProfile`/`OhcExamination` (§11.19) | **Covered** | The medical evaluation half was already well served. **Fit testing is now built** exactly as this row proposed — a dated record per person per make/model/size with a pass/fail and an annual clock, reusing `ContractorMedicalClearance`'s expiry-and-reminder shape verbatim. Two things are enforced rather than trusted: (f)(7)'s fit-factor minimum on a quantitative pass, and withdrawal of the respirator on a failed or revoked test. Issuing a respirator to somebody with no valid fit test is flagged at the moment of issue. Cartridge change schedules are not modelled. |
 | 1910.146 | **Permit-required confined spaces** — a written programme, a space inventory and signage, entry permits with atmospheric testing, attendants, entry supervisors, rescue services, and permit cancellation and retention for one year | **`WorkPermit`** confined space types + `WorkPermitGasTest` + stand-by person + rescue plan checklists (§11.22) | **Covered — with one real gap** | The entry permit is fully modelled: the confined space and confined-space-inert types, a stand-by person as a named `WorkPermitWorker` role, gas tests validated against configured O₂ and %LEL ranges that refuse an out-of-range reading without an explicit override note, seeded rescue plan check sheets, suspension on an unacceptable reading, and a cancellation reason code vocabulary (`emergency_declared`, `incident_at_work_area`, `permit_conditions_violated`, `other`) so the register can answer "how many permits were cancelled for a violation this quarter" without reading free text. **The gap is the space inventory** — 1910.146 requires the employer to identify and evaluate permit spaces; there is no register of confined spaces as such. `Asset` or `Location` is the natural home. |
 | 1910.147 | **Lockout/Tagout** — energy control procedures per machine, annual periodic inspection by an authorized employee with a certification identifying the machine, the date, the employees included and the inspector, and training | `WorkPermit` LOTOTO checklist template (§11.22) | **Partial** | LOTOTO is one of the seeded check sheets and its `critical` items block permit issue. What is missing is the **machine-specific energy control procedure** as a record and the **annual periodic inspection certification**, which is what an inspector asks for. |
 | 1910.151 | Medical services and first aid; eyewash and safety showers | `FirstAidCase`/`FirstAidKit`/`FirstAidKitInspection`; `OhcVisit` (§11.19) | **Covered** | Kit register with periodic inspections, overdue report and daily reminder; case register with response time, ambulance and hospital referral. Eyewash and safety shower inspection would be a new `FirstAidKit`-shaped register. |
@@ -263,7 +267,7 @@ for the PSSR module.
 | 1910.1020 | **Access to employee exposure and medical records** — retained for the duration of employment plus 30 years, with employee access on request | `EmployeeMedicalProfile`/`OhcExamination`/`HazardExposure` (§11.19) | **Partial** | Employee access to their own records is enforced by the ability rules, and the OHC module's confidentiality boundary is the strictest in the app. **The 30-year retention is not enforceable** — there is no retention period concept anywhere in the schema, and 44 controllers expose `destroy`. This is Part 11 gap G2 surfacing in an OSHA context. |
 | 1910.1030 | Bloodborne pathogens — exposure control plan, hepatitis B vaccination offer and declination, post-exposure evaluation, sharps injury log | `OhcVaccination`; `FirstAidCase`; `IncidentPerson` (§11.19, §11.4) | **Partial** | Vaccination tracking with batch, expiry and booster compliance genuinely covers the hepatitis B offer; a needlestick is recordable as a first aid case or an incident. The **declination record** and a distinct **sharps injury log** do not exist. |
 | 1910.1200 | **Hazard Communication** — a written programme, labels, **safety data sheets readily accessible**, and employee training on the hazards of chemicals in their work area | `Chemical` master; `TrainingSession` (§11.5) | **Not covered** | `Chemical` holds `name`, `cas_number` and `active`. **There is no SDS holding, no GHS classification, no hazard or precautionary statements, no chemical inventory by location, and no label management.** Training can be evidenced generically. HazCom is consistently among the most-cited OSHA standards, and this is the largest single OSHA gap in the app. See gap **S6**. |
-| 1910.1000 & Subpart Z substance-specific standards | **Permissible exposure limits**; exposure monitoring, medical surveillance and recordkeeping for specific substances | `SurveillanceProgram`/`HazardExposure`/`OhcExamination` (§11.19) | **Partial** | Same position as Factories Act §41F: the medical surveillance half is built and the exposure measurement half is absent. See gap **S2**. |
+| 1910.1000 & Subpart Z substance-specific standards | **Permissible exposure limits**; exposure monitoring, medical surveillance and recordkeeping for specific substances | `ExposureLimit`/`ExposureMeasurement` (§11.7.4); `SurveillanceProgram`/`HazardExposure`/`OhcExamination` (§11.19) | **Covered** | Same position as Factories Act §41F above — both halves now exist. `ExposureLimit#source` records a PEL as a PEL, so an OSHA limit and an ACGIH TLV for the same agent are distinguishable rather than conflated. 1910.95's **standard threshold shift** remains open, since audiograms are not structured data. |
 
 ---
 
@@ -276,105 +280,150 @@ that already exists, and several are a few columns and a reminder job.
 ### S1 — Statutory equipment examination as a distinct record
 **Factories Act §§28, 29, 31, 87; 29 CFR 1910.119(j), 1910.147 · High, both**
 
-`MaintenanceRecord` conflates a preventive maintenance visit with a statutory
-examination by a competent person, and neither one blocks anything.
+**Mostly closed (2026-08-11).** See architecture.md §11.7.3.
 
-- An **examination type** on the record distinguishing statutory examination
-  from routine maintenance, with the **competent person's identity and
-  qualification**, the certificate, the acceptance criteria and the verdict.
-- Safe working load, design pressure and last-examination date as first-class
-  `Asset` attributes rather than free text.
-- **A use-blocking consequence.** `WorkPermits::Issue` already refuses a permit
-  whose crew has an uncleared `gate_pass_status`; the same guard should refuse a
-  permit against an `Asset` with an overdue statutory examination. This is the
-  cheapest high-value change in this document — the pattern, the service and the
-  guard-error convention all already exist.
+`MaintenanceRecord#kind` now separates a preventive maintenance visit from a
+statutory examination by a competent person, carrying the competent person's
+name, qualification and employer (plus an optional user link, since the
+examiner is often external), the statutory reference, the acceptance criteria,
+the certificate number and a `fit`/`fit_with_conditions`/`unfit` verdict.
+`fit_with_conditions` requires the conditions to be recorded and does not bar
+use — the conditions govern. Safe working load and design pressure are
+first-class `Asset` columns with units.
+
+`Asset#statutory_examination_state` is derived by
+`StatutoryExaminations::RefreshState` on the same terms as `calibration_state`
+(nightly sweep, worst-true-statement precedence, never-examined counts as
+overdue), and **`WorkPermits::Submit` now refuses a permit against equipment
+whose examination has lapsed or which was declared unfit** — the use-blocking
+consequence this gap asked for, built on the `guard_gate_passes!` shape that
+already existed. `work_permits.asset_id` is the new optional register link that
+makes the check possible; a permit naming its equipment only in free text is
+still allowed rather than blocked, so a half-built asset register cannot
+switch the control off wholesale.
+
+What remains:
+
 - A LOTO **energy control procedure per machine** with an annual periodic
-  inspection certification (1910.147(c)(6) names the four fields it must carry).
+  inspection certification (1910.147(c)(6) names the four fields it must
+  carry). This is a distinct model against a distinct regulation with its own
+  clock, and was deliberately left out of the examination slice rather than
+  bolted onto it.
 
 ### S2 — Workplace exposure monitoring against permissible limits
 **Factories Act §§13–15, 41F, 91; 29 CFR 1910.95, 1910.1000, Subpart Z · High, both**
 
-The single substantive safety gap. The app knows who is exposed to what and
-examines them on a clock; it does not know **how much** they are exposed to.
+**Mostly closed (2026-08-11).** See architecture.md §11.7.4.
 
-- An **occupational exposure limit master** — substance or agent, limit value,
-  averaging period (8-hour TWA, STEL, ceiling), and the source (Factories Act
-  Second Schedule, OSHA PEL, ACGIH TLV), configurable like `RiskMatrixLevel`
-  rather than hardcoded.
-- A **workplace monitoring record** — sampling point, area or personal, date,
-  duration, method, measured value, and an automatic comparison against the
-  limit in force **at the time of measurement** (the `WorkPermitGasTest`
-  precedent: `acceptable` is computed and stored precisely because the limit is
-  configuration that can change).
-- Noise dosimetry driving `SurveillanceProgram` enrolment automatically, and a
-  **standard threshold shift** determination on successive audiograms.
-- An exceedance raises a Finding through the existing `Findings::RaiseFromSource`
-  path — but **mandatorily**, not opt-in, since this is a statutory limit.
-- This is also gap P13 in the [food/pharma mapping](ich-q7-haccp-harpc-mapping.md);
-  build the sample-and-result engine once and point it at both.
+`ExposureLimit` is the permissible-limit register — agent, averaging period
+(8-hour TWA / 15-minute STEL / ceiling), value and unit, action level, and the
+source (Factories Act Second Schedule, OSHA PEL, ACGIH TLV, NIOSH REL or an
+internal limit) with its citation. Configurable rather than hardcoded, and
+deliberately **not** site-scoped: a statutory limit is set by the statute, not
+by the plant. A starting register of the common Indian values plus the noise
+limits is seeded in every environment, each row flagged for a competent person
+to confirm against the current gazette.
+
+`ExposureMeasurement` is the sample — personal or area, sampling point,
+duration, method, the instrument used, and the value — with the limit, the
+action level, the unit **and** the verdict all snapshotted onto the row, so
+revising a limit never rewrites a past result. An exceedance raises a
+**major_nc Finding without asking**, and a personal sample at or above the
+action level enrols the worker in their own site's surveillance programme for
+that hazard, which is the step that otherwise gets missed.
+
+`ReportsController#exposure_exceedances` is the register of everything that
+reached an action level or breached a limit.
+
+What remains:
+
+- **Noise dosimetry driving a standard threshold shift determination** on
+  successive audiograms. Dosimetry-driven *enrolment* is built; the STS
+  comparison is not, and cannot be until audiograms are structured data —
+  `OhcExaminationTest` stores its value as free text, so there is no
+  frequency-by-frequency threshold to compare. That is its own slice.
+- This gap was previously noted as also closing **P13** in the
+  [food/pharma mapping](ich-q7-haccp-harpc-mapping.md). It does not: P13 is
+  utility and *microbiological* monitoring (water, compressed air, organisms)
+  and depends on P2's `Sample`/`TestResult` engine. The sampling-and-verdict
+  shape built here is a good precedent for it, and makes it cheaper, but P13
+  stays open.
 
 ### S3 — Workplace inspection rounds and facility condition records
 **Factories Act §§11, 17, 18, 19, 42–48; 29 CFR 1910.141, 1910.157 · High, both**
 
-A whole class of recurring, scheduled, checklist-driven inspection that the app
-does not have, despite having four different checklist engines.
+**Closed (2026-08-11).** See architecture.md §11.25.
 
-- A **general workplace inspection** with a versioned checklist, a schedule per
-  area, an executor, findings per item and an overdue report — housekeeping,
-  lighting, drinking water, sanitary facilities, welfare facilities, fire
-  extinguishers, eyewash and safety showers, emergency exits, and signage.
-- Build it by **generalizing `FirstAidKitInspection`**, which already has the
-  register-plus-periodic-inspection-plus-overdue-report-plus-daily-reminder-job
-  shape working, rather than adding a fifth bespoke checklist engine. Use
-  `BbsChecklistTemplateVersion`'s immutable-once-published versioning for the
-  form so a past inspection is never re-read against wording that did not exist
-  yet.
-- The whitewashing date register (§11(2)) falls out of this for free.
+`WorkplaceInspectionTemplate` / `…Version` / `…Item` is the versioned form,
+immutable once effective; `WorkplaceInspectionRound` is the register of what
+must be inspected, where and how often; `WorkplaceInspection` is one walk,
+pinning the form version at start so it always renders the questions actually
+asked.
+
+Built exactly as this gap asked — by generalizing `FirstAidKitInspection`'s
+register-plus-periodic-execution shape and borrowing
+`BbsChecklistTemplateVersion`'s immutable versioning — rather than adding a
+fifth bespoke checklist engine.
+
+`PopulateStandardItems` seeds 22 questions drawn from the Act in one action,
+covering cleanliness, ventilation, dust and fume, lighting, drinking water,
+sanitary facilities, washing and welfare, creche, first aid, fire precautions,
+eyewash and safety showers, machine guarding and signage. A round nobody has
+ever walked counts as **overdue**, and a **critical** item answered No raises a
+nonconformity without asking.
+
+**§11(2)'s whitewashing date register falls out of it for free**, exactly as
+predicted: a standard question carrying the statutory reference, a required
+note for the date, and an immutable form version behind it *is* that register.
 
 ### S4 — Person attributes and the statutory appointment register
 **Factories Act §§23, 40B, 41C(b), 49, 66, 67–71; 29 CFR 1910.119(g), 1910.178 · Medium, both**
 
-**Partially closed (2026-08-06).** Competency-gated role assignment is built —
-architecture.md §11.5.3. A `blocking` `CompetencyRequirement` refuses a role
-assignment while the person does not hold the competency, `UserCompetency` is
-the appointment record, and the Competency Gaps report catches an authorization
-that lapses *after* assignment. That closed the shared gap this document
-previously listed alongside ICH Q7 §3.1, 21 CFR 117.180 and Part 11 §11.10(i).
+**Closed (2026-08-11).** See architecture.md §11.5.3 and §11.27.
 
-What remains:
+Competency-gated role assignment was built 2026-08-06. The remainder is now
+built too:
 
-- Date of birth, sex and employment category on `User` or a person profile,
-  without which the young-person and women's-night-work restrictions cannot even
-  be expressed. Handle this carefully: these are sensitive attributes and belong
-  behind the OHC module's confidentiality shape, not the ordinary
-  department-scoped one.
-- **Gate permit signing authority**, not only role assignment.
-  `WorkPermits::Issue` already refuses a permit whose crew has an uncleared
-  contractor gate pass, so the guard shape exists; pointing the same guard at
-  `User#holds_competency?` for a permit type's issuer, acceptor and approvers is
-  a small, high-value extension of what now exists.
-- A **statutory appointment register** — Safety Officer (§40B), Welfare Officer
-  (§49), competent persons, first aiders, entry supervisors, authorized LOTO
-  employees — recording the qualification, the appointment date and **the notice
-  sent to the Chief Inspector**. `UserCompetency` holds the qualification half
-  today; the statutory notification half has no field.
+- **Person attributes** — date of birth, sex and employment category sit on
+  `EmployeeMedicalProfile`, behind the OHC confidentiality boundary exactly as
+  this gap insisted, never on `User`. `#statutory_category_as_of` derives
+  adult/adolescent/child from the date of birth and returns nil when none is on
+  file, and `#employment_category_mismatch?` surfaces a typed category that
+  disagrees with it.
+- **Statutory appointment register** — `StatutoryAppointment` records the post,
+  the qualification, the appointment date and **the notice sent to the Chief
+  Inspector**, which is the half `UserCompetency` never had. Posts requiring a
+  notice are distinguished from those that do not, and the report lists posts
+  nobody currently holds.
+
+What remains, deliberately deferred: **gate permit signing authority on
+competency**. `WorkPermits::Submit` now carries three guards of exactly this
+shape (gate pass, statutory examination, and the checklist gate), so pointing
+one at `User#holds_competency?` for a permit type's issuer and acceptor is a
+small extension — but it needs a competency to be nominated per permit type,
+which is a configuration decision rather than a build.
 
 ### S5 — PPE programme and respirator fit testing
-**Factories Act §35, §87; 29 CFR 1910.132, 1910.133, 1910.134, 1910.138 · Medium, both — and cheap**
+**Factories Act §35, §87; 29 CFR 1910.132, 1910.133, 1910.134, 1910.138 · Medium, both**
 
-No PPE module exists. `BbsAction#control_hierarchy`'s `ppe` value is the only
-mention of PPE in the entire schema.
+**Closed (2026-08-11).** See architecture.md §11.26.
 
-- A **PPE hazard assessment with written certification** — 1910.132(d)(2) names
-  the four fields it must carry (workplace, certifier, date, and identification
-  as a certification), which makes this an unusually well-specified build.
-- A PPE catalogue, issue record per person, and inspection for reusable items.
-- **Respirator fit test records** — person, make, model, size, method, date,
-  pass/fail, annual clock. Copy `ContractorMedicalClearance` verbatim: dated
-  clearance, printable certificate, revocation, computed status and an expiry
-  reminder job. It is the same record with different columns, and fit testing is
-  the most-cited element of 1910.134.
+`PpeHazardAssessment` is 1910.132(d)(2)'s written certification, with all four
+fields the section names modelled as columns and a check constraint refusing a
+certified row missing any of them. `PpeItem` is the catalogue with conformity
+standards, `PpeIssue` the issue register per person, and `PpeInspection` the
+periodic examination of reusable equipment.
+
+`RespiratorFitTest` is `ContractorMedicalClearance` with different columns,
+exactly as this gap asked: a dated, immutable, revocable clearance with a
+computed status and an annual clock. Two rules are enforced rather than
+trusted — a quantitative pass below 1910.134(f)(7)'s fit-factor minimum is
+refused, and a failed or revoked test withdraws the respirator the person was
+issued.
+
+Not built: a Prawn certificate renderer. The fit-test page is print-friendly,
+which is a printable certificate in the sense asked for; a dedicated renderer
+would be a mechanical copy of `ContractorMedicalClearances::CertificatePdf`.
 
 ### S6 — Chemical hazard information, SDS, and external notification clocks
 **Factories Act §41B, §89; 29 CFR 1910.1200, 1910.119(d), 1904.39 · Medium, both**
@@ -415,51 +464,84 @@ exists only so the permit approval matrix can compute "after G-shift".
   actually on shift now*, which both currently approximate by role.
 
 ### S8 — Prescribed statutory formats and standard log renderers
-**Factories Act registers and returns; 29 CFR 1904.29, 1904.32 · Medium, both — and mostly mechanical**
+**Factories Act registers and returns; 29 CFR 1904.29, 1904.32 · Medium, both**
 
-The data largely exists; nothing prints in the format the regulator expects.
+**Engine closed; per-state content is a data task (2026-08-11).** See
+architecture.md §11.28.
 
-- **OSHA 300 Log, 300A Annual Summary and 301 Incident Report** rendered from
-  `Incident`/`IncidentPerson`. 1904.29(b)(4) permits an equivalent form provided
-  it carries the same information and is as readable, so this is a rendering
-  problem, not a data problem.
-- State-prescribed Factories Act registers and the annual and half-yearly
-  returns, driven from a per-state configuration rather than hardcoded — form
-  numbers and columns differ by state, and hardcoding one state's forms is how
-  this becomes unmaintainable.
-- The app already has five hand-written Prawn renderers to copy from
-  (`Audits::ReportPdf`, `HazopStudies::ReportPdf`,
-  `Ohc::MedicalExaminationRegisterPdf`, `Documents::CoverSheet`,
-  `MasterDocumentRegisters::IndexPdf`), and `Ohc::MedicalExaminationRegisterPdf`
-  is already a statutory register in all but name.
-- The 300A **certification by a company executive** lands on Part 11 gap G1 —
-  it is a signature with a stated meaning, which the approval engine cannot yet
-  produce.
+`StatutoryFormDefinition` makes the format **configuration**: a jurisdiction,
+a form number, a citation, and the columns that jurisdiction wants. Adding a
+state is a row, not a class — which is exactly what this gap asked for and the
+only design that survives 36 Indian jurisdictions.
+
+Built and verifiable: **OSHA 300 and 300A**, rendered from
+`Incident`/`IncidentPerson` under 1904.29(b)(4)'s equivalent-form allowance,
+with the classification mapping enforced (`fac` excluded per
+1904.7(b)(5)(ii)). Built as an unverified baseline: the Model Rules accident
+and young-persons registers.
+
+**Every seeded format ships `verified: false`** and says so on screen and in
+print. No individual Indian state is seeded, deliberately — a wrong form
+number that looks authoritative is worse than an empty register. Filling in
+Maharashtra, Gujarat and the rest from their published Rules is a data task
+for somebody with those Rules to hand, and `rails_admin_import` will load a
+spreadsheet of them.
+
+What remains:
+
+- **Forms requiring man-days, hours worked or periods of work** — the register
+  of adult workers (§62) and the annual return's headcount figures — depend on
+  the shift roster in gap **S7**. The engine will carry them once that data
+  exists.
+- **Total days away / days restricted** on the 300A are not derivable from the
+  schema, and print as "Not recorded".
+- **The 300A executive certification** is Part 11 gap **G1**; it prints a
+  signature block.
 
 ### S9 — Contractor safety pre-qualification
 **Factories Act contractor provisions; 29 CFR 1910.119(h) · Medium, both**
 
-On-site control is genuinely strong — gate-pass-enforced crews, toolbox talks as
-signed records, medical clearance with expiry reminders. **Pre-qualification is
-not**: `SupplierEvaluation` scores quality, delivery and service, with no safety
-criteria at all.
+**Closed (2026-08-11).** See architecture.md §11.27.
 
-- Safety criteria on supplier evaluation, or a contractor-specific
-  pre-qualification record: injury rates, safety programme review, insurance,
-  statutory registrations, and a periodic re-qualification clock.
-- A contractor injury and illness log — 1910.119(h)(2)(vi) requires it by name,
-  and `FirstAidCase` and `IncidentPerson` already cover contractors, so this is
-  a report over existing data rather than a new model.
-- This is the same gap `iso-standards-mapping.md` records as ISO 45001 §8.1.4
-  "Not yet covered" — closing it closes both.
+`Supplier` carries a `contractor` flag and the four things 1910.119(h)(2)(i)
+asks an employer to obtain and evaluate before selecting a contractor — injury
+rates (LTIFR/TRIR), safety programme review, insurance currency and statutory
+registrations — with a re-qualification clock.
+`Supplier#prequalification_gaps` names *which* piece is missing rather than
+returning a bare false. `SupplierEvaluation` gains a `safety_score` on the same
+scale as the commercial criteria, nullable so a non-contractor is not scored on
+a criterion that does not apply, and a score below halfway demands findings.
+
+`ReportsController#contractor_safety` is the register plus the injury log.
+
+**A correction to this gap's own description.** It stated that "`FirstAidCase`
+and `IncidentPerson` already cover contractors, so this is a report over
+existing data". That is true of `FirstAidCase`, which carries `person_type`. It
+is **not** true of `IncidentPerson`, which has no person type at all — a
+contractor there is an external person with no linked user, indistinguishable
+from a visitor or a member of the public. The report therefore shows a genuine
+contractor first aid log and a separately, honestly labelled "external persons
+injured" panel. **Residual:** adding a person type to `IncidentPerson` would
+close the incident half properly.
+
+This also closes what `iso-standards-mapping.md` records as ISO 45001 §8.1.4.
 
 ### S10 — Confined space and hazardous location inventories
 **Factories Act §36; 29 CFR 1910.146 · Low, both**
 
-1910.146 requires the employer to identify and evaluate permit spaces before a
-permit is ever raised. There is no register of confined spaces, hazardous area
-classifications, or energy isolation points. `Location` or `Asset` is the natural
-home, and each entry should be linkable from the permit that governs entry to it.
+**Closed (2026-08-11).** See architecture.md §11.27.
+
+`HazardousArea` is one register covering confined spaces, electrically
+classified areas and energy isolation points — one table with a `kind` rather
+than three, following the precedent `calibration_records` set. Each entry
+carries its hazards, entry requirements and review clock, and
+`work_permits.hazardous_area_id` links the permit to the space it governs entry
+to, so 1910.146(c)(1)'s "identify and evaluate before a permit is raised" is
+literal rather than aspirational.
+
+Reclassifying a confined space to non-permit requires a written basis, enforced
+by a validation and a check constraint — that is precisely the decision
+1910.146(c)(7) makes the employer document.
 
 ---
 
