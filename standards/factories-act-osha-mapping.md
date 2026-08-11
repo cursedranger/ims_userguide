@@ -426,42 +426,65 @@ which is a printable certificate in the sense asked for; a dedicated renderer
 would be a mechanical copy of `ContractorMedicalClearances::CertificatePdf`.
 
 ### S6 — Chemical hazard information, SDS, and external notification clocks
-**Factories Act §41B, §89; 29 CFR 1910.1200, 1910.119(d), 1904.39 · Medium, both**
+**Factories Act §41B, §88, §88A, §89; 29 CFR 1910.1200, 1910.119(d), 1904.39 · Medium, both**
 
-Three related things the `Chemical` master is too thin to hold.
+**Closed (2026-08-11).** See architecture.md §11.30.
 
-- Extend `Chemical` into a real hazardous substance master: GHS classification,
-  hazard and precautionary statements, **SDS attachment with a revision date and
-  a review clock**, exposure limit reference (S2), incompatibilities, and
-  storage requirements. `Chemical` is already paper-trailed and already master
-  data in RailsAdmin, so this is additive.
-- A **chemical inventory by location** with quantities — which serves 1910.1200
-  and 1910.119(d), and also the Factories Act §41B public disclosure and the
-  MAH/threshold-quantity determination under the Manufacture, Storage and Import
-  of Hazardous Chemicals Rules.
-- **Statutory notification clocks.** `IncidentNotification` holds a recipient
-  authority and a required decision but no due-at. Add one, derived from the
-  injury classification and the applicable rule — OSHA's 8-hour fatality and
-  24-hour hospitalization/amputation clocks, and the state-prescribed Factories
-  Act §88 timeframe — and wire it into the existing overdue-reminder job pattern
-  every other module already uses. An **occupational disease notification**
-  record (§89, Third Schedule) belongs here too.
+`Chemical` is now a real hazardous substance master — GHS classification and
+signal word, hazard and precautionary statements, incompatibilities, storage,
+first aid and firefighting measures, and the SDS as an attachment with a
+revision date and a review clock. A hazardous substance with **no revision
+date counts as overdue**, because an undated sheet cannot be shown to be
+current.
+
+`ChemicalInventory` records what is held where, and the per-site total drives
+the **MSIHC Major Accident Hazard determination** — which returns *nil* rather
+than false when no threshold is recorded, because "not determined" and "under
+the threshold" are different answers.
+
+`IncidentNotifications::DeriveClocks` derives the statutory clocks from the
+injury classifications on the incident, with the jurisdictions mapped
+separately: 1904.39's **8 hours** for a fatality and 24 for a hospitalisation,
+§88's reportable-accident clock for anything above first aid, §88A for an
+occurrence with nobody hurt, and **nothing at all for a first-aid-only case**.
+The reminder job runs **hourly**, because a daily 7am reminder arrives after an
+eight-hour deadline.
+
+**A correction to this gap's own description**, which said
+`IncidentNotification` had "no due-at". It had `due_date` — but a date cannot
+express eight hours, and nothing derived or chased it. `due_at` is now a real
+timestamp and `due_date` is left untouched.
+
+**Residual:** the §89 occupational disease notification has its field
+(`third_schedule_disease`) and its clock, but nothing yet *derives* one — that
+needs a diagnosis recorded against the Third Schedule, which is an OHC data
+shape rather than a notification one.
 
 ### S7 — Working hours, shift roster and the register of adult workers
 **Factories Act §§51–66, 62; OSH Code 2020 · Medium, India-specific**
 
-`Shift` is a real, well-designed site master that nobody is rostered onto — it
-exists only so the permit approval matrix can compute "after G-shift".
+**Closed (2026-08-11).** See architecture.md §11.29.
 
-- A **shift roster** assigning users to shifts by date, which turns the existing
-  master into a register of adult workers (§62), a periods-of-work notice (§61),
-  and the basis for weekly-hours, daily-hours and spread-over checks.
-- Overtime and leave are deliberately **out of scope** — that is payroll, and
-  this app should integrate with an HR system rather than grow one. Say so
-  explicitly in any proposal rather than leaving it ambiguous.
-- Worth noting the incidental benefit: a roster would let
-  `MedicalNotifications::Recipients` and the permit escalation resolve *who is
-  actually on shift now*, which both currently approximate by role.
+`ShiftAssignment` rosters people onto the existing `Shift` master by date.
+That turns it into the **register of adult workers (§62)** and the **notice of
+periods of work (§61)** — both now register kinds in the statutory form engine
+(S8), printable in any jurisdiction's format.
+
+The hours limits are **checked and surfaced, never enforced**: §51 (48 hours a
+week), §54 (9 a day), §56 (10.5-hour spread-over) and §52 (weekly holiday) are
+computed and shown on the board, in a breach panel and on the register, but an
+assignment always saves. Refusing the record does not prevent the hours. The
+one refusal is rostering somebody twice on a day, citing §60.
+
+The incidental benefit this gap predicted is delivered:
+`ShiftAssignment.on_duty_at` answers who is actually on shift, and
+`MedicalNotifications::Recipients` now notifies the **on-duty first aiders**
+by intersecting the §45 appointment register with the roster — additively, so
+a site with no roster behaves exactly as before.
+
+**Overtime and leave with wages remain deliberately out of scope** — that is
+payroll, and this app should integrate with an HR system rather than grow one.
+Say so explicitly in any proposal rather than leaving it ambiguous.
 
 ### S8 — Prescribed statutory formats and standard log renderers
 **Factories Act registers and returns; 29 CFR 1904.29, 1904.32 · Medium, both**

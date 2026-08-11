@@ -181,6 +181,50 @@ Sample/demo login credentials are printed by the seed tasks — see
     checked it against the published Rules. Explains why no Indian state ships
     pre-filled, how to bulk-load many jurisdictions, and states plainly which
     forms cannot yet be produced and why.
+39. [Workplace Exposure Monitoring](38-workplace-exposure-monitoring.md) —
+    Factories Act §41F and the Second Schedule, 29 CFR 1910.95/1910.1000: the
+    half health surveillance could not answer, which is *how much*. A
+    permissible-limit register shared across sites because a statute sets it and
+    not a plant; personal and area sampling judged against the limit **in force
+    when it was taken**; an exceedance that raises a major nonconformity without
+    asking and enrols the worker in their own site's surveillance programme.
+    Explains why decibels need a different action-level fraction from
+    concentrations.
+40. [Workplace Inspections](39-workplace-inspections.md) — Factories Act §§11,
+    17–19, 38, 42–48; 29 CFR 1910.141/1910.157: the inspection an inspector
+    opens first. A versioned form that becomes **immutable once published**, 22
+    standard questions drawn from the Act in one action, rounds scheduled per
+    area where *never inspected* counts as overdue, "not applicable" kept
+    distinct from "unanswered", and a critical item answered No raising a
+    nonconformity automatically. §11(2)'s whitewashing register falls out of it.
+41. [PPE & Respiratory Protection](40-ppe-and-respiratory-protection.md) —
+    Factories Act §35/§87, 29 CFR 1910.132–138: 1910.132(d)(2)'s **written
+    certification** modelled field by field; a catalogue carrying conformity
+    standards; issue and inspection registers where withdrawing equipment takes
+    it off the wearer automatically; and respirator fit testing with
+    1910.134(f)(7)'s fit-factor minimum **enforced**, a failure withdrawing the
+    respirator, and revocation that keeps the original on file.
+42. [Statutory Registers](41-statutory-registers.md) — Factories Act §§7, 36,
+    40B, 49, 66–71; 29 CFR 1910.146/1910.147: who is appointed to each statutory
+    post **and whether the Chief Inspector was told**, which is the half a
+    qualification record never held; plus the confined space, classified area and
+    energy isolation register, where reclassifying a permit space demands a
+    written basis. Explains why age and sex live behind the OHC confidentiality
+    boundary.
+43. [Shift Roster](42-shift-roster.md) — Factories Act §§51–62: the shift master
+    finally has people on it. A week board, bulk rostering that **skips rather
+    than moves** anyone already rostered, and the Act's hours limits **checked
+    and shown but never enforced** — because refusing the record does not prevent
+    the hours. Unlocks the §62 register of adult workers and §61 notice of
+    periods of work, and answers who is actually on duty.
+44. [Chemical Register & SDS](43-chemical-register-and-sds.md) — 29 CFR
+    1910.1200/1910.119(d), Factories Act §41B/§§88–89, MSIHC Rules 1989: what you
+    store, how dangerous it is, where it is, and whether the sheet telling a
+    worker how to handle it is still current — with an undated SDS counting as
+    **overdue rather than unknown**. Includes the MSIHC threshold determination
+    (which returns *not determined* rather than *safe*) and the statutory
+    notification clocks, whose reminder runs **hourly** because 1904.39 gives
+    eight hours for a fatality.
 
 ## Standards & regulatory mapping
 
